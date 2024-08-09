@@ -1,0 +1,62 @@
+{% extends "template.html" %}
+
+{% block title %}BNTL{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- infobox -->
+    <div class="col-xs-12 col-md-6 order-0">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h4>BIBLIOGRAFIE</h4>
+                    <h4 class="text-muted">VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP</h4>
+                    <p class="fs-6">
+                    De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
+                    uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten. 
+                    </br>
+                    We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
+                    kan u mee nadenken over de BNTL van de toekomst. 
+                    </p>
+                    <div class="row">
+                        <p class="text-end"><a href="/about">Lees verder...</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row fw-light px-3 pt-3">
+            <div class="col-12">
+                Some text describing the website background system. Thanks to zotero.
+            </div>
+        </div>
+        <hr>
+        <div class="row fw-light px-3">
+            <div class="col-12">
+                Bekijk ook de Friese bibliografie: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
+            </div>
+        </div>
+        <hr>
+        <div class="row fw-light px-3">
+            <div class="col-12">
+                Digitale Bibliografie voor die Afrikaanse Taalkunde <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- searchbox -->
+    <div class="col-xs-12 col-md-6 order-1 order-sm-0">
+        <div class="row">
+            <form>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Zoek op:" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">zoeken</button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <p class="text-end"><a href="#">geavanceerd zoeken</a></p>
+            <p class="text-end"><a href="#">help bij het zoeken</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
