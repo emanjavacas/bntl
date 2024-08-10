@@ -83,6 +83,7 @@ class AtlasClient():
        self.mongodb_client = MongoClient(settings.MONGODB_URI)
        self.database = self.mongodb_client[settings.MONGODB_DB]
        self.bntl_coll = self.database[settings.MONGODB_BNTL_COLL]
+       self.UNIQUE_REFS = unique_refs = self.bntl_coll.distinct("type_of_reference")
 
     def __len__(self):
         return self.bntl_coll.estimated_document_count()
@@ -118,12 +119,8 @@ class AtlasClient():
                     logger.info("Insert error for document:", doc)
 
     def find(self, query=None, limit=100, skip=0):
-       cursor = self.bntl_coll.find(query or {}, limit=limit)
-       items = list(cursor.skip(skip))
-       # drop object id's
-       for item in items:
-           item.pop('_id')
-       return items
+       cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
+       return cursor
     
     def close(self):
         self.mongodb_client.close()
@@ -139,8 +136,11 @@ if __name__ == '__main__':
     # with open('merged.ris', 'r') as f:
     with open(args.ris_file, 'r') as f:
         db = rispy.load(f)
-
+    
     client = AtlasClient()
+    items = list(client.find(limit=1000000))
+
+
     client.insert_documents(db, batch_size=5_000)
 
     _errors = []

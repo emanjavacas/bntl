@@ -1,9 +1,12 @@
 
+import json
 import logging
 from typing import List, Optional
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from pydantic import BaseModel, Field
+
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -63,6 +66,14 @@ async def about(request: Request):
     return templates.TemplateResponse("help.html", {"request": request})
 
 
+@app.get("/search", response_class=HTMLResponse)
+async def search(request: Request):
+    return templates.TemplateResponse(
+        "search.html", 
+        {"request": request, 
+         "type_of_reference": app.state.db_client.UNIQUE_REFS})
+
+
 @app.get("/count")
 async def index():
     return {"message": {"Estimated document count": len(app.state.db_client)}}    
@@ -76,6 +87,7 @@ def build_query(type_of_reference=None,
                 use_regex_title=False,
                 use_regex_author=False,
                 use_regex_keywords=False):
+
     query = []
 
     if type_of_reference is not None:
@@ -98,14 +110,14 @@ def build_query(type_of_reference=None,
         else:
             query.append({"$and": [{"year": {"$gte": year}},
                                    {"end_year": {"$lt": year}}]})
-            
+
     if author is not None:
         author = author if not use_regex_author else {"$regex": author}
         query.append({"$or": [{"authors": author},
                               {"first_authors": author},
                               {"secondary_authors": author},
                               {"tertiary_authors": author}]})
-        
+
     if keywords is not None:
         keywords = keywords if not use_regex_keywords else {"$regex": keywords}
         query.append({"keywords": keywords})
@@ -117,52 +129,45 @@ def build_query(type_of_reference=None,
     else:
         query = {}
 
-    return query    
+    return query
 
 
-@app.get("/query")
-async def query(type_of_reference: Optional[str] = None,
-                title: Optional[str] = None,
-                year: Optional[str] = None,
-                author: Optional[str] = None,
-                keywords: Optional[str] = None,
-                # regex
-                use_regex_title: Optional[bool] = False,
-                use_regex_author: Optional[bool] = False,
-                use_regex_keywords: Optional[bool] = False, 
+class SearchQuery(BaseModel):
+    type_of_reference: Optional[str] = None
+    title: Optional[str] = None
+    year: Optional[str] = None
+    author: Optional[str] = None
+    keywords: Optional[str] = None
+    use_regex_author: Optional[bool] = False
+    use_regex_title: Optional[bool] = False
+    use_regex_keywords: Optional[bool] = False
+
+
+@app.post("/query")
+async def query(search_query: SearchQuery, 
                 limit: int=100, 
                 skip: int=0) -> List[EntryModel]:
-
-    query = build_query(
-        type_of_reference, title, year, author, keywords, 
-        use_regex_title, use_regex_author, use_regex_keywords)
-
+    query = build_query(**search_query.dict())
     logger.info(query)
-
     cursor = app.state.db_client.find(query, limit=limit, skip=skip)
-    items = list(cursor)
-
-    return items
+    return list(cursor)
 
 
-@app.get("/paginate")
-async def paginate_route(type_of_reference: Optional[str] = None,
-                         title: Optional[str] = None,
-                         year: Optional[str] = None,
-                         author: Optional[str] = None,
-                         keywords: Optional[str] = None,
-                         # regex
-                         use_regex_title: Optional[bool] = False,
-                         use_regex_author: Optional[bool] = False,
-                         use_regex_keywords: Optional[bool] = False) -> Page[EntryModel]:
-
-    query = build_query(
-        type_of_reference, title, year, author, keywords, 
-        use_regex_title, use_regex_author, use_regex_keywords)
-
+@app.post("/paginate")
+async def paginate_route(search_query: SearchQuery, request: Request) -> Page[EntryModel]:
+    logger.info(search_query)
+    query = build_query(**search_query.dict())
     logger.info(query)
-
     return paginate(app.state.db_client.bntl_coll, query)
+
+
+@app.get("/results", response_class=HTMLResponse)
+async def results(request: Request, search_query: SearchQuery):
+    logger.info(search_query)
+    query = build_query(**search_query.dict())
+    logger.info(query)
+    data = paginate(app.state.db_client.bntl_coll, query)
+    return templates.TemplateResponse("results.html", {"request": request, **data.dict()})
 
 
 if __name__ == '__main__':
@@ -177,3 +182,4 @@ if __name__ == '__main__':
                 port=settings.PORT,
                 # workers=3,
                 reload=args.debug)
+

@@ -1,0 +1,105 @@
+{% extends "template.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <div class="card border-secondary px-0">
+      <div class="card-header">
+        <h3 class="text-uppercase">Geavanceerd zoeken</h3>
+      </div>
+      <div class="card-body">
+        <form id="searchForm" class="needs-validation" novalidate>
+          <!-- reference type -->
+          <div class="row">
+            <div class="col">
+              <div class="form-floating flex-grow-1 py-2">
+                <select class="form-select" name="type_of_reference" aria-label="Floating label select example">
+                  {% for rType in type_of_reference %}
+                    <option value="{{rType}}">{{rType}}</option>
+                  {% endfor %}
+                  <option value="" selected>Kies er een</option>
+                </select>
+                <label for="type_of_reference">Publicatie type</label>
+                <div class="row fw-light px-2">
+                  <div class="col small">
+                    Reference type quick help text
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- year -->
+          <div class="row">
+            <div class="col">
+              <div class="form-floating flex-grow-1 py-2">
+                <input type="text" class="form-control" name="year" placeholder="1987" pattern="[0-9]{4}(-[0-9]{4})?">
+                <div class="invalid-feedback">
+                Invalid
+                </div>
+                <label for="year">Jaar</label>
+                <div class="row fw-light px-2">
+                  <div class="col small">
+                    Year quick help text
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- author -->
+          <div class="row">
+            <div class="col">
+              <div class="form-floating flex-grow-1 py-2">
+                <input type="text" class="form-control" name="author" placeholder="Mike Kestemont">
+                <label for="author">Auteur</label>
+              </div>
+              <div class="form-check float-end">
+                <label class="form-check-label" for="use_regex_author">Regex</label>
+                <input class="form-check-input" type="checkbox" name="use_regex_author">
+              </div>
+            </div>
+          </div>
+
+          <!-- title -->
+          <div class="row">
+            <div class="col">
+              <div class="form-floating flex-grow-1 py-2">
+                <input type="text" class="form-control" name="title" placeholder="De Zwarte Konink">
+                <label for="title">Titelbeschrijving</label>
+              </div>
+
+              <div class="form-check float-end">
+                <label class="form-check-label" for="use_regex_title">Regex</label>
+                <input class="form-check-input" type="checkbox" name="use_regex_title">
+              </div>
+            </div>
+          </div>
+
+          <!-- keywords -->
+          <div class="row">
+            <div class="col">
+              <div class="form-floating flex-grow-1 py-2">
+                <input type="text" class="form-control" name="keywords", placeholder="test">
+                <label for="keywords">Trefwoorden</label>
+              </div>
+              <div class="form-check float-end">
+                <label class="form-check-label" for="use_regex_keywords">Regex</label>
+                <input class="form-check-input" type="checkbox" name="use_regex_keywords">
+              </div>
+            </div>
+          </div>
+
+          <!-- button -->
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-primary">Zoek</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

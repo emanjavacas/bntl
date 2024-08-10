@@ -1,0 +1,58 @@
+<div class="row small">
+    <!-- type of reference -->
+    <div class="row fw-bold">Publicatietype</div>
+    <div class="row">{{item.type_of_reference}}</div>
+    <!-- year -->
+    <div class="row fw-bold pt-3">Jaar</div>
+    <div class="row px-0"><span>{{item.year}}{% if item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</span></div>
+    <!-- authors -->
+    <div class="row fw-bold pt-3">Auteurs</div>
+    <div class="row">
+    {% if item.authors %}
+        {% for author in item.authors %}
+            <a class="px-0" href="#">{{author}}</a>
+        {% endfor %}
+    {% endif %}
+    {% if item.first_authors %}
+        {% for author in item.first_authors %}
+            <a class="px-0" href="#">{{author}}</a>
+        {% endfor %}
+    {% endif %}
+    {% if item.secondary_authors %}
+        {% for author in item.secondary_authors %}
+            <a class="px-0" href="#">{{author}}</a>
+        {% endfor %}
+    {% endif %}
+    {% if item.tertiary_authors %}
+        {% for author in item.tertiary_authors %}
+            <a class="px-0" href="#">{{author}}</a>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+    <!-- title -->
+    <div class="row fw-bold pt-3">Titelbeschrijving</div>
+    <div class="row px-0">
+      <span>{{item.title}}
+        {% if item.secondary_title %}<span class="text-muted">{{item.secondary_title}}</span>{% endif %}
+        {% if item.tertiary_title %}<span class="text-muted">{{item.tertiary_title}}</span>{% endif %}
+      </span>
+    </div>
+    <!-- keywords -->
+    <div class="row fw-bold pt-3">Keywords</div>
+    {% for keyword in item.keywords %}
+      <div class="row">
+        <a class="px-0" href="#">{{keyword}}</a>
+      </div>
+    {% endfor %}
+    <!-- URL -->
+    <div class="row fw-bold pt-3">URL</div>
+    <div class="row">
+      {% if item.urls %}
+        {% for url in item.urls %}
+          <a class="px-0" href="{{url}}">{{url}}</a>
+        {% endfor %}
+      {% else %}Geen url opgegeven
+    {% endif %}
+  </div>
+</div>
