@@ -1,10 +1,10 @@
 
-from typing import Type, Tuple, Dict, Union, List
+from typing import Type, Tuple
 import logging.config
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_settings import PydanticBaseSettingsSource, TomlConfigSettingsSource
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 import toml
 
@@ -21,11 +21,14 @@ class Settings(BaseSettings):
     BNTL_COLL: str = Field(help="MongoDB BNTL collection name", default="bntl")
     BNTL_DB: str = Field(help="MongoDB BNTL database name", default="bntl")
 
-    QUERY_URI: str = Field()
-    QUERY_COLL: str = Field(help="MongoDB BNTL collection name", default="queries")
-    QUERY_DB: str = Field(help="MongoDB BNTL database name", default="query")
+    LOCAL_URI: str = Field()
+    QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
+    USERS_COLL: str = Field(help="MongoDB user collection name", default="users")
+    LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
 
-    model_config = SettingsConfigDict(toml_file="settings.toml")
+    SECRET: str = Field(help="API secret token")
+
+    model_config = SettingsConfigDict(toml_file=["settings.toml", "secret_settings.toml"])
 
     @classmethod
     def settings_customise_sources(

@@ -8,7 +8,7 @@ T = TypeVar("T")
 
 
 class PagedResponseSchema(BaseModel, Generic[T]):
-    total: int
+    n_hits: int
     page: int
     from_page: int
     to_page: int
@@ -24,13 +24,14 @@ def paginate(coll, query, ResponseSchema: BaseModel,
              page: int=Field(1, ge=1),
              size: int=Field(10, le=100),
              transform: Callable=identity) -> PagedResponseSchema[T]:
+
     results = coll.find(query).skip((page - 1) * size).limit(size)
-    total = coll.count_documents(query)
-    total_pages = total // size
+    n_hits = coll.count_documents(query)
+    total_pages = n_hits // size
     from_page = max(1, page - 4)
     to_page = min(total_pages, page + 4)
     return PagedResponseSchema(
-        total=total,
+        n_hits=n_hits,
         page=page,
         from_page=from_page,
         to_page=to_page,

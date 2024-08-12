@@ -3,12 +3,17 @@ import re
 import bson
 import logging
 import traceback
+import uuid
+from datetime import datetime
 from typing import List, Optional, Dict
 
 from pydantic import BaseModel, Field, ConfigDict, ValidationError
+
+import pymongo
 from pymongo import MongoClient, errors
 
 from bntl.settings import settings
+from bntl.queries import SearchQuery
 
 
 logger = logging.getLogger(__name__)
@@ -121,22 +126,32 @@ class BNTLClient():
     def find(self, query=None, limit=100, skip=0):
         cursor = self.coll.find(query or {}, limit=limit).skip(skip)
         return cursor
-    
+
     def close(self):
         self.mongodb_client.close()
 
 
-class QueryClient():
-    def __init__(self) -> None:
-        self.mongodb_client = MongoClient(settings.QUERY_URI)
-        self.coll = self.mongodb_client[settings.QUERY_DB][settings.QUERY_COLL]
+class QueryModel(BaseModel):
+    query_id: str
+    timestamp: datetime
+    search_query: SearchQuery
+    session_id: uuid.UUID
+    n_hits: Optional[int]
+    last_accessed: datetime
 
-    def __len__(self):
-        return self.coll.estimated_document_count()
+
+class LocalClient():
+    def __init__(self) -> None:
+        self.mongodb_client = MongoClient(settings.LOCAL_URI)
+        self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
+        self.users_coll = self.mongodb_client[settings.LOCAL_DB][settings.USERS_COLL]
+
+    def get_session_queries(self, session_id) -> List[QueryModel]:
+        return list(self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING))
 
     def ping(self):
         self.mongodb_client.admin.command('ping')
-    
+
     def close(self):
         self.mongodb_client.close()
 
@@ -147,29 +162,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ris-file', required=True, help="Path to ris file with data to be indexed.")
     args = parser.parse_args()
-    
-    # with open('merged.ris', 'r') as f:
+
     with open(args.ris_file, 'r') as f:
         db = rispy.load(f)
-    
-    client = AtlasClient()
-    items = list(client.find(limit=1000000))
-
-
-    client.insert_documents(db, batch_size=5_000)
 
     _errors = []
-    for i in range(len(db)):
+    for idx, item in enumerate(db):
         try:
-            EntryModel.model_validate(db[i]).dict()
-        except:
-            _errors.append(i)
+            EntryModel.model_validate(item).dict()
+        except Exception:
+            _errors.append(idx)
 
-    [db[errors[i]]['year'] for i in range(len(errors))]
-    db[_errors[0]]
-
-    cursor = client.coll.find({"$and": [{"secondary_title": "Flämische Schriften"}, 
-                                             {"$and": [{"year": {"$gt": 1941}},
-                                                       {"year": {"$lt": 1943}}]}]})
-    
-    list(cursor)
+    client = BNTLClient()
+    client.insert_documents(db, batch_size=5_000)
