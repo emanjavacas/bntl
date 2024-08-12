@@ -17,9 +17,13 @@ def setup_logger(path='settings_logger.toml'):
 
 class Settings(BaseSettings):
     PORT: int = Field(help="Server port")
-    MONGODB_URI: str = Field(help="MongoDB URI used for connection")
-    MONGODB_BNTL_COLL: str = Field(help="MongoDB BNTL collection name")
-    MONGODB_DB: str = Field(help="MongoDB BNTL database name")
+    BNTL_URI: str = Field(help="MongoDB URI used for connection")
+    BNTL_COLL: str = Field(help="MongoDB BNTL collection name", default="bntl")
+    BNTL_DB: str = Field(help="MongoDB BNTL database name", default="bntl")
+
+    QUERY_URI: str = Field()
+    QUERY_COLL: str = Field(help="MongoDB BNTL collection name", default="queries")
+    QUERY_DB: str = Field(help="MongoDB BNTL database name", default="query")
 
     model_config = SettingsConfigDict(toml_file="settings.toml")
 

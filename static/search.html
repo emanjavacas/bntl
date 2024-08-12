@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col">
               <div class="form-floating flex-grow-1 py-2">
-                <select class="form-select" name="type_of_reference" aria-label="Floating label select example">
+                <select id="type_of_reference_select" class="form-select" name="type_of_reference" aria-label="Floating label select example">
                   {% for rType in type_of_reference %}
                     <option value="{{rType}}">{{rType}}</option>
                   {% endfor %}

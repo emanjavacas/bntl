@@ -1,21 +1,20 @@
 
-import json
 import logging
-from typing import List, Optional
+from typing import List
 from contextlib import asynccontextmanager
+from bson import ObjectId
+import uuid
 
-from pydantic import BaseModel, Field
-
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi_pagination import add_pagination
-from fastapi_pagination.links import Page
-from fastapi_pagination.ext.pymongo import paginate
 
-from bntl.db_client import AtlasClient, EntryModel
+from bntl.db import BNTLClient, EntryModel, QueryClient
+from bntl.queries import SearchQuery, build_query
 from bntl.settings import settings, setup_logger
+from bntl.pagination import paginate
 
 
 setup_logger()
@@ -30,9 +29,11 @@ Search engine + front end for a Zotero database
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.db_client = AtlasClient()
+    app.state.bntl_client = BNTLClient()
+    app.state.query_client = QueryClient()
     yield
-    app.state.db_client.close()
+    app.state.bntl_client.close()
+    app.state.query_client.close()
 
 
 app = FastAPI(
@@ -42,11 +43,15 @@ app = FastAPI(
     version="0.0.0",
     lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"])
 
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-# add pagination
-add_pagination(app)
 # declare templates
 templates = Jinja2Templates(directory="static")
 
@@ -62,7 +67,7 @@ async def about(request: Request):
 
 
 @app.get("/help", response_class=HTMLResponse)
-async def about(request: Request):
+async def help(request: Request):
     return templates.TemplateResponse("help.html", {"request": request})
 
 
@@ -71,103 +76,42 @@ async def search(request: Request):
     return templates.TemplateResponse(
         "search.html", 
         {"request": request, 
-         "type_of_reference": app.state.db_client.UNIQUE_REFS})
+         "type_of_reference": app.state.bntl_client.unique_refs})
 
 
 @app.get("/count")
 async def index():
-    return {"message": {"Estimated document count": len(app.state.db_client)}}    
-
-
-def build_query(type_of_reference=None,
-                title=None,
-                year=None,
-                author=None,
-                keywords=None,
-                use_regex_title=False,
-                use_regex_author=False,
-                use_regex_keywords=False):
-
-    query = []
-
-    if type_of_reference is not None:
-        query.append({"type_of_reference": type_of_reference})
-
-    if title is not None:
-        title = title if not use_regex_title else {"$regex": title}
-        query.append({"$or": [{"title": title},
-                              {"secondary_title": title},
-                              {"tertiary_title": title}]})
-
-    if year is not None:
-        if "-" in year: # year range
-            start, end = year.split('-')
-            start, end = int(start), int(end)
-            query.append({"$or": [{"$and": [{"year": {"$gte": start}},
-                                            {"year": {"$lt": end}}]},
-                                  {"$and": [{"end_year": {"$gte": start}},
-                                            {"end_year": {"$lt": end}}]}]})
-        else:
-            query.append({"$and": [{"year": {"$gte": year}},
-                                   {"end_year": {"$lt": year}}]})
-
-    if author is not None:
-        author = author if not use_regex_author else {"$regex": author}
-        query.append({"$or": [{"authors": author},
-                              {"first_authors": author},
-                              {"secondary_authors": author},
-                              {"tertiary_authors": author}]})
-
-    if keywords is not None:
-        keywords = keywords if not use_regex_keywords else {"$regex": keywords}
-        query.append({"keywords": keywords})
-
-    if len(query) > 1:
-        query = {"$and": query}
-    elif len(query) == 1:
-        query = query[0]
-    else:
-        query = {}
-
-    return query
-
-
-class SearchQuery(BaseModel):
-    type_of_reference: Optional[str] = None
-    title: Optional[str] = None
-    year: Optional[str] = None
-    author: Optional[str] = None
-    keywords: Optional[str] = None
-    use_regex_author: Optional[bool] = False
-    use_regex_title: Optional[bool] = False
-    use_regex_keywords: Optional[bool] = False
+    return {"message": {"Estimated document count": len(app.state.bntl_client)}}    
 
 
 @app.post("/query")
-async def query(search_query: SearchQuery, 
-                limit: int=100, 
-                skip: int=0) -> List[EntryModel]:
+async def query(search_query: SearchQuery, limit: int=100, skip: int=0) -> List[EntryModel]:
     query = build_query(**search_query.dict())
     logger.info(query)
-    cursor = app.state.db_client.find(query, limit=limit, skip=skip)
+    cursor = app.state.bntl_client.find(query, limit=limit, skip=skip)
     return list(cursor)
 
 
-@app.post("/paginate")
-async def paginate_route(search_query: SearchQuery, request: Request) -> Page[EntryModel]:
-    logger.info(search_query)
-    query = build_query(**search_query.dict())
-    logger.info(query)
-    return paginate(app.state.db_client.bntl_coll, query)
+@app.post("/registerQuery")
+async def register_query(search_query: SearchQuery):
+    query_id = app.state.query_client.coll.insert_one(search_query.dict()).inserted_id
+    logger.info("Registering query: {}".format(str(query_id)))
+    return JSONResponse(content={"query_id": str(query_id)})
 
 
-@app.get("/results", response_class=HTMLResponse)
-async def results(request: Request, search_query: SearchQuery):
+@app.get("/paginate")
+async def paginate_route(query_id: str, request: Request, page: int=Query(1, ge=1), size: int=Query(10, le=100)):
+    search_query = app.state.query_client.coll.find_one({'_id': ObjectId(query_id)})
     logger.info(search_query)
-    query = build_query(**search_query.dict())
+    if not search_query:
+        return JSONResponse(status_code=404, content={"error": "Query not found"})
+    search_query.pop('_id')
+    query = build_query(**search_query)
     logger.info(query)
-    data = paginate(app.state.db_client.bntl_coll, query)
-    return templates.TemplateResponse("results.html", {"request": request, **data.dict()})
+    results = paginate(app.state.bntl_client.coll, query, EntryModel, page=page, size=size)
+    return templates.TemplateResponse(
+        "results.html",
+        {"request": request, "query_id": query_id, **results.dict()})
 
 
 if __name__ == '__main__':
@@ -182,4 +126,3 @@ if __name__ == '__main__':
                 port=settings.PORT,
                 # workers=3,
                 reload=args.debug)
-

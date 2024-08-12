@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class EntryModel(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
     # mandatory
     label: str = Field(help="Zotero export validation result")
     name_of_database: str = Field(help="BNTL metadata")
@@ -62,7 +62,7 @@ def fix_year(doc):
         int(doc['year'])
         doc['end_year'] = int(doc['year']) + 1 # year is uninclusive
         return doc
-    except:
+    except Exception:
         # undefined years (eg. 197X), go for average value
         if 'X' in doc['year']:
             doc['year'] = doc['year'].replace('X', '5')
@@ -78,18 +78,18 @@ def fix_year(doc):
     return doc
 
 
-class AtlasClient():
-    def __init__ (self):
-       self.mongodb_client = MongoClient(settings.MONGODB_URI)
-       self.database = self.mongodb_client[settings.MONGODB_DB]
-       self.bntl_coll = self.database[settings.MONGODB_BNTL_COLL]
-       self.UNIQUE_REFS = unique_refs = self.bntl_coll.distinct("type_of_reference")
+class BNTLClient():
+    def __init__ (self) -> None:
+        self.mongodb_client = MongoClient(settings.BNTL_URI)
+        self.database = self.mongodb_client[settings.BNTL_DB]
+        self.coll = self.database[settings.BNTL_COLL]
+        self.unique_refs = self.coll.distinct("type_of_reference")
 
     def __len__(self):
-        return self.bntl_coll.estimated_document_count()
+        return self.coll.estimated_document_count()
 
     def ping(self):
-       self.mongodb_client.admin.command('ping')
+        self.mongodb_client.admin.command('ping')
 
     def insert_documents(self, documents, batch_size=10_000):
         doc_id = 0
@@ -104,23 +104,38 @@ class AtlasClient():
                     doc = EntryModel.model_validate(doc).dict()
                     subset.append(doc)
                 except YearFormatException:
-                    logger.info("Dropping document due to wrong year format", doc_id)
+                    logger.info("Dropping document due to wrong year format, doc: {}".format(doc_id))
                     logger.info(traceback.format_exc())
                 except ValidationError:
-                    logger.info("Dropping document due to wrong format", doc_id)
+                    logger.info("Dropping document due to wrong format, doc: {}".format(doc_id))
                     logger.info(traceback.format_exc())
                 doc_id += 1
             # entry
             try:
-                self.bntl_coll.insert_many(subset)
+                self.coll.insert_many(subset)
             except errors.BulkWriteError as e:
                 panic = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
                 for doc in panic:
-                    logger.info("Insert error for document:", doc)
+                    logger.info("Insert error for doc: {}".format(doc))
 
     def find(self, query=None, limit=100, skip=0):
-       cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
-       return cursor
+        cursor = self.coll.find(query or {}, limit=limit).skip(skip)
+        return cursor
+    
+    def close(self):
+        self.mongodb_client.close()
+
+
+class QueryClient():
+    def __init__(self) -> None:
+        self.mongodb_client = MongoClient(settings.QUERY_URI)
+        self.coll = self.mongodb_client[settings.QUERY_DB][settings.QUERY_COLL]
+
+    def __len__(self):
+        return self.coll.estimated_document_count()
+
+    def ping(self):
+        self.mongodb_client.admin.command('ping')
     
     def close(self):
         self.mongodb_client.close()
@@ -153,7 +168,7 @@ if __name__ == '__main__':
     [db[errors[i]]['year'] for i in range(len(errors))]
     db[_errors[0]]
 
-    cursor = client.bntl_coll.find({"$and": [{"secondary_title": "Flämische Schriften"}, 
+    cursor = client.coll.find({"$and": [{"secondary_title": "Flämische Schriften"}, 
                                              {"$and": [{"year": {"$gt": 1941}},
                                                        {"year": {"$lt": 1943}}]}]})
     

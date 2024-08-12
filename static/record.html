@@ -40,11 +40,14 @@
     </div>
     <!-- keywords -->
     <div class="row fw-bold pt-3">Keywords</div>
-    {% for keyword in item.keywords %}
-      <div class="row">
-        <a class="px-0" href="#">{{keyword}}</a>
-      </div>
-    {% endfor %}
+    {% if item.keywords %}
+        {% for keyword in item.keywords %}
+        <div class="row">
+            <a class="px-0" href="#">{{keyword}}</a>
+        </div>
+        {% endfor %}
+    {% else %}Geen opgegeven
+    {% endif %}
     <!-- URL -->
     <div class="row fw-bold pt-3">URL</div>
     <div class="row">

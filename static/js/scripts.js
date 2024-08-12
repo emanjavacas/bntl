@@ -18,8 +18,20 @@ $(document).ready(function() {
         })
     })()
 
-    $('form').submit(function(event) {
+    $('#searchForm').on('submit', function (event) {
         event.preventDefault();
+
+        // // nullify fields if they're empty
+        // $(this).find('input[name]')
+        //     .filter(function () {
+        //         return !this.value;
+        //     })
+        //     .prop('name', '');
+        // $(this).find('select')
+        // // nullify select
+        // if ($('#type_of_reference_select').val() === '') {
+        //     $('#type_of_reference_select').prop('disabled', true);
+        // }
 
         const formArray = $(this).serializeArray();
         const formData = {};
@@ -33,19 +45,14 @@ $(document).ready(function() {
             }
         })
         console.log(formData);
-
+        
         $.ajax({
-            url: '/results',
-            type: 'GET',
+            type: 'POST',
+            url: '/registerQuery',
             data: JSON.stringify(formData),
-            dataType: "json",
-            headers: {'Content-Type': 'application/json'},
-            success: function(data) {
-                console.log('Success:', data);
-                $('html').html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
+            contentType: 'application/json',
+            success: function(response) {
+                window.location.href = '/paginate?query_id=' + response.query_id;
             }
         });
     });
