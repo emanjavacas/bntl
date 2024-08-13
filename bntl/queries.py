@@ -15,6 +15,7 @@ class SearchQuery(BaseModel):
     use_regex_author: Optional[bool] = False
     use_regex_title: Optional[bool] = False
     use_regex_keywords: Optional[bool] = False
+    full_text: Optional[str] = None
 
 
 def build_query(type_of_reference=None,
@@ -24,9 +25,12 @@ def build_query(type_of_reference=None,
                 keywords=None,
                 use_regex_title=False,
                 use_regex_author=False,
-                use_regex_keywords=False):
+                use_regex_keywords=False,
+                full_text=None):
     """
     """
+    if full_text:
+        return {"full_text": full_text}
 
     query = []
 

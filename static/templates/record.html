@@ -10,22 +10,22 @@
     <div class="row">
     {% if item.authors %}
         {% for author in item.authors %}
-            <a class="px-0" href="#">{{author}}</a>
+            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
         {% endfor %}
     {% endif %}
     {% if item.first_authors %}
         {% for author in item.first_authors %}
-            <a class="px-0" href="#">{{author}}</a>
+            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
         {% endfor %}
     {% endif %}
     {% if item.secondary_authors %}
         {% for author in item.secondary_authors %}
-            <a class="px-0" href="#">{{author}}</a>
+            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
         {% endfor %}
     {% endif %}
     {% if item.tertiary_authors %}
         {% for author in item.tertiary_authors %}
-            <a class="px-0" href="#">{{author}}</a>
+            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
         {% endfor %}
     {% endif %}
     </div>
@@ -43,7 +43,7 @@
     {% if item.keywords %}
         {% for keyword in item.keywords %}
         <div class="row">
-            <a class="px-0" href="#">{{keyword}}</a>
+            <a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a>
         </div>
         {% endfor %}
     {% else %}Geen opgegeven

@@ -126,6 +126,14 @@ class BNTLClient():
     def find(self, query=None, limit=100, skip=0):
         cursor = self.coll.find(query or {}, limit=limit).skip(skip)
         return cursor
+    
+    def full_text_search(self, string, fuzzy=False, **fuzzy_kwargs):
+        query = {"query": string, "path": {"wildcard": "*"}}
+        if fuzzy:
+            query["fuzzy"] = fuzzy_kwargs
+        cursor = self.coll.aggregate([
+            {"$search": {"index": "default", "text": query}}])
+        return cursor
 
     def close(self):
         self.mongodb_client.close()
@@ -174,4 +182,9 @@ if __name__ == '__main__':
             _errors.append(idx)
 
     client = BNTLClient()
-    client.insert_documents(db, batch_size=5_000)
+    # client.insert_documents(db, batch_size=5_000)
+
+    key = "kestemont"
+    cursor = client.coll.aggregate([{"$search": {"index": "default", "text": {"query": key, "path": {"wildcard": "*"}}}}])
+    results = list(cursor)
+    len(results)

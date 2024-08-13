@@ -20,10 +20,10 @@
 <div class="row">
   <div class="col">
     <h3 class="pb-3">Zoekgeschiedenis</h3>
-    <div class="row-cols-lg-4 row-cols-md-3 row-cols-sm-1">
+    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1 row-cols-xs-1 g-2">
       {% for query in queries %}
       <div class="col">
-        <div class="card text-dark bg-light ">
+        <div class="card h-100">
           <div class="card-header">
             <a style="text-decoration: none" class="stretched-link link-dark" href="/paginate?query_id={{query._id}}">{{ query.timestamp.strftime('%B %d, %Y, %H:%M:%S') }}</a>
           </div>
@@ -51,8 +51,10 @@
               {% endif %}
               </ul>
             </div>
-            <p class="card-text text-end"><small class="text-muted push-end">Laatst geopened: {{ query.last_accessed.astimezone() | naturaltime }}</small></p>
-          </div> 
+          </div>
+          <div class="card-footer">
+            <div class="card-text text-end"><small class="text-muted">{{ query.last_accessed.astimezone() | naturaltime }}</small></div>
+          </div>
         </div>
       </div>
       {% endfor %}

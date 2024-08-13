@@ -1,7 +1,6 @@
 {% extends "template.html" %}
 
 {% block title %}Results{% endblock %}
-{% block script %}const queryId = "{{query_id}}";{% endblock %}
 
 {% block content %}
 
@@ -34,16 +33,33 @@
         <span class="navbar-text small">
           Sorteer op 
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
-          <button type="button" class="btn btn-sm btn-outline-secondary">Auteur</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">Jaar</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">Relevantie</button>
+          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Auteur</a>
+          <a class="btn btn-sm {% if sort_author == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
+             href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}">
+              <i class="bi bi-caret-up-fill"></i>
+          </a>
+          <a class="btn btn-sm {% if sort_author == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
+            href="{{source}}&sort_author={% if sort_author == 'descending' %}{% else %}descending{% endif %}&sort_year={{sort_year}}">
+            <i class="bi bi-caret-down-fill"></i>
+          </a>
+        </div>
+        <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
+          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Jaar</a>
+          <a class="btn btn-sm {% if sort_year == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
+             href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}">
+              <i class="bi bi-caret-up-fill"></i>
+          </a>
+          <a class="btn btn-sm {% if sort_year == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
+            href="{{source}}&sort_year={% if sort_year == 'descending' %}{% else %}descending{% endif %}&sort_author={{sort_author}}">
+            <i class="bi bi-caret-down-fill"></i>
+          </a>
         </div>
         </span>
         <span class="navbar-text small justify-content-end">Zoekresultaten per pagina
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if size == targetSize %}disabled{% endif %}" role="button"
-                href="/paginate?query_id={{query_id}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}">
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}">
                 {{targetSize}}
               </a>
             {% endfor %}
@@ -91,17 +107,25 @@
       <div class="container justify-content-center">
         <span class="navbar-text">
           <ul class="pagination">
-            <li class="page-item {% if page == 1 %}disabled{% endif %}"><a class="page-link" href="/paginate?query_id={{query_id}}&size={{size}}&page=1">&lt;&lt;</a></li>
-            <li class="page-item {% if page == 1 %}disabled{% endif %}"><a class="page-link" href="/paginate?query_id={{query_id}}&size={{size}}&page={{page-1}}">&lt;</a></li>
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page=1">&lt;&lt;</a>
+            </li>
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page-1}}">&lt;</a>
+            </li>
             {% for i in range(from_page, to_page + 1) %}
               {% if i == page %}
                 <li class="page-item disabled"><a class="page-link" href="#">{{i}}</a></li>
               {% else %}
-                <li class="page-item"><a class="page-link" href="/paginate?query_id={{query_id}}&size={{size}}&page={{i}}">{{i}}</a></li>
+                <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}">{{i}}</a></li>
               {% endif %}
             {% endfor %}
-            <li class="page-item {% if page == total_pages %}disabled{% endif %}"><a class="page-link" href="/paginate?query_id={{query_id}}&size={{size}}&page={{page+1}}">&gt;</a></li>
-            <li class="page-item {% if page == total_pages %}disabled{% endif %}"><a class="page-link" href="/paginate?query_id={{query_id}}&size={{size}}&page={{total_pages}}">&gt;&gt;</a></li>
+            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}">&gt;</a>
+            </li>
+            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}">&gt;&gt;</a>
+            </li>
           </ul>
         </span>
       </div>

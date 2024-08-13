@@ -1,13 +1,14 @@
 
 import logging
 from typing import List
+import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from bson import ObjectId
 import uuid
 import humanize
 
-from fastapi import FastAPI, Request, Query
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -16,7 +17,7 @@ from fastapi.templating import Jinja2Templates
 from bntl.db import BNTLClient, EntryModel, LocalClient
 from bntl.queries import SearchQuery, build_query
 from bntl.settings import settings, setup_logger
-from bntl.pagination import paginate
+from bntl.pagination import paginate, PageParams
 
 
 setup_logger()
@@ -100,30 +101,58 @@ async def search(request: Request):
 async def register_query(search_query: SearchQuery, request: Request):
     session_id = request.cookies.get("session_id")
     existing_query = app.state.local_client.query_coll.find_one(
-        {"session_id": session_id, "search_query": search_query.dict()})
+        {"session_id": session_id, "search_query": search_query.model_dump()})
     if existing_query:
         query_id = existing_query["_id"]
     else:
         query_data = {}
-        query_data["search_query"] = search_query.dict()
+        query_data["search_query"] = search_query.model_dump()
         query_data["session_id"] = session_id
         query_data["timestamp"] = datetime.now(timezone.utc)
         query_id = app.state.local_client.query_coll.insert_one(query_data).inserted_id
-        logger.info("Registering query: %s", str(query_id))
+        logger.info("Registered query: %s", str(query_id))
 
     return JSONResponse(content={"query_id": str(query_id)})
 
 
+def run_query(search_query: SearchQuery, page_params: PageParams):
+    if not isinstance(search_query, dict):
+        search_query = search_query.model_dump()
+    if '_id' in search_query:
+        search_query.pop('_id')
+    query = build_query(**search_query)
+    logger.info(query)
+    return paginate(app.state.bntl_client.coll, query, page_params, EntryModel)
+
+
+@app.get("/quickQuery")
+async def quick_query(request: Request,
+                      search_query: SearchQuery=Depends(),
+                      page_params: PageParams=Depends()):
+    """
+    This route is a shortcut to query the database without registering queries in the db.
+    It is only meant to be used in quick-queries like links pointing to authors or keywords.
+    """
+    logger.info(page_params)
+    results = run_query(search_query, page_params)
+    # add source
+    source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
+    return templates.TemplateResponse(
+        "results.html", {"request": request, "source": source, **results.model_dump()})
+
+
 @app.get("/paginate")
-async def paginate_route(query_id: str, request: Request, page: int=Query(1, ge=1), size: int=Query(10, le=100)):
+async def paginate_route(query_id: str, request: Request,
+                         page_params: PageParams=Depends()):
+
     session_id = request.cookies.get("session_id")
-    query_data = app.state.local_client.query_coll.find_one({'_id': ObjectId(query_id), "session_id": session_id})
-    logger.info(query_data)
+    query_data = app.state.local_client.query_coll.find_one(
+        {'_id': ObjectId(query_id), "session_id": session_id})
     if not query_data:
         return JSONResponse(status_code=404, content={"error": "Query not found"})
-    query_data.pop('_id')
-    query = build_query(**query_data["search_query"])
-    results = paginate(app.state.bntl_client.coll, query, EntryModel, page=page, size=size)
+
+    results = run_query(query_data['search_query'], page_params)
+
     # store total on query database for preview
     app.state.local_client.query_coll.update_one(
         {"session_id": session_id, "_id": ObjectId(query_id)},
@@ -132,9 +161,13 @@ async def paginate_route(query_id: str, request: Request, page: int=Query(1, ge=
     app.state.local_client.query_coll.update_one(
         {"session_id": session_id, "_id": ObjectId(query_id)},
         {"$set": {"last_accessed": datetime.now(timezone.utc)}})
+    
+    source = f"/paginate?query_id={query_id}"
+    logger.info(source)
+
     return templates.TemplateResponse(
         "results.html",
-        {"request": request, "query_id": query_id, **results.dict()})
+        {"request": request, "source": source, **results.model_dump()})
 
 
 @app.get("/history")
@@ -152,7 +185,7 @@ async def index():
 
 @app.post("/query")
 async def query_route(search_query: SearchQuery, limit: int=100, skip: int=0) -> List[EntryModel]:
-    query = build_query(**search_query.dict())
+    query = build_query(**search_query.model_dump())
     logger.info(query)
     cursor = app.state.bntl_client.find(query, limit=limit, skip=skip)
     return list(cursor)
