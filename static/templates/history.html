@@ -30,6 +30,9 @@
           <div class="card-body" id="historyCard">
             <div class="card-text py-0">
               <ul class="py-0" style="padding: 0; list-style-type: none;">
+              {% if query.search_query.full_text %}
+              <li><span class="fw-bold">Fulltext: </span>"{{query.search_query.full_text}}"</li>
+              {% endif %}
               {% if query.search_query.type_of_reference %}
               <li><span class="fw-bold">Publicatietype: </span>
                 <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{query.search_query.type_of_reference}}">
@@ -40,14 +43,50 @@
               {% if query.search_query.year %}
               <li><span class="fw-bold">Jaar: </span>"{{query.search_query.year}}"</li>
               {% endif %}
+
               {% if query.search_query.title %}
-              <li><span class="fw-bold">Title: </span>"{{query.search_query.title}}"</li>
+              <li><span class="fw-bold">Title: </span>"{{query.search_query.title}}"
+                {% if query.search_query.use_regex_title %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="10px" src="/static/assets/img/regex.svg">
+                </span>
+                {% endif %}
+                {% if query.search_query.use_case_title %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="15px" src="/static/assets/img/letter-case-capitalize.svg">
+                </span>
+                {% endif %}
+              </li>
               {% endif %}
+
               {% if query.search_query.author %}
-              <li><span class="fw-bold">Auteur: </span>"{{query.search_query.author}}"</li>
+              <li><span class="fw-bold">Auteur: </span>"{{query.search_query.author}}"
+                {% if query.search_query.use_regex_author %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="10px" src="/static/assets/img/regex.svg">
+                </span>
+                {% endif %}
+                {% if query.search_query.use_case_author %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="15px" src="/static/assets/img/letter-case-capitalize.svg">
+                </span>
+                {% endif %}
+              </li>
               {% endif %}
+
               {% if query.search_query.keywords %}
-              <li><span class="fw-bold">Trefwoorden: </span>"{{query.search_query.keywords}}"</li>
+              <li><span class="fw-bold">Trefwoorden: </span>"{{query.search_query.keywords}}"
+                {% if query.search_query.use_regex_keywords %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="10px" src="/static/assets/img/regex.svg">
+                </span>
+                {% endif %}
+                {% if query.search_query.use_case_keywords %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
+                  <img width="15px" src="/static/assets/img/letter-case-capitalize.svg">
+                </span>
+                {% endif %}
+              </li>
               {% endif %}
               </ul>
             </div>

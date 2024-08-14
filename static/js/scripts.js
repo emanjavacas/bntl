@@ -18,13 +18,24 @@ $(document).ready(function() {
         })
     })()
 
+    // make sure regex checkbox is checked if the case checkbox is checked
+    $.each(["author", "title", "keywords"], function(key, val) {
+        $(`#${val}_case_id`).change(function(){
+            if ($(this).is(":checked")) {
+                $(`#${val}_regex_id`).prop("checked", true);
+            }
+        })
+    })
+
     $('#searchForm').on('submit', function (event) {
         event.preventDefault();
         const formArray = $(this).serializeArray();
         const formData = {};
         $.each(formArray, function(index, field){
+            console.log(field)
             if (field.value !== "") {
-                if (field.name.includes("regex")) {
+                if (field.name.includes("regex") || field.name.includes("case")) {
+                    console.log(field)
                     formData[field.name] = true;
                 } else {
                     formData[field.name] = field.value;

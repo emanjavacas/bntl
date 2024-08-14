@@ -48,48 +48,32 @@
             </div>
           </div>
 
-          <!-- author -->
+          {% for screen, key in [("author", "Auteur"), ("title", "Titelbeschrijving"), ("keywords", "Trefwoorden")] %}
           <div class="row">
             <div class="col">
               <div class="form-floating flex-grow-1 py-2">
-                <input type="text" class="form-control" name="author" placeholder="Mike Kestemont">
-                <label for="author">Auteur</label>
+                <input type="text" class="form-control" name="{{screen}}" placeholder="test">
+                <label for="{{screen}}">{{key}}</label>
               </div>
-              <div class="form-check float-end">
-                <label class="form-check-label" for="use_regex_author">Regex</label>
-                <input class="form-check-input" type="checkbox" name="use_regex_author">
+              <div class="form-check form-switch form-check-inline form-check-reverse float-end">
+                <label class="form-check-label" for="use_case_{{screen}}">                 
+                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Use case">
+                    <img width="16px" src="/static/assets/img/letter-case-capitalize.svg">
+                  </span>
+                </label>
+                <input id="{{screen}}_case_id" class="form-check-input" role="switch" type="checkbox" name="use_case_{{screen}}">
               </div>
-            </div>
-          </div>
-
-          <!-- title -->
-          <div class="row">
-            <div class="col">
-              <div class="form-floating flex-grow-1 py-2">
-                <input type="text" class="form-control" name="title" placeholder="De Zwarte Konink">
-                <label for="title">Titelbeschrijving</label>
-              </div>
-
-              <div class="form-check float-end">
-                <label class="form-check-label" for="use_regex_title">Regex</label>
-                <input class="form-check-input" type="checkbox" name="use_regex_title">
+              <div class="form-check form-check-inline form-check-reverse form-switch float-end">
+                <label class="form-check-label" for="use_regex_{{screen}}">
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Use regex">
+                    <img width="14px" src="/static/assets/img/regex.svg">
+                  </span>
+                </label>
+                <input id="{{screen}}_regex_id" class="form-check-input" role="switch" type="checkbox" name="use_regex_{{screen}}">
               </div>
             </div>
           </div>
-
-          <!-- keywords -->
-          <div class="row">
-            <div class="col">
-              <div class="form-floating flex-grow-1 py-2">
-                <input type="text" class="form-control" name="keywords", placeholder="test">
-                <label for="keywords">Trefwoorden</label>
-              </div>
-              <div class="form-check float-end">
-                <label class="form-check-label" for="use_regex_keywords">Regex</label>
-                <input class="form-check-input" type="checkbox" name="use_regex_keywords">
-              </div>
-            </div>
-          </div>
+          {% endfor %}
 
           <!-- button -->
           <div class="row">
@@ -103,3 +87,6 @@
   </div>
 </div>
 {% endblock %}
+
+
+

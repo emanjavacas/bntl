@@ -15,6 +15,10 @@ class SearchQuery(BaseModel):
     use_regex_author: Optional[bool] = False
     use_regex_title: Optional[bool] = False
     use_regex_keywords: Optional[bool] = False
+    use_case_author: Optional[bool] = False
+    use_case_title: Optional[bool] = False
+    use_case_keywords: Optional[bool] = False
+
     full_text: Optional[str] = None
 
 
@@ -24,12 +28,15 @@ def build_query(type_of_reference=None,
                 author=None,
                 keywords=None,
                 use_regex_title=False,
+                use_case_title=False,
                 use_regex_author=False,
+                use_case_author=False,
                 use_regex_keywords=False,
+                use_case_keywords=False,
                 full_text=None):
     """
     """
-    if full_text:
+    if full_text: #shortcut
         return {"full_text": full_text}
 
     query = []
@@ -38,7 +45,10 @@ def build_query(type_of_reference=None,
         query.append({"type_of_reference": type_of_reference})
 
     if title is not None:
-        title = title if not use_regex_title else {"$regex": title}
+        if use_regex_title:
+            title = {"$regex": title}
+            if not use_case_title:
+                title["$options"] = "i"
         query.append({"$or": [{"title": title},
                               {"secondary_title": title},
                               {"tertiary_title": title}]})
@@ -56,14 +66,20 @@ def build_query(type_of_reference=None,
                                    {"end_year": {"$lte": int(year) + 1}}]})
 
     if author is not None:
-        author = author if not use_regex_author else {"$regex": author}
+        if use_regex_author:
+            author = {"$regex": author}
+            if not use_case_author:
+                author["$options"] = "i"
         query.append({"$or": [{"authors": author},
                               {"first_authors": author},
                               {"secondary_authors": author},
                               {"tertiary_authors": author}]})
 
     if keywords is not None:
-        keywords = keywords if not use_regex_keywords else {"$regex": keywords}
+        if use_regex_keywords:
+            keywords = {"$regex": keywords}
+            if not use_case_keywords:
+                keywords["$options"] = "i"
         query.append({"keywords": keywords})
 
     if len(query) > 1:

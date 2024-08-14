@@ -99,6 +99,7 @@ async def search(request: Request):
 
 @app.post("/registerQuery")
 async def register_query(search_query: SearchQuery, request: Request):
+    logger.info(search_query)
     session_id = request.cookies.get("session_id")
     existing_query = app.state.local_client.query_coll.find_one(
         {"session_id": session_id, "search_query": search_query.model_dump()})

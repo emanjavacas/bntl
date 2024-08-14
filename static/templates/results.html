@@ -120,10 +120,10 @@
                 <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}">{{i}}</a></li>
               {% endif %}
             {% endfor %}
-            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+            <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
               <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}">&gt;</a>
             </li>
-            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+            <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
               <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}">&gt;&gt;</a>
             </li>
           </ul>
