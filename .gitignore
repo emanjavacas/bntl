@@ -7,3 +7,5 @@ venv
 
 *.log
 *.lock
+
+secret_settings.toml
