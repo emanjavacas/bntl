@@ -1,37 +1,21 @@
 
 import math
-from typing import Generic, List, TypeVar, Literal, Callable
+from typing import Callable
 
 import pymongo
-from pydantic import BaseModel, Field
-from bntl.queries import SearchQuery
+from pydantic import BaseModel
+
+from bntl.models import PageParams, PagedResponseModel, SearchQuery, T
+from bntl import utils
 
 
-T = TypeVar("T")
 SORT_ORDER_MAP = {"ascending": pymongo.ASCENDING, "descending": pymongo.DESCENDING}
-def identity(item): return item
-
-
-class PagedResponseSchema(BaseModel, Generic[T]):
-    n_hits: int
-    from_page: int
-    to_page: int
-    total_pages: int
-    items: List[T]
-
-
-class PageParams(BaseModel):
-    page: int=Field(default=1, ge=1)
-    size: int=Field(default=10, le=100)
-    sort_author: Literal["ascending", "descending", ""]=Field(default="")
-    sort_year: Literal["ascending", "descending", ""]=Field(default="")
-
-
-class PagedResponseSchemaOut(PageParams, PagedResponseSchema, Generic[T]):
-    pass
 
 
 def parse_sort(page_params: PageParams):
+    """
+    Transforms page_params into a pymongo-ready data-structure
+    """
     sort_author, sort_year = page_params.sort_author, page_params.sort_year
     sort = []
     if sort_author:
@@ -42,6 +26,9 @@ def parse_sort(page_params: PageParams):
 
 
 def paginate_find(coll, query: SearchQuery, page_params: PageParams):
+    """
+    Pagination logic over a regular advanced search
+    """
     # unwrap params
     page, size = page_params.page, page_params.size
 
@@ -55,7 +42,11 @@ def paginate_find(coll, query: SearchQuery, page_params: PageParams):
     return results, n_hits
 
 
-def paginate_aggregate(coll, query: SearchQuery, page_params: PageParams):
+def _paginate_full_text_atlas(coll, query, page_params):
+    """
+    Internal pagination logic when using cloud atlas for full-text search
+        https://www.mongodb.com/products/platform/atlas-search
+    """
     # unwrap params
     page, size = page_params.page, page_params.size
 
@@ -82,18 +73,40 @@ def paginate_aggregate(coll, query: SearchQuery, page_params: PageParams):
     return results, n_hits
 
 
+def _paginate_full_text_mongodb(coll, query, page_params):
+    """
+    Pagination logic for full text search using a local mongodb text index
+    (see "bntl.db.create_text_index")
+    """
+    return paginate_find(coll, {"$text": {"$search": query["full_text"]}}, page_params)
+
+
+def paginate_full_text(coll, query: SearchQuery, page_params: PageParams):
+    """
+    Router for the full text functionality
+    """
+    uri, _ = coll.database.client.address
+    if utils.is_atlas(uri):
+        return _paginate_full_text_atlas(coll, query, page_params)
+    return _paginate_full_text_mongodb(coll, query, page_params)
+
+
 def paginate(coll, 
              query: SearchQuery, 
              page_params: PageParams, 
-             ResponseSchema: BaseModel, 
-             transform: Callable=identity) -> PagedResponseSchemaOut[T]:
+             ResponseModel: BaseModel, 
+             transform: Callable=utils.identity) -> PagedResponseModel[T]:
+    """
+    Generic pagination function over MongoDB
+    """
     # unwrap params
     page, size = page_params.page, page_params.size
     sort_author, sort_year = page_params.sort_author, page_params.sort_year
 
     # search and sort
     if "full_text" in query and query["full_text"] is not None:
-        results, n_hits = paginate_aggregate(coll, query, page_params)
+        # TODO: route to the local method (no atlas)
+        results, n_hits = paginate_full_text(coll, query, page_params)
     else:
         results, n_hits = paginate_find(coll, query, page_params)
 
@@ -105,9 +118,9 @@ def paginate(coll,
     for item in results:
         item["doc_id"] = str(item["_id"])
         item.pop("_id")
-        items.append(ResponseSchema.model_validate(transform(item)))
+        items.append(ResponseModel.model_validate(transform(item)))
 
-    return PagedResponseSchemaOut(
+    return PagedResponseModel(
         n_hits=n_hits,
         from_page=from_page,
         to_page=to_page,
