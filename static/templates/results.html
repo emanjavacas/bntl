@@ -55,6 +55,18 @@
           </a>
         </div>
         </span>
+        {% if source.startswith("/vector") %}
+        <span class="navbar-text small justify-content-end">Topresultaten
+          <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
+            {% for targetLimit in [10, 20, 50] %}
+              <a class="btn btn-sm btn-outline-secondary text-muted {% if limit == targetLimit %}disabled{% endif %}" role="button"
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&limit={{targetLimit}}">
+                {{targetLimit}}
+              </a>
+            {% endfor %}
+          </div>
+        </span>
+        {% else %}
         <span class="navbar-text small justify-content-end">Zoekresultaten per pagina
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
@@ -65,6 +77,7 @@
             {% endfor %}
           </div>
         </span>
+        {% endif %}
       </div>
     </nav>
   </div>

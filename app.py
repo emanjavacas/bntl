@@ -17,7 +17,7 @@ from fastapi.templating import Jinja2Templates
 
 from bntl.db import BNTLClient, build_query
 from bntl.vector import VectorClient
-from bntl.models import SearchQuery, DBEntryModel, VectorEntryModel
+from bntl.models import SearchQuery, DBEntryModel, VectorEntryModel, VectorParams
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
 
@@ -192,6 +192,34 @@ async def paginate_route(query_id: str, request: Request,
         {"request": request, "source": source, **results.model_dump()})
 
 
+@app.get("/vectorQuery")
+async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends(), vector_params: VectorParams=Depends()):
+    """
+    Vector-based query route using the document id
+    """
+    logger.info(vector_params)
+    hits = app.state.vector_client.search(doc_id, limit=vector_params.limit)
+    hits_mapping = {item["doc_id"]: item["score"] for item in hits}
+
+    def transform(item):
+        item["score"] = hits_mapping[item["doc_id"]]
+        return item
+
+    query = {"_id": {"$in": [bson.objectid.ObjectId(item["doc_id"]) for item in hits]}}
+    # overwrite pagination, since we are not using it for now
+    page_params.size = 100
+    results = paginate(app.state.bntl_client.bntl_coll, query, page_params, VectorEntryModel, transform)
+
+    # ensure we sort by score unless differently specified
+    if not page_params.sort_author and not page_params.sort_year:
+        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
+
+    # add source
+    source = "/vectorQuery?doc_id=" + doc_id
+    return templates.TemplateResponse(
+        "results.html", {"request": request, "source": source, **results.model_dump()})
+
+
 @app.get("/history")
 async def history(request: Request):
     """
@@ -221,31 +249,6 @@ async def query_route(search_query: SearchQuery, limit: int=100, skip: int=0) ->
     logger.info(query)
     cursor = app.state.bntl_client.find(query, limit=limit, skip=skip)
     return list(cursor)
-
-
-@app.get("/vectorQuery")
-async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends()):
-    """
-    Vector-based query route using the document id
-    """
-    hits = app.state.vector_client.search(doc_id)
-    hits_mapping = {item["doc_id"]: item["score"] for item in hits}
-
-    def transform(item):
-        item["score"] = hits_mapping[item["doc_id"]]
-        return item
-
-    query = {"_id": {"$in": [bson.objectid.ObjectId(item["doc_id"]) for item in hits]}}
-    results = paginate(app.state.bntl_client.bntl_coll, query, page_params, VectorEntryModel, transform)
-
-    # ensure we sort by score unless differently specified
-    if not page_params.sort_author and not page_params.sort_year:
-        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
-
-    # add source
-    source = "/vectorQuery?doc_id=" + doc_id
-    return templates.TemplateResponse(
-        "results.html", {"request": request, "source": source, **results.model_dump()})
 
 
 if __name__ == '__main__':

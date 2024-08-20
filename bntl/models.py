@@ -61,7 +61,6 @@ class SearchQuery(BaseModel):
     use_case_author: Optional[bool] = False
     use_case_title: Optional[bool] = False
     use_case_keywords: Optional[bool] = False
-
     full_text: Optional[str] = None
 
 
@@ -83,10 +82,17 @@ class _PagedResponseModel(BaseModel, Generic[T]):
 
 
 class PageParams(BaseModel):
-    page: int=Field(default=1, ge=1)
-    size: int=Field(default=10, le=100)
-    sort_author: Literal["ascending", "descending", ""]=Field(default="")
-    sort_year: Literal["ascending", "descending", ""]=Field(default="")
+    page: int=Field(default=1, ge=1, help="Page number to retrieve")
+    size: int=Field(default=10, le=100, help="Number of documents per page")
+    sort_author: Literal["ascending", "descending", ""]=Field(
+        default="", help="Sort order for author")
+    sort_year: Literal["ascending", "descending", ""]=Field(
+        default="", help="Sort order for year")
+    
+
+class VectorParams(BaseModel):
+    limit: int=Field(default=10, help="Top-k vectors to retrieve")
+    threshold: float=Field(default=0, ge=0, lt=1, help="Similarity threshold")
 
 
 class PagedResponseModel(PageParams, _PagedResponseModel, Generic[T]):
