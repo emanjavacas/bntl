@@ -26,7 +26,11 @@ class Settings(BaseSettings):
     USERS_COLL: str = Field(help="MongoDB user collection name", default="users")
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
 
+    QDRANT_PORT: int = Field(default=6333)
+    QDRANT_COLL: str = Field(default="bntl")
+
     SECRET: str = Field(help="API secret token")
+    WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
     model_config = SettingsConfigDict(toml_file=["settings.toml", "secret_settings.toml"])
 

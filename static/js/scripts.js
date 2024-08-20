@@ -27,12 +27,13 @@ $(document).ready(function() {
         })
     })
 
+    // search.html
     $('#searchForm').on('submit', function (event) {
+        $("#loadingModal").modal("show");
         event.preventDefault();
         const formArray = $(this).serializeArray();
         const formData = {};
         $.each(formArray, function(index, field){
-            console.log(field)
             if (field.value !== "") {
                 if (field.name.includes("regex") || field.name.includes("case")) {
                     console.log(field)
@@ -49,11 +50,16 @@ $(document).ready(function() {
             contentType: 'application/json',
             success: function(response) {
                 window.location.href = '/paginate?query_id=' + response.query_id;
+            },
+            error: function(response) {
+                $("#errorModal").modal("show");
             }
         });
     });
 
+    // index.html
     $('#fullText').on('submit', function (event) {
+        $("#loadingModal").modal("show");
         event.preventDefault();
         const formData = {}
         formData["full_text"] = $(this).serializeArray()[0].value;

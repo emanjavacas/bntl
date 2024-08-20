@@ -1,4 +1,5 @@
 
+import bson
 import logging
 from typing import List
 import urllib.parse
@@ -7,6 +8,7 @@ from contextlib import asynccontextmanager
 from bson import ObjectId
 import uuid
 import humanize
+from pydantic import Field
 
 from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +16,8 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from bntl.db import BNTLClient, EntryModel, LocalClient
+from bntl.db import BNTLClient, DBEntryModel, LocalClient
+from bntl.vector import VectorClient
 from bntl.queries import SearchQuery, build_query
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
@@ -34,9 +37,11 @@ Search engine + front end for a Zotero database
 async def lifespan(app: FastAPI):
     app.state.bntl_client = BNTLClient()
     app.state.local_client = LocalClient()
+    app.state.vector_client = VectorClient()
     yield
     app.state.bntl_client.close()
     app.state.local_client.close()
+    app.state.vector_client.close()
 
 
 app = FastAPI(
@@ -119,11 +124,9 @@ async def register_query(search_query: SearchQuery, request: Request):
 def run_query(search_query: SearchQuery, page_params: PageParams):
     if not isinstance(search_query, dict):
         search_query = search_query.model_dump()
-    if '_id' in search_query:
-        search_query.pop('_id')
     query = build_query(**search_query)
     logger.info(query)
-    return paginate(app.state.bntl_client.coll, query, page_params, EntryModel)
+    return paginate(app.state.bntl_client.coll, query, page_params, DBEntryModel)
 
 
 @app.get("/quickQuery")
@@ -174,6 +177,7 @@ async def paginate_route(query_id: str, request: Request,
 @app.get("/history")
 async def history(request: Request):
     session_id = request.cookies.get("session_id")
+    logger.info(app.state.local_client.get_session_queries(session_id))
     return templates.TemplateResponse(
         "history.html",
         {"request": request, "queries": app.state.local_client.get_session_queries(session_id)})
@@ -185,11 +189,37 @@ async def index():
 
 
 @app.post("/query")
-async def query_route(search_query: SearchQuery, limit: int=100, skip: int=0) -> List[EntryModel]:
+async def query_route(search_query: SearchQuery, limit: int=100, skip: int=0) -> List[DBEntryModel]:
     query = build_query(**search_query.model_dump())
     logger.info(query)
     cursor = app.state.bntl_client.find(query, limit=limit, skip=skip)
     return list(cursor)
+
+
+class VectorEntryModel(DBEntryModel):
+    score: float = Field(help="Vector similarity")
+
+
+@app.get("/vectorQuery")
+async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends()):
+    hits = app.state.vector_client.search(doc_id)
+    hits_mapping = {item["doc_id"]: item["score"] for item in hits}
+
+    def transform(item):
+        item["score"] = hits_mapping[item["doc_id"]]
+        return item
+
+    query = {"_id": {"$in": [bson.objectid.ObjectId(item["doc_id"]) for item in hits]}}
+    results = paginate(app.state.bntl_client.coll, query, page_params, VectorEntryModel, transform)
+
+    # ensure we sort by score unless differently specified
+    if not page_params.sort_author and not page_params.sort_year:
+        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
+
+    # add source
+    source = "/vectorQuery?doc_id=" + doc_id
+    return templates.TemplateResponse(
+        "results.html", {"request": request, "source": source, **results.model_dump()})
 
 
 if __name__ == '__main__':
@@ -202,5 +232,5 @@ if __name__ == '__main__':
     uvicorn.run("app:app",
                 host='0.0.0.0',
                 port=settings.PORT,
-                # workers=3,
+                workers=settings.WORKERS,
                 reload=args.debug)

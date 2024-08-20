@@ -52,7 +52,7 @@ class EntryModel(BaseModel):
 
 
 class DBEntryModel(EntryModel):
-    id: bson.objectid.ObjectId = Field(help='Internal MongoDB id', alias="_id")
+    doc_id: str = Field(help='Internal MongoDB id')
 
 
 class YearFormatException(Exception):
@@ -106,7 +106,7 @@ class BNTLClient():
             for doc in documents[start:end]:
                 try:
                     doc = fix_year(doc)
-                    doc = EntryModel.model_validate(doc).dict()
+                    doc = EntryModel.model_validate(doc).model_dump()
                     subset.append(doc)
                 except YearFormatException:
                     logger.info("Dropping document due to wrong year format, doc: {}".format(doc_id))
@@ -181,10 +181,54 @@ if __name__ == '__main__':
         except Exception:
             _errors.append(idx)
 
-    client = BNTLClient()
+    bntl_client = BNTLClient()
+    len(list(bntl_client.coll.find({"_id": bson.objectid.ObjectId("66b4fc4321c5d2c5d7f453d0")})))
     # client.insert_documents(db, batch_size=5_000)
 
     key = "kestemont"
-    cursor = client.coll.aggregate([{"$search": {"index": "default", "text": {"query": key, "path": {"wildcard": "*"}}}}])
+    cursor = bntl_client.coll.aggregate([{"$search": {"index": "default", "text": {"query": key, "path": {"wildcard": "*"}}}}])
     results = list(cursor)
     len(results)
+
+
+    # from elasticsearch import Elasticsearch
+    # from elasticsearch.helpers import bulk
+
+    # username = 'elastic'
+    # # password = os.getenv('ELASTIC_PASSWORD') # Value you set in the environment variable
+
+    # client = Elasticsearch(
+    #     "http://localhost:9200",
+    #     basic_auth=(username, "elastic")
+    # )
+
+    # print(client.info())
+    # mappings = {"properties": {"title": {"type": "text", "analyzer": "standard"},
+    #                         "secondary_title": {"type": "text", "analyzer": "standard"},
+    #                         "tertiary_title": {"type": "text", "analyzer": "standard"},
+    #                         "authors": {"type": "text", "analyzer": "standard"},
+    #                         "first_authors": {"type": "text", "analyzer": "standard"},
+    #                         "secondary_authors": {"type": "text", "analyzer": "standard"},
+    #                         "tertiary_authors": {"type": "text", "analyzer": "standard"},
+    #                         "keywords": {"type": "text", "analyzer": "standard"}}}
+    # client.indices.create(index="bntl", mappings=mappings)
+    # docs = list(bntl_client.coll.find())
+    # # client.indices.delete(index="bntl")
+    # bulk(client,
+    #     [{"_id": str(doc["_id"]), 
+    #     "_index": "bntl", 
+    #     "_source": {key: val for key, val in doc.items() if key != "_id"}} for doc in docs])
+    # # client.cat.count(index="bntl", format="json")
+
+    # res = client.search(
+    #     index="bntl", 
+    #     query={"multi_match": {"query": "kestemont", 
+    #                         "fields": ["authors", "first_authors", "secondary_authors", "tertiary_authors",
+    #                                     "title", ""],
+    #                         "fuzziness": 2}})
+
+    # res["hits"]["total"]
+    # item = next(bntl_client.coll.find({}))
+    # item["doc_id"] = str(item["_id"])
+    # item.pop('_id')
+    # DBEntryModel.model_validate(item)

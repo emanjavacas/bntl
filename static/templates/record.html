@@ -1,10 +1,19 @@
 <div class="row small">
+  <div class="col-11">
     <!-- type of reference -->
     <div class="row fw-bold">Publicatietype</div>
     <div class="row">{{item.type_of_reference}}</div>
     <!-- year -->
     <div class="row fw-bold pt-3">Jaar</div>
-    <div class="row px-0"><span>{{item.year}}{% if item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</span></div>
+    <div class="row px-0">{{item.year}}{% if item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
+    <!-- title -->
+    <div class="row fw-bold pt-3">Titelbeschrijving</div>
+    <div class="row px-0">
+      <span>{{item.title}}
+        {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
+        {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}
+      </span>
+    </div>    
     <!-- authors -->
     <div class="row fw-bold pt-3">Auteurs</div>
     <div class="row">
@@ -29,15 +38,6 @@
         {% endfor %}
     {% endif %}
     </div>
-
-    <!-- title -->
-    <div class="row fw-bold pt-3">Titelbeschrijving</div>
-    <div class="row px-0">
-      <span>{{item.title}}
-        {% if item.secondary_title %}<span class="text-muted">{{item.secondary_title}}</span>{% endif %}
-        {% if item.tertiary_title %}<span class="text-muted">{{item.tertiary_title}}</span>{% endif %}
-      </span>
-    </div>
     <!-- keywords -->
     <div class="row fw-bold pt-3">Keywords</div>
     {% if item.keywords %}
@@ -57,5 +57,13 @@
         {% endfor %}
       {% else %}Geen url opgegeven
     {% endif %}
+    </div>
+  </div>
+  <div class="col-1">
+    <div class="row">
+      <span class="text-end">
+        <a href="/vectorQuery?doc_id={{item.doc_id}}"><img width="25px" src="/static/assets/img/microchip-ai_12400758.svg"></a>
+      </span>
+    </div>
   </div>
 </div>

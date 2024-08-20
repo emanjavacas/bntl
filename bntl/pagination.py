@@ -1,6 +1,6 @@
 
 import math
-from typing import Generic, List, TypeVar, Literal
+from typing import Generic, List, TypeVar, Literal, Callable
 
 import pymongo
 from pydantic import BaseModel, Field
@@ -9,6 +9,7 @@ from bntl.queries import SearchQuery
 
 T = TypeVar("T")
 SORT_ORDER_MAP = {"ascending": pymongo.ASCENDING, "descending": pymongo.DESCENDING}
+def identity(item): return item
 
 
 class PagedResponseSchema(BaseModel, Generic[T]):
@@ -81,7 +82,11 @@ def paginate_aggregate(coll, query: SearchQuery, page_params: PageParams):
     return results, n_hits
 
 
-def paginate(coll, query: SearchQuery, page_params: PageParams, ResponseSchema: BaseModel) -> PagedResponseSchemaOut[T]:
+def paginate(coll, 
+             query: SearchQuery, 
+             page_params: PageParams, 
+             ResponseSchema: BaseModel, 
+             transform: Callable=identity) -> PagedResponseSchemaOut[T]:
     # unwrap params
     page, size = page_params.page, page_params.size
     sort_author, sort_year = page_params.sort_author, page_params.sort_year
@@ -96,6 +101,12 @@ def paginate(coll, query: SearchQuery, page_params: PageParams, ResponseSchema: 
     from_page = max(1, page - 4)
     to_page = min(total_pages, page + 4)
 
+    items = []
+    for item in results:
+        item["doc_id"] = str(item["_id"])
+        item.pop("_id")
+        items.append(ResponseSchema.model_validate(transform(item)))
+
     return PagedResponseSchemaOut(
         n_hits=n_hits,
         from_page=from_page,
@@ -105,4 +116,4 @@ def paginate(coll, query: SearchQuery, page_params: PageParams, ResponseSchema: 
         sort_year=sort_year,
         page=page,
         size=size,
-        items=[ResponseSchema.model_validate(item) for item in results])
+        items=items)

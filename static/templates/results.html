@@ -22,7 +22,7 @@
     </div>
 <div class="row">
     <div class="col fw-light px-3 py-3 small">
-        {{n_hits}} Zoekresultaten voor...
+        {{n_hits}} Zoekresultaten
     </div>
 </div>
 
@@ -74,20 +74,39 @@
   <div class="col">
     <div class="accordion accordion-flush" id="searchItems">
       {% for item in items %}
-      <div class="accordion-item">
+      <div class="accordion-item" data-docId="{{item.doc_id}}">
         <h2 class="accordion-header" id="flush-heading-{{loop.index}}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse-{{loop.index}}">
-            <span class="pe-2">{{loop.index + (page - 1) * size}}.</span>
+            <span class="btn btn-primary position-relative pe-2">{{loop.index + (page - 1) * size}}.
+              {% if item["score"] %}
+                <span style="font-size:10px;" class="text-small position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{ item.score|round(3, 'floor') }}</span>
+              {% endif %}
+            </span>
             <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{item.type_of_reference}}">
               <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
             </span>
             <span class="text-muted small pe-2">
+  
+              {% if item.authors %}
+              <span class="fst-italic">
+              {% for author in item.authors %}
+                  {{author}}
+              {% endfor %}
+              {% if item.first_authors %}
+                {% for author in item.first_authors %}
+                  {{author}}
+                {% endfor %}
+              {% endif %}
+              </span>
+              {% endif %}
+
               {% if item.unknown_tag and "AV" in item.unknown_tag %}
                 {{item.unknown_tag["AV"][0]}}
               {% else %}
                 {{item.title}}
               {% endif %}
-            </span>
+  
+            </span>    
           </button>
         </h2>
         <div id="flush-collapse-{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{loop.index}}" data-bs-parent="#searchItems">
