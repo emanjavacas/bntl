@@ -58,6 +58,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
+
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
@@ -81,16 +82,25 @@ async def add_session_id(request: Request, call_next):
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    """
+    Home route
+    """
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
+    """
+    About route
+    """
     return templates.TemplateResponse("about.html", {"request": request})
 
 
 @app.get("/help", response_class=HTMLResponse)
 async def help(request: Request):
+    """
+    Help route showing information about the functioning of the app
+    """
     return templates.TemplateResponse("help.html", {"request": request})
 
 
