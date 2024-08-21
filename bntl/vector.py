@@ -1,9 +1,9 @@
 
+from tqdm import tqdm
+
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 from qdrant_client import models
-
-from tqdm import tqdm
 
 from bntl.settings import settings
 
@@ -17,6 +17,9 @@ class VectorClient:
         self.collection_name = settings.QDRANT_COLL
 
     def search(self, doc_id, limit=10):
+        """
+        Find top-k (`limit`) nearest neighbors to the given `doc_id`
+        """
         hits, _ = self.qdrant_client.scroll(self.collection_name, scroll_filter=models.Filter(
             must=[models.FieldCondition(key="doc_id", match=models.MatchValue(value=doc_id))]),
             with_vectors=True)

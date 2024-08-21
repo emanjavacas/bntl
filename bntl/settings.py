@@ -17,19 +17,17 @@ def setup_logger(path='settings_logger.toml'):
 
 class Settings(BaseSettings):
     PORT: int = Field(help="Server port")
-    BNTL_URI: str = Field(help="MongoDB URI used for connection")
+    BNTL_URI: str = Field(help='MongoDB URI used for the database logic. For example: "mongodb://localhost:27017"')
     BNTL_COLL: str = Field(help="MongoDB BNTL collection name", default="bntl")
     BNTL_DB: str = Field(help="MongoDB BNTL database name", default="bntl")
 
-    LOCAL_URI: str = Field()
+    LOCAL_URI: str = Field(help='MongoDB URI for the local logic. For example: "mongodb://localhost:27017"')
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
-    USERS_COLL: str = Field(help="MongoDB user collection name", default="users")
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
 
-    QDRANT_PORT: int = Field(default=6333)
+    QDRANT_PORT: int = Field(help="Port used by QDrant (usually 6333)")
     QDRANT_COLL: str = Field(default="bntl")
 
-    SECRET: str = Field(help="API secret token")
     WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
     model_config = SettingsConfigDict(toml_file=["settings.toml", "secret_settings.toml"])
