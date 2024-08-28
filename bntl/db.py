@@ -1,17 +1,14 @@
 
+import bson
 import logging
-import traceback
-
 from typing import List, Union
 
-from pydantic import ValidationError
-
 import pymongo
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 
 from bntl.settings import settings
 from bntl import utils
-from bntl.models import QueryModel, EntryModel
+from bntl.models import QueryModel
 
 
 logger = logging.getLogger(__name__)
@@ -58,6 +55,23 @@ class BNTLClient():
         cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
         return cursor
     
+    def find_one(self, doc_id):
+        item = self.bntl_coll.find_one({"_id": bson.objectid.ObjectId(doc_id)})
+        if item:
+            item["doc_id"] = str(item.pop("_id"))
+        return item
+    
+    def find_last_added(self, top=3):
+        items = []
+        count = 0
+        for item in self.bntl_coll.find({}).sort("date_added", pymongo.DESCENDING):
+            if count >= top:
+                break
+            item["doc_id"] = str(item.pop("_id"))
+            items.append(item)
+            count += 1
+        return items
+    
     def full_text_search(self, string, fuzzy=False, **fuzzy_kwargs):
         if not self.is_atlas:
             raise ValueError("full_text_search requires Atlas deployment")
@@ -72,39 +86,6 @@ class BNTLClient():
     def close(self):
         self.mongodb_client1.close()
         self.mongodb_client2.close()
-
-
-def insert_documents(collection, documents, batch_size=10_000):
-    """
-    General document ingestion logic
-    """
-    # TODO: offer a service for full ingestions that also register embeddings and updates the vector database
-
-    doc_id = 0
-    for start in range(0, len(documents), batch_size):
-        end = min(start + batch_size, len(documents))
-        logger.info("Inserting batch number {}: {}-to-{}".format(1 + (start // batch_size), start + 1, end))
-        # validation
-        subset = []
-        for doc in documents[start:end]:
-            try:
-                doc = utils.fix_year(doc)
-                doc = EntryModel.model_validate(doc).model_dump()
-                subset.append(doc)
-            except utils.YearFormatException:
-                logger.info("Dropping document due to wrong year format, doc: {}".format(doc_id))
-                logger.info(traceback.format_exc())
-            except ValidationError:
-                logger.info("Dropping document due to wrong format, doc: {}".format(doc_id))
-                logger.info(traceback.format_exc())
-            doc_id += 1
-        # entry
-        try:
-            collection.insert_many(subset)
-        except errors.BulkWriteError as e:
-            panic = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
-            for doc in panic:
-                logger.info("Insert error for doc: {}".format(doc))
 
 
 def create_text_index(client: Union[BNTLClient]):
@@ -190,22 +171,22 @@ def build_query(type_of_reference=None,
 
 
 
-if __name__ == '__main__':
-    import rispy
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--ris-file', required=True, help="Path to ris file with data to be indexed.")
-    args = parser.parse_args()
+# if __name__ == '__main__':
+#     import rispy
+#     import argparse
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument('--ris-file', required=True, help="Path to ris file with data to be indexed.")
+#     args = parser.parse_args()
 
-    with open(args.ris_file, 'r') as f:
-        db = rispy.load(f)
+#     with open(args.ris_file, 'r') as f:
+#         db = rispy.load(f)
 
-    _errors = []
-    for idx, item in enumerate(db):
-        try:
-            EntryModel.model_validate(item).dict()
-        except Exception:
-            _errors.append(idx)
+#     _errors = []
+#     for idx, item in enumerate(db):
+#         try:
+#             EntryModel.model_validate(item).dict()
+#         except Exception:
+#             _errors.append(idx)
 
     # from elasticsearch import Elasticsearch
     # from elasticsearch.helpers import bulk

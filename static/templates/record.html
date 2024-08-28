@@ -1,5 +1,16 @@
+
+<div class="row">
+  <div class="col text-end">
+    <span class="text-end pe-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Permalink">
+      <a href="/item?doc_id={{item.doc_id}}"><img width="20px" src="/static/assets/img/permalink.svg"></a>
+    </span>  
+    <span class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="Find similar documents">
+      <a href="/vectorQuery?doc_id={{item.doc_id}}&limit=10"><img width="25px" src="/static/assets/img/microchip-ai_12400758.svg"></a>
+    </span>
+    </div>
+</div>
 <div class="row small">
-  <div class="col-11">
+  <div class="col-10">
     <!-- type of reference -->
     <div class="row fw-bold">Publicatietype</div>
     <div class="row">{{item.type_of_reference}}</div>
@@ -57,13 +68,6 @@
         {% endfor %}
       {% else %}Geen url opgegeven
     {% endif %}
-    </div>
-  </div>
-  <div class="col-1">
-    <div class="row">
-      <span class="text-end">
-        <a href="/vectorQuery?doc_id={{item.doc_id}}&limit=10"><img width="25px" src="/static/assets/img/microchip-ai_12400758.svg"></a>
-      </span>
     </div>
   </div>
 </div>

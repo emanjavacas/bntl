@@ -37,6 +37,10 @@ class VectorClient:
             self.qdrant_client.create_collection(
                 collection_name=self.collection_name,
                 vectors_config=VectorParams(size=vectors.shape[1], distance=Distance.COSINE))
+            self.qdrant_client.create_payload_index(
+                collection_name=self.collection_name,
+                field_name="doc_id",
+                field_schema="uuid")
 
         cur = 0
         for i in tqdm(range(0, vectors.shape[0], batch_size)):

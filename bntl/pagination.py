@@ -116,8 +116,7 @@ def paginate(coll,
 
     items = []
     for item in results:
-        item["doc_id"] = str(item["_id"])
-        item.pop("_id")
+        item["doc_id"] = str(item.pop("_id"))
         items.append(ResponseModel.model_validate(transform(item)))
 
     return PagedResponseModel(

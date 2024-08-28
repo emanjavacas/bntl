@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from bson import ObjectId
 import uuid
+import bson.objectid
 import humanize
 
 from fastapi import FastAPI, Request, Depends
@@ -82,7 +83,9 @@ async def home(request: Request):
     """
     Home route
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        "index.html", 
+        {"request": request, "last_added": app.state.bntl_client.find_last_added()})
 
 
 @app.get("/about", response_class=HTMLResponse)
@@ -230,6 +233,13 @@ async def history(request: Request):
     return templates.TemplateResponse(
         "history.html",
         {"request": request, "queries": app.state.bntl_client.get_session_queries(session_id)})
+
+
+@app.get("/item")
+async def item(doc_id: str, request: Request):
+    item = app.state.bntl_client.find_one(doc_id)
+    return templates.TemplateResponse(
+        "item.html", {"request": request, "item": item})
 
 
 @app.get("/count")

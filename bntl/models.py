@@ -43,6 +43,7 @@ class EntryModel(BaseModel):
 
 class DBEntryModel(EntryModel):
     doc_id: str = Field(help='Internal MongoDB id')
+    date_added: datetime = Field(help="Date of ingestion")
 
 
 class VectorEntryModel(DBEntryModel):
