@@ -34,6 +34,7 @@ class BNTLClient():
         self.bntl_coll = self.mongodb_client1[settings.BNTL_DB][settings.BNTL_COLL]
         self.mongodb_client2 = MongoClient(settings.LOCAL_URI)
         self.query_coll = self.mongodb_client2[settings.LOCAL_DB][settings.QUERY_COLL]
+        self.upload_coll = self.mongodb_client2[settings.LOCAL_DB][settings.UPLOAD_COLL]
 
         self.is_atlas = utils.is_atlas(settings.BNTL_URI)
         self.unique_refs = self.bntl_coll.distinct("type_of_reference")

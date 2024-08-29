@@ -15,7 +15,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/static/css/yeti.min.css" rel="stylesheet" />
         <link href="/static/css/main.css" rel="stylesheet" />
-        <script>{% block script %}{% endblock %}</script>
+        {% block script %}{% endblock %}
     </head>
     
     <body class="d-flex flex-column h-100">
@@ -39,10 +39,10 @@
                                     <a class="nav-link" href="/search">zoeken</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/about">over de BNTL</a>
+                                    <a class="nav-link" href="/help">help</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/help">help</a>
+                                    <a class="nav-link" href="/about">over de BNTL</a>
                                 </li>
                             </ul>    
                         </div>

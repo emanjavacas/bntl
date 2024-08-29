@@ -10,7 +10,7 @@ import uuid
 import bson.objectid
 import humanize
 
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, UploadFile, File, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -21,6 +21,7 @@ from bntl.vector import VectorClient
 from bntl.models import SearchQuery, DBEntryModel, VectorEntryModel, VectorParams
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
+from bntl.upload import Status
 
 
 setup_logger()
@@ -259,6 +260,21 @@ async def query_route(search_query: SearchQuery, limit: int=100, skip: int=0) ->
     logger.info(query)
     cursor = app.state.bntl_client.find(query, limit=limit, skip=skip)
     return list(cursor)
+
+
+@app.post("/upload")
+async def upload(file: UploadFile = File(...), background_tasks: BackgroundTasks=None):
+    # handle upload and process the file in the background
+    pass
+
+
+@app.get("/{}".format(settings.UPLOAD_SECRET), response_class=HTMLResponse)
+async def upload_page(request: Request):
+    """
+    Upload route
+    """
+    return templates.TemplateResponse("upload.html", {"request": request, "statuses": Status.__get_classes__()})
+
 
 
 if __name__ == '__main__':

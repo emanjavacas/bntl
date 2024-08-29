@@ -23,7 +23,9 @@ class Settings(BaseSettings):
 
     LOCAL_URI: str = Field(help='MongoDB URI for the local logic. For example: "mongodb://localhost:27017"')
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
+    UPLOAD_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="upload")
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
+    UPLOAD_SECRET: str = Field(help="Secret to run the upload logic")
 
     QDRANT_PORT: int = Field(help="Port used by QDrant (usually 6333)")
     QDRANT_COLL: str = Field(default="bntl")

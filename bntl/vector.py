@@ -42,7 +42,7 @@ class VectorClient:
                 field_name="doc_id",
                 field_schema="uuid")
 
-        cur = 0
+        cur = self.qdrant_client.count(self.collection_name).count
         for i in tqdm(range(0, vectors.shape[0], batch_size)):
             self.qdrant_client.upsert(
                 collection_name=self.collection_name,

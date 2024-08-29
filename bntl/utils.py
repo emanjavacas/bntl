@@ -3,6 +3,10 @@ import urllib
 import re
 
 
+class MissingFieldException(Exception):
+    pass
+
+
 class YearFormatException(Exception):
     pass
 

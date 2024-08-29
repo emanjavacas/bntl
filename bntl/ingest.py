@@ -35,12 +35,15 @@ def convert_to_text(doc, ignore_keywords=False):
     return output
 
 
+def validate(doc):
+    if not doc["title"]:
+        raise utils.MissingFieldException({"field": "title"})
+
+
 def insert_documents(collection, documents, batch_size=10_000):
     """
     General document ingestion logic
     """
-    # TODO: offer a service for full ingestions that also register embeddings and updates the vector database
-
     doc_id = 0
     for start in range(0, len(documents), batch_size):
         end = min(start + batch_size, len(documents))
@@ -52,12 +55,16 @@ def insert_documents(collection, documents, batch_size=10_000):
                 doc = utils.fix_year(doc)
                 doc = EntryModel.model_validate(doc).model_dump()
                 doc["date_added"] = datetime.now(timezone.utc)
+                validate(doc)
                 subset.append(doc)
             except utils.YearFormatException:
                 logger.info("Dropping document due to wrong year format, doc: {}".format(doc_id))
                 logger.info(traceback.format_exc())
             except ValidationError:
                 logger.info("Dropping document due to wrong format, doc: {}".format(doc_id))
+                logger.info(traceback.format_exc())
+            except utils.MissingFieldException:
+                logger.info("Dropping document due to missing field, doc: {}".format(doc_id))
                 logger.info(traceback.format_exc())
             doc_id += 1
         # entry
@@ -100,17 +107,23 @@ if __name__ == '__main__':
     create_text_index(bntl_client)
     docs = list(bntl_client.bntl_coll.find())
 
-    from sentence_transformers import SentenceTransformer
-    query_prompt_name = "s2s_query"
+    from FlagEmbedding import BGEM3FlagModel
+
+    model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
+    # Setting use_fp16 to True speeds up computation with a slight performance degradation
+
+    # from sentence_transformers import SentenceTransformer
+    # query_prompt_name = "s2s_query"
     batch_size = 1_000
 
-    model = SentenceTransformer("dunzhang/stella_en_400M_v5", trust_remote_code=True)
+    # model = SentenceTransformer("dunzhang/stella_en_400M_v5", trust_remote_code=True).cuda()
 
     logger.info("Encoding documents")
     for i in tqdm.tqdm(range(0, len(docs), batch_size)):
-        query_embeddings = model.encode(
-            [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs[i:i+batch_size]],
-            prompt_name=query_prompt_name, show_progress_bar=True)
+        texts = [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs[i:i+batch_size]]
+        # embeddings = model.encode(
+        #     texts, prompt_name=query_prompt_name, show_progress_bar=True)
+        embeddings = model.encode(texts, batch_size=12)["dense_vecs"]
         doc_ids = [str(doc["_id"]) for doc in docs]
-        break
+        vector_client.insert(embeddings, doc_ids)
     
