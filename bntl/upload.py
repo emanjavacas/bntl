@@ -39,11 +39,8 @@ class FileUploadManager:
     def add_chunk(self, file_id: str, chunk_number: int, chunk_data: bytes):
         self.file_chunks[file_id][chunk_number] = chunk_data
 
-    def update_status(self, file_id: str, new_status: str):
-        self.app_state.bntl_client.update_coll.update_one(
-            {"file_id": file_id},
-            {"$set": {"current_status": new_status},
-             "$push": {"status_history": {"status": new_status, "timestamp": datetime.now(timezone.utc)}}})
+    async def update_status(self, file_id: str, new_status: str):
+        self.app_state.bntl_client.update_upload_status(file_id, new_status)
 
     async def process_file_if_ready(self, file_id: str, total_chunks: int):
         if len(self.file_chunks[file_id]) == total_chunks:

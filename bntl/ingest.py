@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pydantic import ValidationError
 from pymongo import errors
 
-from bntl.db import BNTLClient, create_text_index
+from bntl.db import DBClient, create_text_index
 from bntl.vector import VectorClient
 from bntl.models import EntryModel
 from bntl import utils
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     setup_logger()
 
     vector_client = VectorClient()
-    bntl_client = BNTLClient()
+    bntl_client = await DBClient.create()
 
     with open(args.ris_file, 'r') as f:
         logger.info("Loading data from file")
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     insert_documents(bntl_client.bntl_coll, data)
     logger.info("Creating text indices")
     create_text_index(bntl_client)
-    docs = list(bntl_client.bntl_coll.find())
+    docs = bntl_client.bntl_coll.find().to_list(length=None)
 
     from FlagEmbedding import BGEM3FlagModel
 

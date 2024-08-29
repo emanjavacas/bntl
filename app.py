@@ -5,7 +5,6 @@ from typing import List
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
-from bson import ObjectId
 import uuid
 import bson.objectid
 import humanize
@@ -16,7 +15,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from bntl.db import BNTLClient, build_query
+from bntl.db import DBClient, build_query
 from bntl.vector import VectorClient
 from bntl.models import SearchQuery, DBEntryModel, VectorEntryModel, VectorParams
 from bntl.settings import settings, setup_logger
@@ -36,7 +35,7 @@ Search engine + front end for a Zotero database
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.bntl_client = BNTLClient()
+    app.state.bntl_client = await DBClient.create()
     app.state.vector_client = VectorClient()
     yield
     app.state.bntl_client.close()
@@ -86,7 +85,7 @@ async def home(request: Request):
     """
     return templates.TemplateResponse(
         "index.html", 
-        {"request": request, "last_added": app.state.bntl_client.find_last_added()})
+        {"request": request, "last_added": await app.state.bntl_client.find_last_added()})
 
 
 @app.get("/about", response_class=HTMLResponse)
@@ -121,24 +120,17 @@ async def register_query(search_query: SearchQuery, request: Request):
     """
     Log a query and store the parameters so that we can later show it in the query history
     """
-    logger.info(search_query)
     session_id = request.cookies.get("session_id")
-    existing_query = app.state.bntl_client.query_coll.find_one(
-        {"session_id": session_id, "search_query": search_query.model_dump()})
-    if existing_query:
-        query_id = existing_query["_id"]
+    query_data = app.state.bntl_client.find_query(session_id, search_query)
+    if query_data:
+        query_id = query_data["_id"]
     else:
-        query_data = {}
-        query_data["search_query"] = search_query.model_dump()
-        query_data["session_id"] = session_id
-        query_data["timestamp"] = datetime.now(timezone.utc)
-        query_id = app.state.bntl_client.query_coll.insert_one(query_data).inserted_id
-        logger.info("Registered query: %s", str(query_id))
+        query_id = app.state.bntl_client.register_query(session_id, search_query)
 
     return JSONResponse(content={"query_id": str(query_id)})
 
 
-def run_query(search_query: SearchQuery, page_params: PageParams):
+async def run_query(search_query: SearchQuery, page_params: PageParams):
     """
     General query logic for all incoming browser search activity
     """
@@ -146,7 +138,7 @@ def run_query(search_query: SearchQuery, page_params: PageParams):
         search_query = search_query.model_dump()
     query = build_query(**search_query)
     logger.info(query)
-    return paginate(app.state.bntl_client.bntl_coll, query, page_params, DBEntryModel)
+    return await paginate(app.state.bntl_client.bntl_coll, query, page_params, DBEntryModel)
 
 
 @app.get("/quickQuery")
@@ -158,7 +150,7 @@ async def quick_query(request: Request,
     It is only meant to be used in quick-queries like links pointing to authors or keywords.
     """
     logger.info(page_params)
-    results = run_query(search_query, page_params)
+    results = await run_query(search_query, page_params)
     # add source
     source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
     return templates.TemplateResponse(
@@ -172,21 +164,16 @@ async def paginate_route(query_id: str, request: Request,
     Paginate route when moving forward and backward on a given query
     """
     session_id = request.cookies.get("session_id")
-    query_data = app.state.bntl_client.query_coll.find_one(
-        {'_id': ObjectId(query_id), "session_id": session_id})
+    query_data = await app.state.bntl_client.get_query(query_id, session_id)
     if not query_data:
         return JSONResponse(status_code=404, content={"error": "Query not found"})
 
-    results = run_query(query_data['search_query'], page_params)
+    results = await run_query(query_data['search_query'], page_params)
 
-    # store total on query database for preview
-    app.state.bntl_client.query_coll.update_one(
-        {"session_id": session_id, "_id": ObjectId(query_id)},
-        {"$set": {"n_hits": results.n_hits}})
-    # store last accessed
-    app.state.bntl_client.query_coll.update_one(
-        {"session_id": session_id, "_id": ObjectId(query_id)},
-        {"$set": {"last_accessed": datetime.now(timezone.utc)}})
+    # store total on query database for preview & last accessed
+    app.state.bntl_client.update_query(
+        query_id, session_id, 
+        {"n_hits": results.n_hits, "last_accessed": datetime.now(timezone.utc)})
     
     source = f"/paginate?query_id={query_id}"
     logger.info(source)
@@ -212,7 +199,7 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     query = {"_id": {"$in": [bson.objectid.ObjectId(item["doc_id"]) for item in hits]}}
     # overwrite pagination, since we are not using it for now
     page_params.size = 100
-    results = paginate(app.state.bntl_client.bntl_coll, query, page_params, VectorEntryModel, transform)
+    results = await paginate(app.state.bntl_client.bntl_coll, query, page_params, VectorEntryModel, transform)
 
     # ensure we sort by score unless differently specified
     if not page_params.sort_author and not page_params.sort_year:
@@ -230,10 +217,9 @@ async def history(request: Request):
     Query history route
     """
     session_id = request.cookies.get("session_id")
-    logger.info(app.state.bntl_client.get_session_queries(session_id))
     return templates.TemplateResponse(
         "history.html",
-        {"request": request, "queries": app.state.bntl_client.get_session_queries(session_id)})
+        {"request": request, "queries": await app.state.bntl_client.get_session_queries(session_id)})
 
 
 @app.get("/item")

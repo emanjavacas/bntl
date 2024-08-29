@@ -1,20 +1,22 @@
 
 import bson
+from datetime import datetime, timezone
 import logging
-from typing import List, Union
+from typing import List, Union, Optional
 
+import bson.objectid
 import pymongo
-from pymongo import MongoClient
+import motor.motor_asyncio as motor
 
 from bntl.settings import settings
 from bntl import utils
-from bntl.models import QueryModel
+from bntl.models import QueryModel, SearchQuery
 
 
 logger = logging.getLogger(__name__)
 
 
-class BNTLClient():
+class DBClient():
     """
     Wrapper class for the MongoDB client.
     
@@ -30,66 +32,94 @@ class BNTLClient():
     - optimize the communication between client and server during search
     """
     def __init__ (self) -> None:
-        self.mongodb_client1 = MongoClient(settings.BNTL_URI)
+        self.mongodb_client1 = motor.AsyncIOMotorClient(settings.BNTL_URI)
         self.bntl_coll = self.mongodb_client1[settings.BNTL_DB][settings.BNTL_COLL]
-        self.mongodb_client2 = MongoClient(settings.LOCAL_URI)
+        self.mongodb_client2 = motor.AsyncIOMotorClient(settings.LOCAL_URI)
         self.query_coll = self.mongodb_client2[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client2[settings.LOCAL_DB][settings.UPLOAD_COLL]
 
+    @classmethod
+    async def create(cls):
+        self = cls()
         self.is_atlas = utils.is_atlas(settings.BNTL_URI)
-        self.unique_refs = self.bntl_coll.distinct("type_of_reference")
+        self.unique_refs = await self.bntl_coll.distinct("type_of_reference")
+        return self
 
-    def __len__(self):
-        return self.bntl_coll.estimated_document_count()
+    async def ping(self):
+        await self.mongodb_client1.admin.command('ping')
+        await self.mongodb_client2.admin.command('ping')
 
-    def ping(self):
-        self.mongodb_client1.admin.command('ping')
-        self.mongodb_client2.admin.command('ping')
-
-    def get_session_queries(self, session_id) -> List[QueryModel]:
+    async def get_session_queries(self, session_id) -> List[QueryModel]:
         """
         Retrieve the history of queries for a given user (a user is logged according to a session cookie).
         """
-        return list(self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING))
+        cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
+        return await cursor.to_list(length=None)
 
-    def find(self, query=None, limit=100, skip=0):
+    async def find(self, query=None, limit=100, skip=0):
         cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
-        return cursor
+        return await cursor.to_list(length=None)
     
-    def find_one(self, doc_id):
-        item = self.bntl_coll.find_one({"_id": bson.objectid.ObjectId(doc_id)})
+    async def find_one(self, doc_id):
+        item = await self.bntl_coll.find_one({"_id": bson.objectid.ObjectId(doc_id)})
         if item:
             item["doc_id"] = str(item.pop("_id"))
         return item
-    
-    def find_last_added(self, top=3):
+
+    async def find_last_added(self, top=3):
         items = []
         count = 0
-        for item in self.bntl_coll.find({}).sort("date_added", pymongo.DESCENDING):
+        async for item in self.bntl_coll.find({}).sort("date_added", pymongo.DESCENDING):
             if count >= top:
                 break
             item["doc_id"] = str(item.pop("_id"))
             items.append(item)
             count += 1
         return items
-    
-    def full_text_search(self, string, fuzzy=False, **fuzzy_kwargs):
+
+    async def full_text_search(self, string, fuzzy=False, **fuzzy_kwargs):
         if not self.is_atlas:
             raise ValueError("full_text_search requires Atlas deployment")
         
         query = {"query": string, "path": {"wildcard": "*"}}
-        if fuzzy:
-            query["fuzzy"] = fuzzy_kwargs
-        cursor = self.bntl_coll.aggregate([
-            {"$search": {"index": "default", "text": query}}])
-        return cursor
+        if fuzzy: query["fuzzy"] = fuzzy_kwargs
+
+        return await self.bntl_coll.aggregate([{"$search": {"index": "default", "text": query}}])
+
+    async def get_query(self, query_id: str, session_id: str):
+        return await self.query_coll.find_one(
+            {'_id': bson.objectid.ObjectId(query_id), "session_id": session_id})
+
+    async def find_query(self, session_id: str, search_query: Optional[SearchQuery]=None):
+        # validate existing query
+        return await self.query_coll.find_one(
+            {"session_id": session_id, "search_query": search_query.model_dump()})
+
+    async def register_query(self, session_id: str, search_query: SearchQuery):
+        query_data = {}
+        query_data["search_query"] = search_query.model_dump()
+        query_data["session_id"] = session_id
+        query_data["timestamp"] = datetime.now(timezone.utc)
+        query_id = await self.query_coll.insert_one(query_data).inserted_id
+        return query_id
+
+    async def update_query(self, query_id: str, session_id: str, data):
+        await self.query_coll.update_one(
+            {"session_id": session_id, "_id": bson.objectid.ObjectId(query_id)},
+            {"$set": data})
+
+    async def update_upload_status(self, file_id: str, new_status: str):
+        await self.update_coll.update_one(
+            {"file_id": file_id},
+            {"$set": {"current_status": new_status},
+             "$push": {"status_history": {"status": new_status, "timestamp": datetime.now(timezone.utc)}}})
 
     def close(self):
         self.mongodb_client1.close()
         self.mongodb_client2.close()
 
 
-def create_text_index(client: Union[BNTLClient]):
+def create_text_index(client: Union[DBClient]):
     """
     Create a text index for the local database for full-text search (see bntl.paginate)
     """

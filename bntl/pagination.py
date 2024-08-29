@@ -25,24 +25,26 @@ def parse_sort(page_params: PageParams):
     return sort
 
 
-def paginate_find(coll, query: SearchQuery, page_params: PageParams):
+async def paginate_find(coll, query: SearchQuery, page_params: PageParams):
     """
     Pagination logic over a regular advanced search
     """
     # unwrap params
     page, size = page_params.page, page_params.size
+    sort = parse_sort(page_params)
 
     cursor = coll.find(query)
-    sort = parse_sort(page_params)
-    results = (cursor.sort(sort) if sort else cursor).skip((page - 1) * size).limit(size)
+    if sort:
+        cursor = cursor.sort(sort)
+    results = await cursor.skip((page - 1) * size).limit(size).to_list(length=None)
 
     # collect information
-    n_hits = coll.count_documents(query)
+    n_hits = await coll.count_documents(query)
 
     return results, n_hits
 
 
-def _paginate_full_text_atlas(coll, query, page_params):
+async def _paginate_full_text_atlas(coll, query, page_params):
     """
     Internal pagination logic when using cloud atlas for full-text search
         https://www.mongodb.com/products/platform/atlas-search
@@ -61,8 +63,7 @@ def _paginate_full_text_atlas(coll, query, page_params):
         {"$setWindowFields": {"output": {"totalCount": {"$count": {}}}}},
         {"$skip": (page - 1) * size},
         {"$limit": size}]
-    cursor = coll.aggregate(pipeline)
-    results = list(cursor)
+    results = await coll.aggregate(pipeline).to_list(length=None)
 
     n_hits = 0
     if len(results) > 0:
@@ -73,25 +74,25 @@ def _paginate_full_text_atlas(coll, query, page_params):
     return results, n_hits
 
 
-def _paginate_full_text_mongodb(coll, query, page_params):
+async def _paginate_full_text_mongodb(coll, query, page_params):
     """
     Pagination logic for full text search using a local mongodb text index
     (see "bntl.db.create_text_index")
     """
-    return paginate_find(coll, {"$text": {"$search": query["full_text"]}}, page_params)
+    return await paginate_find(coll, {"$text": {"$search": query["full_text"]}}, page_params)
 
 
-def paginate_full_text(coll, query: SearchQuery, page_params: PageParams):
+async def paginate_full_text(coll, query: SearchQuery, page_params: PageParams):
     """
     Router for the full text functionality
     """
     uri, _ = coll.database.client.address
     if utils.is_atlas(uri):
-        return _paginate_full_text_atlas(coll, query, page_params)
-    return _paginate_full_text_mongodb(coll, query, page_params)
+        return await _paginate_full_text_atlas(coll, query, page_params)
+    return await _paginate_full_text_mongodb(coll, query, page_params)
 
 
-def paginate(coll, 
+async def paginate(coll, 
              query: SearchQuery, 
              page_params: PageParams, 
              ResponseModel: BaseModel, 
@@ -106,9 +107,9 @@ def paginate(coll,
     # search and sort
     if "full_text" in query and query["full_text"] is not None:
         # TODO: route to the local method (no atlas)
-        results, n_hits = paginate_full_text(coll, query, page_params)
+        results, n_hits = await paginate_full_text(coll, query, page_params)
     else:
-        results, n_hits = paginate_find(coll, query, page_params)
+        results, n_hits = await paginate_find(coll, query, page_params)
 
     total_pages = math.ceil(n_hits / size)
     from_page = max(1, page - 4)
