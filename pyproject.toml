@@ -20,6 +20,7 @@ humanize = "^4.10.0"
 tqdm = "^4.66.5"
 qdrant-client = "^1.11.0"
 motor = "^3.5.1"
+aiofiles = "^24.1.0"
 
 
 [build-system]

@@ -87,7 +87,7 @@ if __name__ == '__main__':
     setup_logger()
 
     vector_client = VectorClient()
-    bntl_client = await DBClient.create()
+    db_client = await DBClient.create()
 
     with open(args.ris_file, 'r') as f:
         logger.info("Loading data from file")
@@ -95,17 +95,17 @@ if __name__ == '__main__':
 
     # clean db
     logger.info("Cleaning up MongoDB collections")
-    bntl_client.bntl_coll.drop()
-    bntl_client.query_coll.drop()
+    db_client.bntl_coll.drop()
+    db_client.query_coll.drop()
     logger.info("Cleaning up QDrant collections")
     vector_client.qdrant_client.delete_collection(vector_client.collection_name)
 
     # insert documents
     logger.info("Inserting {} docs from file: {}".format(len(data), args.ris_file))
-    insert_documents(bntl_client.bntl_coll, data)
+    insert_documents(db_client.bntl_coll, data)
     logger.info("Creating text indices")
-    create_text_index(bntl_client)
-    docs = bntl_client.bntl_coll.find().to_list(length=None)
+    create_text_index(db_client)
+    docs = db_client.bntl_coll.find().to_list(length=None)
 
     from FlagEmbedding import BGEM3FlagModel
 

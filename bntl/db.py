@@ -10,7 +10,7 @@ import motor.motor_asyncio as motor
 
 from bntl.settings import settings
 from bntl import utils
-from bntl.models import QueryModel, SearchQuery
+from bntl.models import QueryModel, QueryParams, StatusModel
 
 
 logger = logging.getLogger(__name__)
@@ -43,7 +43,20 @@ class DBClient():
         self = cls()
         self.is_atlas = utils.is_atlas(settings.BNTL_URI)
         self.unique_refs = await self.bntl_coll.distinct("type_of_reference")
+        # ensure text search index
+        if self.is_atlas:
+            logger.info("Indices for atlas need to be created online")
+        else:
+            await self.bntl_coll.create_index({"$**": "text"})
+        # ensure unique index
+        await self.bntl_coll.create_index(["title", "type_of_reference", "year", "authors"], unique=True)
+        # ensure index on file_id (this may generate collisions)
+        await self.upload_coll.create_index("file_id", unique=True)
+
         return self
+    
+    async def count(self):
+        return await self.bntl_coll.estimated_document_count()
 
     async def ping(self):
         await self.mongodb_client1.admin.command('ping')
@@ -90,42 +103,51 @@ class DBClient():
         return await self.query_coll.find_one(
             {'_id': bson.objectid.ObjectId(query_id), "session_id": session_id})
 
-    async def find_query(self, session_id: str, search_query: Optional[SearchQuery]=None):
+    async def find_query(self, session_id: str, query_params: Optional[QueryParams]=None):
         # validate existing query
         return await self.query_coll.find_one(
-            {"session_id": session_id, "search_query": search_query.model_dump()})
+            {"session_id": session_id, "query_params": query_params.model_dump()})
 
-    async def register_query(self, session_id: str, search_query: SearchQuery):
+    async def register_query(self, session_id: str, query_params: QueryParams):
         query_data = {}
-        query_data["search_query"] = search_query.model_dump()
+        query_data["query_params"] = query_params.model_dump()
         query_data["session_id"] = session_id
         query_data["timestamp"] = datetime.now(timezone.utc)
-        query_id = await self.query_coll.insert_one(query_data).inserted_id
+        query_id = (await self.query_coll.insert_one(query_data)).inserted_id
         return query_id
 
     async def update_query(self, query_id: str, session_id: str, data):
-        await self.query_coll.update_one(
+        return await self.query_coll.update_one(
             {"session_id": session_id, "_id": bson.objectid.ObjectId(query_id)},
             {"$set": data})
+    
+    async def register_upload(self, file_id: str, filename: str, status: str):
+        logger.info("Registering file {} with id [{}]".format(filename, file_id))
+        return await self.upload_coll.insert_one(
+            {"file_id": file_id, 
+             "filename": filename,
+             "date_uploaded": datetime.now(timezone.utc),
+             "current_status": {"status": status, "date_updated": datetime.now(timezone.utc)},    
+             "history": []})
+    
+    async def get_upload_history(self):
+        cursor = self.upload_coll.find().sort("date_uploaded", pymongo.DESCENDING)
+        return await cursor.to_list(length=None)
 
-    async def update_upload_status(self, file_id: str, new_status: str):
-        await self.update_coll.update_one(
+    async def update_upload_status(self, file_id: str, new_status: StatusModel):
+        old_status = (await self.upload_coll.find_one({"file_id": file_id}))["current_status"]
+        return await self.upload_coll.update_one(
             {"file_id": file_id},
-            {"$set": {"current_status": new_status},
-             "$push": {"status_history": {"status": new_status, "timestamp": datetime.now(timezone.utc)}}})
+            {"$set": {"current_status": new_status.model_dump()},
+                "$push": {"history": old_status}},
+            upsert=True)
+    
+    async def get_upload_filename(self, file_id: str):
+        return (await self.upload_coll.find_one({"file_id": file_id}))["filename"]
 
     def close(self):
         self.mongodb_client1.close()
         self.mongodb_client2.close()
-
-
-def create_text_index(client: Union[DBClient]):
-    """
-    Create a text index for the local database for full-text search (see bntl.paginate)
-    """
-    if client.is_atlas:
-        return
-    client.bntl_coll.create_index({"$**": "text"})
 
 
 def build_query(type_of_reference=None,
@@ -140,7 +162,6 @@ def build_query(type_of_reference=None,
                 use_regex_keywords=False,
                 use_case_keywords=False,
                 full_text=None):
-    
     """
     Transform an incoming query into a MongoDB-ready query
     """
@@ -240,7 +261,7 @@ def build_query(type_of_reference=None,
     #                         "tertiary_authors": {"type": "text", "analyzer": "standard"},
     #                         "keywords": {"type": "text", "analyzer": "standard"}}}
     # client.indices.create(index="bntl", mappings=mappings)
-    # docs = list(bntl_client.bntl_coll.find())
+    # docs = list(db_client.bntl_coll.find())
     # # client.indices.delete(index="bntl")
     # bulk(client,
     #     [{"_id": str(doc["_id"]), 

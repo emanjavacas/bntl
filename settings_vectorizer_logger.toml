@@ -1,0 +1,28 @@
+
+version = 1
+disable_existing_loggers = false
+
+[handlers.console]
+class = "logging.StreamHandler"
+level = "DEBUG"
+formatter = "standard"
+stream = "ext://sys.stdout"
+
+[handlers.file]
+class = "logging.FileHandler"
+level = "DEBUG"
+formatter = "standard"
+filename = "server.log"
+
+[loggers.app]
+level = "INFO"
+handlers = [ "console", "file" ]
+propagate = false
+
+[root]
+level = "INFO"
+handlers = [ "console", "file" ]
+
+[formatters.standard]
+format = "%(levelname)s:::[%(asctime)s - %(filename)s:%(lineno)s:%(funcName)20s() ] %(message)s"
+datefmt = '%Y-%m-%d %H:%M:%S'

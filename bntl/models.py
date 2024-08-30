@@ -12,13 +12,13 @@ T = TypeVar("T")
 class EntryModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
     # mandatory
-    label: str = Field(help="Zotero export validation result")
-    name_of_database: str = Field(help="BNTL metadata")
     title: str = Field(help="Title of the record")
     type_of_reference: str = Field(help="Record format")
     year: int = Field(help="Year of record publication in string format")
     end_year: int = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)")
     # optional
+    label: Optional[str] = Field(help="Zotero export validation result", default=None)
+    name_of_database: Optional[str] = Field(help="BNTL metadata", default=None)
     secondary_title: Optional[str] = Field(default=None)
     tertiary_title: Optional[str] = Field(default=None)
     authors: Optional[List[str]] = Field(default=None)
@@ -50,7 +50,7 @@ class VectorEntryModel(DBEntryModel):
     score: float = Field(help="Vector similarity")
 
 
-class SearchQuery(BaseModel):
+class QueryParams(BaseModel):
     type_of_reference: Optional[str] = None
     title: Optional[str] = None
     year: Optional[str] = None
@@ -68,7 +68,7 @@ class SearchQuery(BaseModel):
 class QueryModel(BaseModel):
     query_id: str
     timestamp: datetime
-    search_query: SearchQuery
+    query_params: QueryParams
     session_id: uuid.UUID
     n_hits: Optional[int]
     last_accessed: datetime
@@ -91,10 +91,24 @@ class PageParams(BaseModel):
         default="", help="Sort order for year")
     
 
+class PagedResponseModel(PageParams, _PagedResponseModel, Generic[T]):
+    pass
+
+
 class VectorParams(BaseModel):
     limit: int=Field(default=10, help="Top-k vectors to retrieve")
     threshold: float=Field(default=0, ge=0, lt=1, help="Similarity threshold")
 
 
-class PagedResponseModel(PageParams, _PagedResponseModel, Generic[T]):
-    pass
+class StatusModel(BaseModel):
+    status: str
+    date_updated: Optional[datetime]
+    process: Optional[float] = Field(ge=0, le=1, default=None)
+
+
+class FileUploadModel(BaseModel):
+    file_id: str
+    filename: str
+    date_uploaded: datetime
+    current_status: StatusModel
+    history: List[StatusModel]

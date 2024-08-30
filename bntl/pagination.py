@@ -5,7 +5,7 @@ from typing import Callable
 import pymongo
 from pydantic import BaseModel
 
-from bntl.models import PageParams, PagedResponseModel, SearchQuery, T
+from bntl.models import PageParams, PagedResponseModel, QueryParams, T
 from bntl import utils
 
 
@@ -25,7 +25,7 @@ def parse_sort(page_params: PageParams):
     return sort
 
 
-async def paginate_find(coll, query: SearchQuery, page_params: PageParams):
+async def paginate_find(coll, query: QueryParams, page_params: PageParams):
     """
     Pagination logic over a regular advanced search
     """
@@ -82,7 +82,7 @@ async def _paginate_full_text_mongodb(coll, query, page_params):
     return await paginate_find(coll, {"$text": {"$search": query["full_text"]}}, page_params)
 
 
-async def paginate_full_text(coll, query: SearchQuery, page_params: PageParams):
+async def paginate_full_text(coll, query: QueryParams, page_params: PageParams):
     """
     Router for the full text functionality
     """
@@ -93,7 +93,7 @@ async def paginate_full_text(coll, query: SearchQuery, page_params: PageParams):
 
 
 async def paginate(coll, 
-             query: SearchQuery, 
+             query: QueryParams, 
              page_params: PageParams, 
              ResponseModel: BaseModel, 
              transform: Callable=utils.identity) -> PagedResponseModel[T]:

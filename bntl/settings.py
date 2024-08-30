@@ -30,9 +30,11 @@ class Settings(BaseSettings):
     QDRANT_PORT: int = Field(help="Port used by QDrant (usually 6333)")
     QDRANT_COLL: str = Field(default="bntl")
 
+    UPLOAD_LOG_DIR: str = Field(default="./logs", help="Directory to store the upload log files")
+
     WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
-    model_config = SettingsConfigDict(toml_file=["settings.toml", "secret_settings.toml"])
+    model_config = SettingsConfigDict(toml_file=["settings.toml", "settings_secret.toml"])
 
     @classmethod
     def settings_customise_sources(
