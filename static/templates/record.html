@@ -16,7 +16,7 @@
     <div class="row">{{item.type_of_reference}}</div>
     <!-- year -->
     <div class="row fw-bold pt-3">Jaar</div>
-    <div class="row px-0">{{item.year}}{% if item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
+    <div class="row px-0">{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
     <!-- title -->
     <div class="row fw-bold pt-3">Titelbeschrijving</div>
     <div class="row px-0">

@@ -1,19 +1,84 @@
 
+import re
+import json
 import bson
-from datetime import datetime, timezone
 import logging
-from typing import List, Union, Optional
+import hashlib
+from pydantic import ValidationError
+from datetime import datetime, timezone
+from typing import List, Optional
 
-import bson.objectid
 import pymongo
 import motor.motor_asyncio as motor
 
 from bntl.settings import settings
 from bntl import utils
-from bntl.models import QueryModel, QueryParams, StatusModel
+from bntl.models import QueryModel, QueryParams, StatusModel, EntryModel
 
 
 logger = logging.getLogger(__name__)
+
+
+class MissingFieldException(Exception):
+    pass
+
+
+class YearFormatException(Exception):
+    pass
+
+
+def fix_year(doc):
+    """
+    Utility function dealing with different input formats for the year field.
+    We try to validate the year to a proper int and add a end_year field to
+    enable year range queries. If unable to do so, the document will be ingested,
+    but wont be retrieved upon year queries. It's the curator's responsability
+    to make sure the documents are in appropriate format.
+    """
+    try:
+        doc['year'] = int(doc['year'])
+        doc['end_year'] = doc['year'] + 1 # year is uninclusive
+        return doc
+    except Exception:
+        # missing year
+        if "year" not in doc:
+            return doc
+        # undefined years (eg. 197X), go for average value
+        if 'X' in doc['year']:
+            doc['year'] = doc['year'].replace('X', '5')
+            return fix_year(doc)
+        # range years (eg. 1987-2024, 1987-, ...)
+        if '-' in doc['year']:
+            m = re.match(r"([0-9]{4})-([0-9]{4})?", doc['year'])
+            if not m:
+                return doc
+            start, end = m.groups()
+            doc['year'] = int(start)
+            doc['end_year'] = end or int(start) + 1 # use starting date if end year is missing
+
+    return doc
+
+
+def generate_document_hash(doc):
+    """
+    Generate document hash to avoid duplicates
+    """
+    doc_str = json.dumps(doc, sort_keys=True)
+    return hashlib.sha256(doc_str.encode()).hexdigest()
+
+
+def prepare_document(doc):
+    """
+    Adapt incoming document to internal database format and validate
+    """
+    # fix year
+    doc = fix_year(doc)
+    doc = EntryModel.model_validate(doc).model_dump()
+    # hash document
+    doc["hash"] = generate_document_hash(doc)
+    # add date
+    doc["date_added"] = datetime.now(timezone.utc)
+    return doc
 
 
 class DBClient():
@@ -43,13 +108,18 @@ class DBClient():
         self = cls()
         self.is_atlas = utils.is_atlas(settings.BNTL_URI)
         self.unique_refs = await self.bntl_coll.distinct("type_of_reference")
+        await self.ensure_indices()
+        return self
+
+    async def ensure_indices(self):
+        # ensure unique index
+        logger.info("Creating DB indices")
+        await self.bntl_coll.create_index("hash", unique=True)
         # ensure text search index
         if self.is_atlas:
             logger.info("Indices for atlas need to be created online")
         else:
             await self.bntl_coll.create_index({"$**": "text"})
-        # ensure unique index
-        await self.bntl_coll.create_index(["title", "type_of_reference", "year", "authors"], unique=True)
         # ensure index on file_id (this may generate collisions)
         await self.upload_coll.create_index("file_id", unique=True)
 
@@ -62,14 +132,33 @@ class DBClient():
         await self.mongodb_client1.admin.command('ping')
         await self.mongodb_client2.admin.command('ping')
 
-    async def get_session_queries(self, session_id) -> List[QueryModel]:
-        """
-        Retrieve the history of queries for a given user (a user is logged according to a session cookie).
-        """
-        cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
-        return await cursor.to_list(length=None)
+    # document collection
+    async def insert_documents(self, documents, logger=logger, progress_callback=None, callback_batch=500):
+        done = []
+        for doc_idx, doc in enumerate(documents):
+            try:
+                doc = prepare_document(doc)
+                doc_id = (await self.bntl_coll.insert_one(doc)).inserted_id
+                done.append(str(doc_id))
+            except YearFormatException as e:
+                await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
+                await utils.maybe_await(logger.info(str(e)))
+            except MissingFieldException as e:
+                await utils.maybe_await(logger.info("Dropping document #{} due to missing field".format(doc_idx)))
+                await utils.maybe_await(logger.info(str(e)))
+            except ValidationError as e:
+                await utils.maybe_await(logger.info("Dropping document #{} due to wrong data format".format(doc_idx)))
+                await utils.maybe_await(logger.info(str(e)))
+            except pymongo.errors.DuplicateKeyError as e:
+                await utils.maybe_await(logger.info("Dropping document #{} due to duplicate".format(doc_idx)))
+                await utils.maybe_await(logger.info(str(e)))
 
-    async def find(self, query=None, limit=100, skip=0):
+            if progress_callback is not None and doc_idx > 0 and doc_idx % callback_batch == 0:
+                await utils.maybe_await(progress_callback(doc_idx))
+
+        return done
+
+    async def find(self, query=None, limit=0, skip=0):
         cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
         return await cursor.to_list(length=None)
     
@@ -99,6 +188,14 @@ class DBClient():
 
         return await self.bntl_coll.aggregate([{"$search": {"index": "default", "text": query}}])
 
+    # query collection
+    async def get_session_queries(self, session_id) -> List[QueryModel]:
+        """
+        Retrieve the history of queries for a given user (a user is logged according to a session cookie).
+        """
+        cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
+        return await cursor.to_list(length=None)
+
     async def get_query(self, query_id: str, session_id: str):
         return await self.query_coll.find_one(
             {'_id': bson.objectid.ObjectId(query_id), "session_id": session_id})
@@ -121,6 +218,7 @@ class DBClient():
             {"session_id": session_id, "_id": bson.objectid.ObjectId(query_id)},
             {"$set": data})
     
+    # upload documents
     async def register_upload(self, file_id: str, filename: str, status: str):
         logger.info("Registering file {} with id [{}]".format(filename, file_id))
         return await self.upload_coll.insert_one(
@@ -131,7 +229,7 @@ class DBClient():
              "history": []})
     
     async def get_upload_history(self):
-        cursor = self.upload_coll.find().sort("date_uploaded", pymongo.DESCENDING)
+        cursor = self.upload_coll.find().sort("date_uploaded", pymongo.ASCENDING)
         return await cursor.to_list(length=None)
 
     async def update_upload_status(self, file_id: str, new_status: StatusModel):
@@ -144,10 +242,20 @@ class DBClient():
     
     async def get_upload_filename(self, file_id: str):
         return (await self.upload_coll.find_one({"file_id": file_id}))["filename"]
+    
+    async def find_upload_status(self, file_id):
+        return await self.upload_coll.find_one({"file_id": file_id})
 
     def close(self):
         self.mongodb_client1.close()
         self.mongodb_client2.close()
+
+    async def _clear_up(self): # DANGER
+        await self.bntl_coll.drop()
+        await self.query_coll.drop()
+        await self.upload_coll.drop()
+        # ensure we recreate the indices
+        await self.ensure_indices()
 
 
 def build_query(type_of_reference=None,

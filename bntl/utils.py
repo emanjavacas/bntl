@@ -1,45 +1,12 @@
 
 import os
 import urllib
-import re
 from datetime import datetime, timezone
+import asyncio
 
 import aiofiles, aioconsole
 
 from bntl.settings import settings
-
-
-class MissingFieldException(Exception):
-    pass
-
-
-class YearFormatException(Exception):
-    pass
-
-
-def fix_year(doc):
-    """
-    Utility function dealing with different input formats for the year field.
-    We validate the year, and add a end_year field to unify range search queries.
-    """
-    try:
-        doc['end_year'] = int(doc['year']) + 1 # year is uninclusive
-        return doc
-    except Exception:
-        # undefined years (eg. 197X), go for average value
-        if 'X' in doc['year']:
-            doc['year'] = doc['year'].replace('X', '5')
-            return fix_year(doc)
-        # range years (eg. 1987-2024, 1987-, ...)
-        if '-' in doc['year']:
-            m = re.match(r"([0-9]{4})-([0-9]{4})?", doc['year'])
-            if not m: # error, skip the record
-                raise YearFormatException({"input": doc['year']})
-            start, end = m.groups()
-            doc['year'] = start
-            doc['end_year'] = end or int(start) + 1 # use starting date if end year is missing
-
-    return doc
 
 
 def identity(item): return item
@@ -54,6 +21,12 @@ def is_atlas(uri):
 
 def get_log_filename(file_id):
     return os.path.join(settings.UPLOAD_LOG_DIR, file_id + '.log')
+
+
+async def maybe_await(value):
+    if asyncio.iscoroutine(value):
+        return await value
+    return value
 
 
 class AsyncLogger:
@@ -79,5 +52,11 @@ class AsyncLogger:
             await self.file.flush()
         else:
             await aioconsole.aprint(log_entry, end='')
+
+    async def info(self, message: str):
+        await self.log(message)
+
+    async def debug(self, message: str):
+        await self.log(message)
 
 

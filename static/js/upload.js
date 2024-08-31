@@ -6,12 +6,12 @@ $(document).ready(function(){
     // state
     const filelist = van.state(new FileList([]));
 
-    function addFileToList(filename, fileId, status) {
-        filelist.val = filelist.val.add(filename, fileId, status);
+    function addFileToList(filename, fileId, status, progress=0) {
+        filelist.val = filelist.val.add(filename, fileId, status, progress);
     }
 
-    function updateFileStatus(fileId, status, uploadChunk) {
-        filelist.val = filelist.val.updateStatus(fileId, status, uploadChunk);
+    function updateFileStatus(fileId, status, progress) {
+        filelist.val = filelist.val.updateStatus(fileId, status, progress);
     }
 
     // file upload logic
@@ -39,14 +39,14 @@ $(document).ready(function(){
                     processData: false,
                     contentType: false,
                     success: function () {
-                        console.log(`Chunk ${currentChunk} of ${file.name} - ${fileId} uploaded`);
+                        console.log(`Chunk ${currentChunk}/${totalChunks} of ${file.name} - ${fileId} uploaded`);
                         if (currentChunk === totalChunks - 1) {
-                            updateFileStatus(fileId, STATUS.INDEXING);
+                            updateFileStatus(fileId, STATUS.INDEXING, 0);
                             checkStatus(fileId);
                         } else {
                             currentChunk++;
                             _readAndUploadNextChunk();
-                            updateFileStatus(fileId, STATUS.UPLOADING, Math.round((currentChunk + 1) * 100 / totalChunks));
+                            updateFileStatus(fileId, STATUS.UPLOADING, Math.round((currentChunk + 1) / totalChunks));
                         }
                     },
                     error: function (xhr, status, error) {
@@ -69,12 +69,21 @@ $(document).ready(function(){
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
                 const fileId = uuidv4();
-                addFileToList(files[i].name, fileId, STATUS.UPLOADING);
+                addFileToList(files[i].name, fileId, STATUS.UPLOADING, 0);
                 // upload the file
                 uploadFileInChunks(files[i], fileId);
             }
         }
         $('#fileInput').val('');
+    }
+
+    function isStatusDone(status) {
+        return (
+            status === STATUS.DONE ||
+            status === STATUS.UNKNOWNERROR ||
+            status === STATUS.UNKNOWNFORMAT ||
+            status === STATUS.VECTORIZINGERROR ||
+            status === STATUS.EMPTYFILE)
     }
 
     function checkStatus(fileId) {
@@ -83,8 +92,10 @@ $(document).ready(function(){
                 url: `/check-status/${fileId}`,
                 type: 'GET',
                 success: function(response) {
-                    updateFileStatus(fileId, response.current_status.status);
-                    if (response.current_status.status === STATUS.DONE) {
+                    console.log(response)
+                    updateFileStatus(fileId, response.current_status.status, response.current_status.progress);
+                    if (isStatusDone(response.current_status.status)) {
+                        console.log(response);
                         clearInterval(interval);
                     }
                 },
@@ -108,7 +119,7 @@ $(document).ready(function(){
                     statusClass = 'bg-info'; break;
                 case STATUS.DONE:
                     statusClass = 'bg-success'; break;
-                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE:
+                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE: case STATUS.VECTORIZINGERROR:
                     statusClass = 'bg-danger'
             }
             const listItem = li({ class: 'list-group-item' },
@@ -117,12 +128,16 @@ $(document).ready(function(){
                         div({ class: "col-8" },
                             button({ class: "btn btn-light position-relative disabled" },
                                 file.filename,
-                                span({ style: "font-size:10px;", class: `position-absolute top-100 start-100 translate-middle badge rounded-pill ${statusClass}` }, file.status.val),
-                                file.status.val == STATUS.UPLOADING ? 
-                                    span({ style: "font-size:8px", class: "position-absolute top-0 start-100 translate-middle badge bg-secondary rounded-pill" }, `${file.uploadChunk.val}/100`): 
+                                span({ style: "font-size:10px;", 
+                                       class: `position-absolute top-100 start-100 translate-middle badge rounded-pill ${statusClass}` }, 
+                                    file.status.val),
+                                file.status.val == STATUS.UPLOADING || file.status.val == STATUS.INDEXING ? 
+                                    span({ style: "font-size:8px", 
+                                           class: "position-absolute top-0 start-100 translate-middle badge bg-secondary rounded-pill" }, 
+                                        `${Math.round(file.progress.val * 100, 2)}/100`): 
                                     span())),
                         div({ class: "col-4" },
-                            file.status.val == STATUS.DONE ? 
+                            isStatusDone(file.status.val) ? 
                             // download button enabled
                             button({ id: `btn-${file.fileId}`, 
                                 class: "btn btn-sm btn-primary float-end",
@@ -153,8 +168,7 @@ $(document).ready(function(){
         type: 'GET',
         success: function(response) {
             $.each(response, function(index, item) {
-                console.log(item);
-                addFileToList(item.filename, item.file_id, item.current_status.status);
+                addFileToList(item.filename, item.file_id, item.current_status.status, item.current_status.progress | 0);
             })
         },
         error: function() { }});
@@ -163,17 +177,21 @@ $(document).ready(function(){
 
 class FileList {
     constructor (files) { this.files = files }
-    add (filename, fileId, status) {
-        this.files.unshift({ filename: filename, fileId: fileId, status: van.state(status), uploadChunk: van.state(0)});
+    add (filename, fileId, status, progress=0) {
+        this.files.unshift({ 
+            filename: filename, 
+            fileId: fileId,
+            status: van.state(status), 
+            progress: van.state(progress) });
         return new FileList(this.files);
     }
-    updateStatus(fileId, status, uploadChunk) {
+    updateStatus(fileId, status, progress) {
         const file = this.files.find(f => f.fileId === fileId);
         if (file) {
             // never downgrade from DONE
             if (file.status.val !== STATUS.DONE) {
                 file.status = van.state(status);
-                file.uploadChunk = van.state(uploadChunk);
+                file.progress = van.state(progress);
             }
         }
         return new FileList(this.files);

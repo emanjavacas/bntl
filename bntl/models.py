@@ -10,13 +10,17 @@ T = TypeVar("T")
 
 
 class EntryModel(BaseModel):
+    """
+    Entry model on the basis of the 
+    """
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
-    # mandatory
-    title: str = Field(help="Title of the record")
-    type_of_reference: str = Field(help="Record format")
-    year: int = Field(help="Year of record publication in string format")
-    end_year: int = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)")
-    # optional
+    # this is stored for convenience (enable year range queries)
+    end_year: Optional[int] = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)", default="")
+
+    # source fields (fields encountered in first db dump, it may fail)
+    title: Optional[str] = Field(help="Title of the record", default=None)
+    type_of_reference: Optional[str] = Field(help="Record format", default=None)
+    year: Optional[int] = Field(help="Year of record publication in string format", default="")
     label: Optional[str] = Field(help="Zotero export validation result", default=None)
     name_of_database: Optional[str] = Field(help="BNTL metadata", default=None)
     secondary_title: Optional[str] = Field(default=None)
@@ -44,6 +48,7 @@ class EntryModel(BaseModel):
 class DBEntryModel(EntryModel):
     doc_id: str = Field(help='Internal MongoDB id')
     date_added: datetime = Field(help="Date of ingestion")
+    hash: str = Field(help="Enable duplicate detection")
 
 
 class VectorEntryModel(DBEntryModel):
@@ -103,7 +108,7 @@ class VectorParams(BaseModel):
 class StatusModel(BaseModel):
     status: str
     date_updated: Optional[datetime]
-    process: Optional[float] = Field(ge=0, le=1, default=None)
+    progress: Optional[float] = Field(ge=0, le=1, default=None)
 
 
 class FileUploadModel(BaseModel):

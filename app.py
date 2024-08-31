@@ -20,12 +20,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from bntl.db import DBClient, build_query
-from bntl.vector import VectorClient
+from bntl.vector import VectorClient, MissingVectorException
 from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
 from bntl.upload import Status, FileUploadManager
 from bntl import utils
+
+from vectorizer import client
 
 
 setup_logger()
@@ -45,7 +47,7 @@ async def lifespan(app: FastAPI):
     app.state.file_upload = FileUploadManager(app.state.db_client, app.state.vector_client)
     yield
     app.state.db_client.close()
-    app.state.vector_client.close()
+    await app.state.vector_client.close()
 
 
 app = FastAPI(
@@ -91,7 +93,9 @@ async def home(request: Request):
     """
     return templates.TemplateResponse(
         "index.html", 
-        {"request": request, "last_added": await app.state.db_client.find_last_added()})
+        {"request": request, 
+         "total_documents": await app.state.db_client.count(), 
+         "last_added": await app.state.db_client.find_last_added()})
 
 
 @app.get("/about", response_class=HTMLResponse)
@@ -191,7 +195,11 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     Vector-based query route using the document id
     """
     logger.info(vector_params)
-    hits = app.state.vector_client.search(doc_id, limit=vector_params.limit)
+    try:
+        hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
+    except MissingVectorException as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
     hits_mapping = {item["doc_id"]: item["score"] for item in hits}
 
     def transform(item):
@@ -261,12 +269,13 @@ async def upload(file: UploadFile = File(...),
     app.state.file_upload.add_chunk(file_id, chunk, await file.read())
     if chunk == total_chunks - 1:
         background_tasks.add_task(app.state.file_upload.process_file, file_id)
+        # await app.state.file_upload.process_file(file_id)
     return
 
 
 @app.get("/check-status/{file_id}", response_model=FileUploadModel)
 async def check_status(file_id: str):
-    status = await app.state.db_client.upload_coll.find_one({"file_id": file_id})
+    status = await app.state.db_client.find_upload_status(file_id)
     if not status:
         raise HTTPException(status_code=404, detail="File not found")
     return status
@@ -289,7 +298,7 @@ async def download_log(file_id: str):
                 media_type='application/octet-stream',
                 headers={"Content-Disposition": f"attachment; filename={filename}.log"})
     else:
-        raise HTTPException(status_code=404, detail=f"File not found")
+        raise HTTPException(status_code=404, detail="File not found")
 
 
 @app.get("/{}".format(settings.UPLOAD_SECRET), response_class=HTMLResponse)
@@ -301,6 +310,22 @@ async def upload_page(request: Request):
         "upload.html", 
         {"request": request,
          "statuses": Status.__get_classes__()})
+
+
+@app.get("/test-vectorizer")
+async def test_system():
+    # create test id
+    task_id = "test-" + str(uuid.uuid4())
+    logger.info("Testing vectorization system with task: {}".format(task_id))
+    # vectorize
+    vectors = await client.send_vectorizer_task_and_poll(
+        task_id, ["Random text to test the system"], logger=logger)
+    # check result
+    if vectors:
+        logger.info("Succesfully vectorized task: {}".format(task_id))
+        return "OK"
+    else:
+        logger.info("No vectors obtained from test task: {}. Check vectorizer log".format(task_id))
 
 
 if __name__ == '__main__':
