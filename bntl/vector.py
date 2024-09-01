@@ -64,5 +64,8 @@ class VectorClient:
 
         return True
     
+    async def _clear_up(self):
+        await self.qdrant_client.delete_collection(self.collection_name)
+    
     async def close(self):
         await self.qdrant_client.close()

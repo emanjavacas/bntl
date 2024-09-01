@@ -46,7 +46,7 @@ $(document).ready(function(){
                         } else {
                             currentChunk++;
                             _readAndUploadNextChunk();
-                            updateFileStatus(fileId, STATUS.UPLOADING, Math.round((currentChunk + 1) / totalChunks));
+                            updateFileStatus(fileId, STATUS.UPLOADING, (currentChunk + 1) / totalChunks);
                         }
                     },
                     error: function (xhr, status, error) {
@@ -92,10 +92,8 @@ $(document).ready(function(){
                 url: `/check-status/${fileId}`,
                 type: 'GET',
                 success: function(response) {
-                    console.log(response)
                     updateFileStatus(fileId, response.current_status.status, response.current_status.progress);
                     if (isStatusDone(response.current_status.status)) {
-                        console.log(response);
                         clearInterval(interval);
                     }
                 },
@@ -168,6 +166,7 @@ $(document).ready(function(){
         type: 'GET',
         success: function(response) {
             $.each(response, function(index, item) {
+                if (!isStatusDone(item.current_status.status)){ checkStatus(item.file_id); }
                 addFileToList(item.filename, item.file_id, item.current_status.status, item.current_status.progress | 0);
             })
         },

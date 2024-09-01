@@ -1,11 +1,10 @@
 
-import uuid
 import logging
 from typing import List
 from contextlib import asynccontextmanager
 
 import asyncio
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.concurrency import run_in_threadpool
 import pymongo
 
@@ -78,11 +77,11 @@ async def vectorize_task(task_id, texts):
 
 
 @app.post("/vectorize")
-async def vectorize(task_id: str, texts: List[str]):
+async def vectorize(task_id: str, texts: List[str], background_tasks: BackgroundTasks):
     try:
         task = await app.state.db_client.create_task(task_id, texts)
-        await vectorize_task(task_id, texts)
-        # background_tasks.add_task(vectorize_task, task_id, texts)
+        # await vectorize_task(task_id, texts)
+        background_tasks.add_task(vectorize_task, task_id, texts)
         return task
     except pymongo.errors.DuplicateKeyError:
         raise HTTPException(status_code=404, detail="Document already vectorized")

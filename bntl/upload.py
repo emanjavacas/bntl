@@ -114,7 +114,7 @@ class FileUploadManager:
             await self.update_status(file_id, Status.VECTORIZING, progress=0)
             data = await self.db_client.find({"_id": {"$in": [bson.objectid.ObjectId(id) for id in doc_ids]}})
             vectors = await client.send_vectorizer_task_and_poll(
-                file_id, 
+                file_id,
                 [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in data],
                 logger=a_logger)
             if vectors:

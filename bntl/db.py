@@ -122,8 +122,6 @@ class DBClient():
             await self.bntl_coll.create_index({"$**": "text"})
         # ensure index on file_id (this may generate collisions)
         await self.upload_coll.create_index("file_id", unique=True)
-
-        return self
     
     async def count(self):
         return await self.bntl_coll.estimated_document_count()

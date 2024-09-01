@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     TASKS_COLL: str = Field(default="tasks")
     VECTORS_COLL: str = Field(default="vectors")
 
-    BATCH_SIZE: int = Field(default=12)
+    BATCH_SIZE: int = Field(default=48)
     RETRY_DELAY: int = Field(default=3600 * 10)
     MAX_RETRIES: int = Field(default=5)
 

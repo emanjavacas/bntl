@@ -30,9 +30,10 @@ async def maybe_await(value):
 
 
 class AsyncLogger:
-    def __init__(self, log_file: str = None):
+    def __init__(self, log_file: str = None, force_print=True):
         self.log_file = log_file
         self.file = None
+        self.force_print = force_print
 
     async def __aenter__(self):
         if self.log_file:
@@ -51,6 +52,8 @@ class AsyncLogger:
             await self.file.write(log_entry)
             await self.file.flush()
         else:
+            await aioconsole.aprint(log_entry, end='')
+        if self.force_print:
             await aioconsole.aprint(log_entry, end='')
 
     async def info(self, message: str):

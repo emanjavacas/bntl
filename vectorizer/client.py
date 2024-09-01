@@ -33,9 +33,20 @@ async def get_vectors(task_id: str):
         async with session.get(
             'http://0.0.0.0:{}/get-vectors/{}'.format(settings.PORT, task_id)) as resp:
             return await resp.json()
+        
+
+def get_retry_time(n_docs):
+    if n_docs > 50_000:
+        return 120
+    elif n_docs > 10_000:
+        return 40
+    elif n_docs > 1_000:
+        return 20
+    return 10
 
 
-async def send_vectorizer_task_and_poll(task_id, texts, retry_time=15, timeout=3600 * 1, logger=logger):
+async def send_vectorizer_task_and_poll(task_id, texts, retry_time=None, timeout=3600 * 1, logger=logger):
+    retry_time = retry_time or get_retry_time(len(texts))
     resp = await post_task(task_id, texts)
 
     # handle 404's, 500's, etc...
@@ -45,18 +56,18 @@ async def send_vectorizer_task_and_poll(task_id, texts, retry_time=15, timeout=3
 
     start = time.time()
     while resp["current_status"]["status"] != Status.DONE:
-        # exist if timeout
+        # exit if timeout
         if (time.time() - start) > timeout:
             await maybe_await(logger.info("Request timed out, check again later"))
             break
-        # check error
-        if resp["current_status"]["status"] in (Status.UNKNOWNERROR, Status.RUNTIMEERROR):
-            await maybe_await(logger.info("Exiting"))
+        # check if error
+        if resp["current_status"]["status"] in (Status.UNKNOWNERROR, Status.RUNTIMEERROR, Status.OUTOFATTEMPTS):
+            await maybe_await(logger.info("Got error: [{}], exiting...".format(resp["current_status"]["status"])))
             break
         else:
             # sleep and retry
             await maybe_await(logger.info("Task in status: {}".format(resp["current_status"]["status"])))
-            await maybe_await(logger.info("sleeping for {} seconds".format(retry_time)))
+            await maybe_await(logger.info("Sleeping for {} seconds".format(retry_time)))
             await asyncio.sleep(retry_time)
         resp = await get_task_status(task_id)
     else: # done, retrieve vectors

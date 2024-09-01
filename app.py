@@ -24,7 +24,7 @@ from bntl.vector import VectorClient, MissingVectorException
 from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
-from bntl.upload import Status, FileUploadManager
+from bntl.upload import Status, FileUploadManager, convert_to_text, get_doc_text
 from bntl import utils
 
 from vectorizer import client
@@ -269,7 +269,6 @@ async def upload(file: UploadFile = File(...),
     app.state.file_upload.add_chunk(file_id, chunk, await file.read())
     if chunk == total_chunks - 1:
         background_tasks.add_task(app.state.file_upload.process_file, file_id)
-        # await app.state.file_upload.process_file(file_id)
     return
 
 
@@ -326,6 +325,29 @@ async def test_system():
         return "OK"
     else:
         logger.info("No vectors obtained from test task: {}. Check vectorizer log".format(task_id))
+
+
+@app.post("/regenerate-vectors")
+async def regenerate_vectors():
+    # create test id
+    task_id = "regenerate-" + str(uuid.uuid4())
+    logger.info("Regenerating vectors with task: {}".format(task_id))
+    # get documents
+    docs = await app.state.db_client.find({})
+    texts = [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs]
+    # vectorize
+    vectors = await client.send_vectorizer_task_and_poll(
+        task_id, texts, retry_time=120, logger=logger)
+    # check result
+    if not vectors:
+        logger.info("No vectors obtained from task: {}. Check vectorizer log".format(task_id))
+        return
+
+    logger.info("Succesfully vectorized task: {}".format(task_id))
+    # clean up vector database and update
+    await app.state.vector_client._clear_up()
+    await logger.info("Ingesting vectors into vector database")
+    await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
 
 
 if __name__ == '__main__':
