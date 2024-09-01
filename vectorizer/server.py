@@ -1,10 +1,12 @@
 
+import json
 import logging
 from typing import List
 from contextlib import asynccontextmanager
 
 import asyncio
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.responses import StreamingResponse
 from fastapi.concurrency import run_in_threadpool
 import pymongo
 
@@ -100,14 +102,19 @@ async def task_status(task_id: str):
         raise HTTPException(status_code=404, detail="Task not found")
 
 
+async def generate_vectors(task_id, batch_size=1000):
+    vectors = await app.state.db_client.vectors_coll.find(
+            {"task_id": task_id}
+    ).sort("vector_id", pymongo.DESCENDING).to_list(length=None)
+    for start in range(0, len(vectors), batch_size):
+        yield json.dumps([item["vector"] for item in vectors[start:start+batch_size]])
+
+
 @app.get("/get-vectors/{task_id}")
 async def get_vectors(task_id: str):
     task = await app.state.db_client.get_task(task_id)
     if task and task["current_status"]["status"] == Status.DONE:
-        vectors = await app.state.db_client.vectors_coll.find(
-            {"task_id": task_id}
-        ).sort("vector_id", pymongo.DESCENDING).to_list(length=None)
-        return [vector["vector"] for vector in vectors]
+        return StreamingResponse(generate_vectors(task_id), media_type="application/json")
     raise HTTPException(status_code=404, detail="Task not done")    
 
 

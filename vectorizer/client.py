@@ -1,4 +1,5 @@
 
+import json
 import time
 import logging
 from typing import List
@@ -26,13 +27,17 @@ async def get_task_status(task_id: str):
         async with session.get(
             'http://0.0.0.0:{}/check-status/{}'.format(settings.PORT, task_id)) as resp:
             return await resp.json()
-        
+
 
 async def get_vectors(task_id: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(
             'http://0.0.0.0:{}/get-vectors/{}'.format(settings.PORT, task_id)) as resp:
-            return await resp.json()
+            # vectors = []
+            output = b""
+            async for line in resp.content.iter_chunked(100 * 1024):
+                output += line
+            return json.loads(output.decode("utf-8"))
         
 
 def get_retry_time(n_docs):
@@ -67,10 +72,10 @@ async def send_vectorizer_task_and_poll(task_id, texts, retry_time=None, timeout
         else:
             # sleep and retry
             await maybe_await(logger.info("Task in status: {}".format(resp["current_status"]["status"])))
-            await maybe_await(logger.info("Sleeping for {} seconds".format(retry_time)))
+            await maybe_await(logger.info("Sleeping for {} seconds...".format(retry_time)))
             await asyncio.sleep(retry_time)
         resp = await get_task_status(task_id)
     else: # done, retrieve vectors
         await maybe_await(
-            logger.info("Vectorization done in {} seconds.".format(round(time.time() - start, 2))))
+            logger.info("Vectorization done in {} seconds".format(round(time.time() - start, 2))))
         return await get_vectors(task_id)

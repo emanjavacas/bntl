@@ -317,14 +317,13 @@ async def test_system():
     task_id = "test-" + str(uuid.uuid4())
     logger.info("Testing vectorization system with task: {}".format(task_id))
     # vectorize
-    vectors = await client.send_vectorizer_task_and_poll(
-        task_id, ["Random text to test the system"], logger=logger)
+    text = ["Random text to test the system"]
+    vectors = await client.send_vectorizer_task_and_poll(task_id, text, logger=logger)
     # check result
     if vectors:
-        logger.info("Succesfully vectorized task: {}".format(task_id))
-        return "OK"
+        return "Ok"
     else:
-        logger.info("No vectors obtained from test task: {}. Check vectorizer log".format(task_id))
+        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
 
 
 @app.post("/regenerate-vectors")
@@ -340,14 +339,25 @@ async def regenerate_vectors():
         task_id, texts, retry_time=120, logger=logger)
     # check result
     if not vectors:
-        logger.info("No vectors obtained from task: {}. Check vectorizer log".format(task_id))
-        return
+        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
 
     logger.info("Succesfully vectorized task: {}".format(task_id))
     # clean up vector database and update
     await app.state.vector_client._clear_up()
     await logger.info("Ingesting vectors into vector database")
     await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
+
+
+@app.post("/get-vectors")
+async def get_vectors(task_id: str):
+    logger.info("Requesting vectors for task: [{}]".format(task_id))
+    vectors = await client.get_vectors(task_id)
+    if not vectors:
+        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
+    # clean up vector database and update
+    await logger.info("Ingesting vectors into vector database")
+    # await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
+    print(vectors)
 
 
 if __name__ == '__main__':
