@@ -89,7 +89,7 @@ $(document).ready(function(){
     function checkStatus(fileId) {
         var interval = setInterval(function() {
             $.ajax({
-                url: `/check-status/${fileId}`,
+                url: `/check-upload-status/${fileId}`,
                 type: 'GET',
                 success: function(response) {
                     updateFileStatus(fileId, response.current_status.status, response.current_status.progress);
@@ -162,7 +162,7 @@ $(document).ready(function(){
     van.add($("#entryPoint"), Card());
     // recall upload history
     $.ajax({
-        url: "upload-history",
+        url: "get-upload-history",
         type: 'GET',
         success: function(response) {
             $.each(response, function(index, item) {
@@ -201,7 +201,7 @@ class FileList {
 function downloadLog(fileId) {
     const a = document.createElement('a');
     a.style.display = 'none';
-    a.href = `/download-log?file_id=${fileId}`;
+    a.href = `/get-upload-logg?file_id=${fileId}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

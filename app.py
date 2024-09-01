@@ -25,9 +25,8 @@ from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParam
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
 from bntl.upload import Status, FileUploadManager, convert_to_text, get_doc_text
+from bntl.model_manager import ModelManager
 from bntl import utils
-
-from vectorizer import client
 
 
 setup_logger()
@@ -44,10 +43,15 @@ Search engine + front end for a Zotero database
 async def lifespan(app: FastAPI):
     app.state.db_client = await DBClient.create()
     app.state.vector_client = VectorClient()
-    app.state.file_upload = FileUploadManager(app.state.db_client, app.state.vector_client)
+    app.state.model_manager = ModelManager()
+    app.state.file_upload = FileUploadManager(
+        app.state.db_client, 
+        app.state.vector_client, 
+        app.state.model_manager)
     yield
     app.state.db_client.close()
     await app.state.vector_client.close()
+    app.state.model_manager.close()
 
 
 app = FastAPI(
@@ -221,8 +225,8 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
         "results.html", {"request": request, "source": source, **results.model_dump()})
 
 
-@app.get("/history")
-async def history(request: Request):
+@app.get("/get-query-history")
+async def get_query_history(request: Request):
     """
     Query history route
     """
@@ -272,23 +276,23 @@ async def upload(file: UploadFile = File(...),
     return
 
 
-@app.get("/check-status/{file_id}", response_model=FileUploadModel)
-async def check_status(file_id: str):
+@app.get("/check-upload-status/{file_id}", response_model=FileUploadModel)
+async def check_upload_status(file_id: str):
     status = await app.state.db_client.find_upload_status(file_id)
     if not status:
         raise HTTPException(status_code=404, detail="File not found")
     return status
 
 
-@app.get("/upload-history", response_model=List[FileUploadModel])
-async def upload_history():
+@app.get("/get-upload-history", response_model=List[FileUploadModel])
+async def get_upload_history():
     # if secret == settings.UPLOAD_SECRET:
     return await app.state.db_client.get_upload_history()
     # return []
 
 
-@app.get("/download-log")
-async def download_log(file_id: str):
+@app.get("/get-upload-log")
+async def get_upload_log(file_id: str):
     log_filename = utils.get_log_filename(file_id)
     filename = await app.state.db_client.get_upload_filename(file_id)
     if os.path.isfile(log_filename):
@@ -309,55 +313,6 @@ async def upload_page(request: Request):
         "upload.html", 
         {"request": request,
          "statuses": Status.__get_classes__()})
-
-
-@app.get("/test-vectorizer")
-async def test_system():
-    # create test id
-    task_id = "test-" + str(uuid.uuid4())
-    logger.info("Testing vectorization system with task: {}".format(task_id))
-    # vectorize
-    text = ["Random text to test the system"]
-    vectors = await client.send_vectorizer_task_and_poll(task_id, text, logger=logger)
-    # check result
-    if vectors:
-        return "Ok"
-    else:
-        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
-
-
-@app.post("/regenerate-vectors")
-async def regenerate_vectors():
-    # create test id
-    task_id = "regenerate-" + str(uuid.uuid4())
-    logger.info("Regenerating vectors with task: {}".format(task_id))
-    # get documents
-    docs = await app.state.db_client.find({})
-    texts = [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs]
-    # vectorize
-    vectors = await client.send_vectorizer_task_and_poll(
-        task_id, texts, retry_time=120, logger=logger)
-    # check result
-    if not vectors:
-        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
-
-    logger.info("Succesfully vectorized task: {}".format(task_id))
-    # clean up vector database and update
-    await app.state.vector_client._clear_up()
-    await logger.info("Ingesting vectors into vector database")
-    await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
-
-
-@app.post("/get-vectors")
-async def get_vectors(task_id: str):
-    logger.info("Requesting vectors for task: [{}]".format(task_id))
-    vectors = await client.get_vectors(task_id)
-    if not vectors:
-        raise HTTPException(status_code=500, detail="No vectors retrieved for task: {}")
-    # clean up vector database and update
-    await logger.info("Ingesting vectors into vector database")
-    # await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
-    print(vectors)
 
 
 if __name__ == '__main__':

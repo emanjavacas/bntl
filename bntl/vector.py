@@ -13,7 +13,6 @@ class MissingVectorException(Exception):
     pass
 
 
-
 class VectorClient:
     """
     Client for a Vector database using QDrant

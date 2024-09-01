@@ -32,6 +32,10 @@ class Settings(BaseSettings):
 
     UPLOAD_LOG_DIR: str = Field(default="./logs", help="Directory to store the upload log files")
 
+    RETRY_DELAY: int = Field(default=3600 * 10)
+    MAX_RETRIES: int = Field(default=5)
+    BATCH_SIZE: int = Field(default=48)
+
     WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
     model_config = SettingsConfigDict(toml_file=["settings.toml", "settings_secret.toml"])
