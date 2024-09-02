@@ -21,7 +21,7 @@ async def main(path):
         await logger.info("Cleaning up MongoDB collections")
         await db_client._clear_up()
         await logger.info("Cleaning up QDrant collections")
-        await vector_client.qdrant_client.delete_collection(vector_client.collection_name)
+        await vector_client._clear_up()
 
         # read data from file
         async with aiofiles.open(path, 'r') as f:
@@ -36,10 +36,10 @@ async def main(path):
         
         # vectorize
         await logger.info("Vectorizing...")
-        task_id = uuid.uuid4()
+        task_id = str(uuid.uuid4())
         docs = await db_client.find({"_id": {"$in": [bson.objectid.ObjectId(id) for id in done]}})
         texts = [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs]
-        vectors = await client.send_vectorizer_task_and_poll(task_id, texts, logger=logger)
+        vectors = await client.vectorize(task_id, texts, db_client.vectors_coll, logger=logger)
 
         # insert to qdrant
         if vectors:

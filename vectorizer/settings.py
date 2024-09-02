@@ -18,7 +18,6 @@ def setup_logger(path='settings_vectorizer_logger.toml'):
 class Settings(BaseSettings):
     PORT: int = Field(help="Server port", default=6666)
 
-    DB_URI: str = Field(help="MongoDB URI for the vectorizer tasks")
     VECTORIZER_DB: str = Field(default="vectorizer")
     TASKS_COLL: str = Field(default="tasks")
     VECTORS_COLL: str = Field(default="vectors")

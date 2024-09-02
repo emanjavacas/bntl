@@ -5,19 +5,17 @@ from datetime import datetime, timezone
 import motor.motor_asyncio as motor
 from pymongo import UpdateOne
 
-from vectorizer.models import StatusModel, TaskModel, VectorModel, Status
+from vectorizer.models import TaskModel, VectorModel, Status, create_new_status
 from vectorizer.settings import settings
+
+from bntl.settings import settings as bntl_settings
 
 logger = logging.getLogger(__name__)
 
 
-def create_new_status(status, **status_info) -> StatusModel:
-    return StatusModel(status=status, date_created=datetime.now(timezone.utc), status_info=status_info)
-
-
 class DBClient():
     def __init__(self, ) -> None:
-        self.db_client = motor.AsyncIOMotorClient(settings.DB_URI)
+        self.db_client = motor.AsyncIOMotorClient(bntl_settings.LOCAL_URI)
         self.tasks_coll = self.db_client[settings.VECTORIZER_DB][settings.TASKS_COLL]
         self.vectors_coll = self.db_client[settings.VECTORIZER_DB][settings.VECTORS_COLL]
 
@@ -55,7 +53,7 @@ class DBClient():
         doc.pop("_id")
         return doc
 
-    async def update_task_status(self, task_id, status, vectors=None, **status_info):
+    async def update_task_status(self, task_id, status, **status_info):
         logger.info(f"Task [{task_id}] updated to status: {status}")
         logger.info("Status info: " + str(status_info))
         old_status = (await self.get_task(task_id))["current_status"]
@@ -65,13 +63,13 @@ class DBClient():
             {"$set": {"current_status": create_new_status(status, **status_info).model_dump()},
              "$push": {"history": old_status}}, 
              upsert=True)
-        # update vectors
-        if vectors is not None:
-            await self.vectors_coll.bulk_write(
-                [UpdateOne({"task_id": task_id, "vector_id": idx},
-                           {"$set": {"vector": vector}})
-                 for idx, vector in enumerate(vectors)])
         return task_update
+    
+    async def store_vectors(self, task_id, vectors):
+        await self.vectors_coll.bulk_write(
+            [UpdateOne({"task_id": task_id, "vector_id": idx},
+                        {"$set": {"vector": vector}})
+                for idx, vector in enumerate(vectors)])
     
     async def _clear_up(self):
         await self.vectors_coll.drop()

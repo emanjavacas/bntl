@@ -1,21 +1,20 @@
 
-import json
 import logging
 from typing import List
 from contextlib import asynccontextmanager
 
 import asyncio
 from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.responses import StreamingResponse
 from fastapi.concurrency import run_in_threadpool
 import pymongo
 
 import torch
+from sentence_transformers import SentenceTransformer
 
 from vectorizer.settings import setup_logger, settings
 from vectorizer.models import Status, TaskModel
-from vectorizer.model_manager import ModelManager
 from vectorizer.db import DBClient
+
 
 setup_logger()
 logger = logging.getLogger(__name__)
@@ -37,6 +36,38 @@ def encode(model, text, batch_size):
     return model.encode(text, batch_size=batch_size)
 
 
+class ModelManager:
+    def __init__(self):
+        self.model = None
+
+    def load_model(self):
+        if self.model is None:
+            self.model = SentenceTransformer("dunzhang/stella_en_1.5B_v5", trust_remote_code=True)
+            self.model = self.model.to(torch.device('cpu'))
+            logger.info("Model loaded on CPU.")
+
+    def move_model_to_gpu(self):
+        if self.model.device != torch.device('cuda'):
+            logger.info("Moving model to GPU...")
+            self.model = self.model.to(torch.device('cuda'))
+            logger.info("Model moved to GPU.")
+
+    def move_model_to_cpu(self):
+        if self.model.device != torch.device('cpu'):
+            logger.info("Moving model back to CPU...")
+            self.model = self.model.to(torch.device('cpu'))
+            logger.info("Model moved back to CPU.")
+
+    def get_model(self):
+        if self.model is None:
+            self.load_model()
+        return self.model
+    
+    def close(self):
+        if self.model:
+            self.move_model_to_cpu()
+
+
 async def vectorize_task(task_id, texts):
     attempts = 0
 
@@ -51,46 +82,42 @@ async def vectorize_task(task_id, texts):
                 vectors = vectors.tolist()
                 app.state.model_manager.move_model_to_cpu()
                 # Update the task status to done
-                await app.state.db_client.update_task_status(task_id, Status.DONE, vectors=vectors)
+                await app.state.db_client.store_vectors(task_id, vectors)
+                await app.state.db_client.update_task_status(task_id, Status.DONE)
                 break
             except Exception as e:
                 if "CUDA out of memory" in str(e):
-                    logger.info(f"GPU out of memory, retrying task [{task_id}]...")
                     await app.state.db_client.update_task_status(
-                        task_id, Status.RETRYING, attempts=attempts, message="GPU OOM")
+                        task_id, Status.RETRYING, attempts=attempts, message="GPU OOM", e=str(e))
                     await asyncio.sleep(settings.RETRY_DELAY)
                     attempts += 1
                     continue
                 else:
                     await app.state.db_client.update_task_status(
-                        task_id, Status.RUNTIMEERROR, attempts=attempts)
-                    logger.info(f"Unknown error for task [{task_id}]")
-                    logger.info(str(e))
+                        task_id, Status.RUNTIMEERROR, attempts=attempts, e=str(e))
                     break
         else:
-            logger.info(f"GPU not available, retrying task {task_id}...")
             await app.state.db_client.update_task_status(
                 task_id, Status.RETRYING, attempts=attempts, message="GPU not available")
             await asyncio.sleep(settings.RETRY_DELAY)
             attempts += 1
 
     if attempts >= settings.MAX_RETRIES:
-        await app.state.db_client.update_task_status(task_id, Status.OUTOFATTEMPTS)
+        await app.state.db_client.update_task_status(task_id, Status.TIMEOUT)
 
 
 @app.post("/vectorize")
 async def vectorize(task_id: str, texts: List[str], background_tasks: BackgroundTasks):
     try:
         task = await app.state.db_client.create_task(task_id, texts)
-        # await vectorize_task(task_id, texts)
         background_tasks.add_task(vectorize_task, task_id, texts)
         return task
     except pymongo.errors.DuplicateKeyError:
-        raise HTTPException(status_code=404, detail="Document already vectorized")
+        raise HTTPException(status_code=500, detail="Document already vectorized")
     except Exception as e:
         logger.info("Error while vectorizing")
         logger.info(str(e))
-        raise HTTPException(status_code=500, detail="Couldn't vectorize: " + str(e))
+        raise HTTPException(status_code=500, detail="Unknown " + str(e))
 
 
 @app.get("/check-status/{task_id}", response_model=TaskModel)
@@ -100,22 +127,6 @@ async def task_status(task_id: str):
         return task
     else:
         raise HTTPException(status_code=404, detail="Task not found")
-
-
-async def generate_vectors(task_id, batch_size=1000):
-    vectors = await app.state.db_client.vectors_coll.find(
-            {"task_id": task_id}
-    ).sort("vector_id", pymongo.DESCENDING).to_list(length=None)
-    for start in range(0, len(vectors), batch_size):
-        yield json.dumps([item["vector"] for item in vectors[start:start+batch_size]])
-
-
-@app.get("/get-vectors/{task_id}")
-async def get_vectors(task_id: str):
-    task = await app.state.db_client.get_task(task_id)
-    if task and task["current_status"]["status"] == Status.DONE:
-        return StreamingResponse(generate_vectors(task_id), media_type="application/json")
-    raise HTTPException(status_code=404, detail="Task not done")    
 
 
 if __name__ == "__main__":

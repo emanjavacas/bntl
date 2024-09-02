@@ -201,7 +201,7 @@ class FileList {
 function downloadLog(fileId) {
     const a = document.createElement('a');
     a.style.display = 'none';
-    a.href = `/get-upload-logg?file_id=${fileId}`;
+    a.href = `/get-upload-log?file_id=${fileId}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

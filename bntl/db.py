@@ -15,6 +15,8 @@ from bntl.settings import settings
 from bntl import utils
 from bntl.models import QueryModel, QueryParams, StatusModel, EntryModel
 
+from vectorizer.settings import settings as v_settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +104,8 @@ class DBClient():
         self.mongodb_client2 = motor.AsyncIOMotorClient(settings.LOCAL_URI)
         self.query_coll = self.mongodb_client2[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client2[settings.LOCAL_DB][settings.UPLOAD_COLL]
+        # vectorize database to retrieve vectors when done
+        self.vectors_coll = self.mongodb_client2[v_settings.VECTORIZER_DB][v_settings.VECTORS_COLL]
 
     @classmethod
     async def create(cls):

@@ -1,11 +1,10 @@
 
-import bson
+from bson.objectid import ObjectId
 import logging
 import collections
 from datetime import datetime, timezone
 from typing import Dict
 
-import bson.objectid
 import rispy
 
 from bntl import utils
@@ -23,6 +22,7 @@ class Status:
     UNKNOWNERROR = 'Unknown error'
     UNKNOWNFORMAT = 'Unknown input format'
     VECTORIZINGERROR = 'Error while vectorizing'
+    VECTORIZINGTIMEOUT = 'Vectorization timed out'
     EMPTYFILE = 'Empty input file' # can happen if all documents fail to validate
     DONE = 'Done'
 
@@ -98,7 +98,6 @@ class FileUploadManager:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT)
                 return
             await a_logger.info("Received {} documents".format(len(documents)))
-
             # validate and ingest
             await a_logger.info("Indexing data...")
             await self.update_status(file_id, Status.INDEXING, progress=0)
@@ -108,17 +107,19 @@ class FileUploadManager:
                 await a_logger.info("Couldn't validate any documents from upload")
                 await self.update_status(file_id, Status.EMPTYFILE)
                 return
-
             # vectorization
             await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
             await self.update_status(file_id, Status.VECTORIZING, progress=0)
-            data = await self.db_client.find({"_id": {"$in": [bson.objectid.ObjectId(id) for id in doc_ids]}})
-            vectors = await client.send_vectorizer_task_and_poll(
+            data = await self.db_client.find({"_id": {"$in": [ObjectId(id) for id in doc_ids]}})
+            vectors = await client.vectorize(
                 file_id,
                 [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in data],
+                self.db_client.vectors_coll,
                 logger=a_logger)
             if vectors:
-                await self.vector_client.insert(vectors, [str(doc["_id"]) for doc in data])
-                await self.update_status(file_id, Status.DONE)
+                    await a_logger.info("Indexing...")
+                    await self.vector_client.insert(vectors, [str(doc["_id"]) for doc in data])
+                    await self.update_status(file_id, Status.DONE)
             else:
                 await self.update_status(file_id, Status.VECTORIZINGERROR)
+            await a_logger.info("Exit job.")

@@ -24,8 +24,7 @@ from bntl.vector import VectorClient, MissingVectorException
 from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
-from bntl.upload import Status, FileUploadManager, convert_to_text, get_doc_text
-from bntl.model_manager import ModelManager
+from bntl.upload import Status, FileUploadManager
 from bntl import utils
 
 
@@ -43,15 +42,12 @@ Search engine + front end for a Zotero database
 async def lifespan(app: FastAPI):
     app.state.db_client = await DBClient.create()
     app.state.vector_client = VectorClient()
-    app.state.model_manager = ModelManager()
     app.state.file_upload = FileUploadManager(
         app.state.db_client, 
-        app.state.vector_client, 
-        app.state.model_manager)
+        app.state.vector_client)
     yield
     app.state.db_client.close()
     await app.state.vector_client.close()
-    app.state.model_manager.close()
 
 
 app = FastAPI(
@@ -203,6 +199,8 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
         hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
     except MissingVectorException as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Vector DB not running")
 
     hits_mapping = {item["doc_id"]: item["score"] for item in hits}
 
