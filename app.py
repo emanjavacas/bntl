@@ -24,8 +24,10 @@ from bntl.vector import VectorClient, MissingVectorException
 from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
-from bntl.upload import Status, FileUploadManager
+from bntl.upload import Status, FileUploadManager, get_doc_text, convert_to_text
 from bntl import utils
+
+from vectorizer import client
 
 
 setup_logger()
@@ -313,13 +315,34 @@ async def upload_page(request: Request):
          "statuses": Status.__get_classes__()})
 
 
+async def revectorize():
+    task_id = "revectorize-" + str(uuid.uuid4())
+    async with utils.AsyncLogger(task_id) as a_logger:
+        docs = await app.db_client.find()
+        vectors = await client.vectorize(
+                task_id,
+                [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs],
+                app.db_client.vectors_coll,
+                logger=a_logger)
+        if vectors:
+            await app.state.vector_client._clear_up()
+            await a_logger.info("Indexing...")
+            await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
+            await a_logger.info("Done indexing")
+        else:
+            a_logger.info("Couldn't get vectors during reindex operation")
+
+
+@app.push("revectorize")
+async def revectorize(background_tasks: BackgroundTasks=None):
+    background_tasks.add_task(revectorize)
+
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
-
-    # make sure db's are set and indexed
 
     # make sure folders exist
     if not os.path.isdir(settings.UPLOAD_LOG_DIR):
