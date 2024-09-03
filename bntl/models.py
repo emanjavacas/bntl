@@ -2,7 +2,7 @@
 import uuid
 from datetime import datetime
 
-from typing import List, Optional, Dict, Generic, TypeVar, Literal
+from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -15,12 +15,12 @@ class EntryModel(BaseModel):
     """
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
     # this is stored for convenience (enable year range queries)
-    end_year: Optional[int] = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)", default="")
+    end_year: Optional[Union[int|str]] = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)", default="")
 
     # source fields (fields encountered in first db dump, it may fail)
     title: Optional[str] = Field(help="Title of the record", default=None)
     type_of_reference: Optional[str] = Field(help="Record format", default=None)
-    year: Optional[int] = Field(help="Year of record publication in string format", default="")
+    year: Optional[Union[int|str]] = Field(help="Year of record publication in string format", default="")
     label: Optional[str] = Field(help="Zotero export validation result", default=None)
     name_of_database: Optional[str] = Field(help="BNTL metadata", default=None)
     secondary_title: Optional[str] = Field(default=None)

@@ -304,7 +304,7 @@ async def get_upload_log(file_id: str):
         raise HTTPException(status_code=404, detail="File not found")
 
 
-@app.get("/{}".format(settings.UPLOAD_SECRET), response_class=HTMLResponse)
+@app.get("/upload", response_class=HTMLResponse)
 async def upload_page(request: Request):
     """
     Upload route
@@ -333,9 +333,10 @@ async def revectorize():
             a_logger.info("Couldn't get vectors during reindex operation")
 
 
-@app.push("revectorize")
+@app.post("/revectorize")
 async def revectorize(background_tasks: BackgroundTasks=None):
     background_tasks.add_task(revectorize)
+    return "Ok"
 
 
 if __name__ == '__main__':
