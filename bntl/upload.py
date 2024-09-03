@@ -117,9 +117,9 @@ class FileUploadManager:
                 self.db_client.vectors_coll,
                 logger=a_logger)
             if vectors:
-                    await a_logger.info("Indexing...")
-                    await self.vector_client.insert(vectors, [str(doc["_id"]) for doc in data])
-                    await self.update_status(file_id, Status.DONE)
+                await a_logger.info("Indexing...")
+                await self.vector_client.insert(vectors, [str(doc["_id"]) for doc in data])
+                await self.update_status(file_id, Status.DONE)
             else:
                 await self.update_status(file_id, Status.VECTORIZINGERROR)
             await a_logger.info("Exit job.")

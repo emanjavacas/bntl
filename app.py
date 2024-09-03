@@ -286,9 +286,7 @@ async def check_upload_status(file_id: str):
 
 @app.get("/get-upload-history", response_model=List[FileUploadModel])
 async def get_upload_history():
-    # if secret == settings.UPLOAD_SECRET:
     return await app.state.db_client.get_upload_history()
-    # return []
 
 
 @app.get("/get-upload-log")
@@ -315,14 +313,16 @@ async def upload_page(request: Request):
          "statuses": Status.__get_classes__()})
 
 
-async def revectorize():
+async def revectorize_task():
     task_id = "revectorize-" + str(uuid.uuid4())
     async with utils.AsyncLogger(task_id) as a_logger:
-        docs = await app.db_client.find()
+        await a_logger.info("Starting revectorize task: {}".format(task_id))
+        docs = await app.state.db_client.find()
+        await a_logger.info("Revectorizing {} documents...".format(len(docs)))
         vectors = await client.vectorize(
                 task_id,
                 [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs],
-                app.db_client.vectors_coll,
+                app.state.db_client.vectors_coll,
                 logger=a_logger)
         if vectors:
             await app.state.vector_client._clear_up()
@@ -334,8 +334,8 @@ async def revectorize():
 
 
 @app.post("/revectorize")
-async def revectorize(background_tasks: BackgroundTasks=None):
-    background_tasks.add_task(revectorize)
+async def revectorize(background_tasks: BackgroundTasks):
+    background_tasks.add_task(revectorize_task)
     return "Ok"
 
 
@@ -355,3 +355,30 @@ if __name__ == '__main__':
                 port=settings.PORT,
                 workers=settings.WORKERS,
                 reload=args.debug)
+
+
+# vc = VectorClient()
+# vecs, _ = await vc.get_vectors()
+# # vectors2 = await dc.vectors_coll.find().to_list(length=None)
+# dc = await DBClient.create()
+# docs = await dc.find()
+# len(docs) == len(vecs)
+# v_ids = [vec.payload['doc_id'] for vec in vecs]
+# d_ids = [str(doc["_id"]) for doc in docs]
+# set(d_ids) == set(v_ids)
+# len(set(d_ids).difference(set(v_ids))) # 293717
+# len(set(v_ids).difference(set(d_ids))) # 0
+# len(set(v_ids).intersection(set(d_ids))) # 1000
+# vecs_db = await dc.vectors_coll.find().to_list(length=None)
+# v_ids2 = [str(doc['_id']) for doc in vecs_db]
+
+# len(d_ids), len(v_ids)
+# set(d_ids) == set(v_ids2)
+# len(set(d_ids).difference(set(v_ids2))) # 293717
+# len(set(v_ids2).difference(set(d_ids))) # 0
+# len(set(v_ids2).intersection(set(d_ids))) # 1000
+
+# set(d_ids) == set(v_ids2)
+# len(set(d_ids).difference(set(v_ids2))) # 293717
+# len(set(v_ids2).difference(set(d_ids))) # 0
+# len(set(v_ids2).intersection(set(d_ids))) # 1000
