@@ -9,8 +9,8 @@ from fastapi.concurrency import run_in_threadpool
 import pymongo
 
 import torch
-from sentence_transformers import SentenceTransformer
 
+from vectorizer.model_manager import ModelManagerFE, ModelManagerStella
 from vectorizer.settings import setup_logger, settings
 from vectorizer.models import Status, TaskModel
 from vectorizer.db import DBClient
@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.model_manager = ModelManager()
+    app.state.model_manager = ModelManagerStella("dunzhang/stella_en_1.5B_v5")
+    # app.state.model_manager = ModelManagerFE('BAAI/bge-m3')
     app.state.db_client = await DBClient.create()
     yield
     app.state.model_manager.close()
@@ -30,42 +31,6 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Vectorizer Backend", lifespan=lifespan)
-
-
-def encode(model, text, batch_size):
-    return model.encode(text, batch_size=batch_size)
-
-
-class ModelManager:
-    def __init__(self):
-        self.model = None
-
-    def load_model(self):
-        if self.model is None:
-            self.model = SentenceTransformer("dunzhang/stella_en_1.5B_v5", trust_remote_code=True)
-            self.model = self.model.to(torch.device('cpu'))
-            logger.info("Model loaded on CPU.")
-
-    def move_model_to_gpu(self):
-        if self.model.device != torch.device('cuda'):
-            logger.info("Moving model to GPU...")
-            self.model = self.model.to(torch.device('cuda'))
-            logger.info("Model moved to GPU.")
-
-    def move_model_to_cpu(self):
-        if self.model.device != torch.device('cpu'):
-            logger.info("Moving model back to CPU...")
-            self.model = self.model.to(torch.device('cpu'))
-            logger.info("Model moved back to CPU.")
-
-    def get_model(self):
-        if self.model is None:
-            self.load_model()
-        return self.model
-    
-    def close(self):
-        if self.model:
-            self.move_model_to_cpu()
 
 
 async def vectorize_task(task_id, texts):
@@ -78,7 +43,7 @@ async def vectorize_task(task_id, texts):
                 app.state.model_manager.load_model()
                 app.state.model_manager.move_model_to_gpu()
                 vectors = await run_in_threadpool(
-                    encode, app.state.model_manager.get_model(), texts, settings.BATCH_SIZE)
+                    app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
                 vectors = vectors.tolist()
                 app.state.model_manager.move_model_to_cpu()
                 # Update the task status to done

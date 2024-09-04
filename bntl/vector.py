@@ -21,13 +21,17 @@ class VectorClient:
         self.qdrant_client = AsyncQdrantClient(location="localhost", port=settings.QDRANT_PORT)
         self.collection_name = settings.QDRANT_COLL
 
+    async def find_vector_by_id(self, doc_id):
+        hits, _ = await self.qdrant_client.scroll(self.collection_name, scroll_filter=models.Filter(
+            must=[models.FieldCondition(key="doc_id", match=models.MatchValue(value=doc_id))]),
+            with_vectors=True)
+        return hits
+
     async def search(self, doc_id, limit=10):
         """
         Find top-k (`limit`) nearest neighbors to the given `doc_id`
         """
-        hits, _ = await self.qdrant_client.scroll(self.collection_name, scroll_filter=models.Filter(
-            must=[models.FieldCondition(key="doc_id", match=models.MatchValue(value=doc_id))]),
-            with_vectors=True)
+        hits = await self.find_vector_by_id(doc_id)        
         if len(hits) == 0:
             raise MissingVectorException("Unknown document: {}".format(doc_id))
         hits = await self.qdrant_client.search(
@@ -51,17 +55,22 @@ class VectorClient:
 
         cur = (await self.qdrant_client.count(self.collection_name)).count
         for i in tqdm(range(0, vectors.shape[0], batch_size)):
+            points = []
+            for v_id, vector in enumerate(vectors[i:i+batch_size]):
+                points.append(PointStruct(
+                    id=cur + i + v_id,
+                    vector=vector.tolist(),
+                    payload={"doc_id": ids[i + v_id]}))
             await self.qdrant_client.upsert(
                 collection_name=self.collection_name,
-                points=[
-                    PointStruct(
-                            id=cur + idx, # vector index in the database
-                            vector=vector.tolist(),
-                            payload={"doc_id": ids[i + idx]})
-                    for idx, vector in enumerate(vectors[i:i+batch_size])])
-            cur += batch_size
+                points=points)
 
         return True
+    
+    async def get_vectors(self):
+        hits, _ = await self.qdrant_client.scroll(
+            self.collection_name, with_vectors=False, limit=500_000)
+        return hits
     
     async def _clear_up(self):
         await self.qdrant_client.delete_collection(self.collection_name)

@@ -1,27 +1,26 @@
 
 import io
 import os
-import bson
 import logging
 from typing import List
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 import uuid
-import bson.objectid
+from bson.objectid import ObjectId
 import humanize
 import aiofiles
 
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, Response, status
 from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from bntl.db import DBClient, build_query
 from bntl.vector import VectorClient, MissingVectorException
-from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel
+from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel, LoginParams
 from bntl.settings import settings, setup_logger
 from bntl.pagination import paginate, PageParams
 from bntl.upload import Status, FileUploadManager, get_doc_text, convert_to_text
@@ -39,6 +38,8 @@ DESCRIPTION = """
 
 Search engine + front end for a Zotero database
 """
+VALIDATED_SESSIONS = set()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -66,7 +67,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
-
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
@@ -75,17 +75,51 @@ templates.env.filters["naturaltime"] = humanize.naturaltime
 
 
 @app.middleware("http")
-async def add_session_id(request: Request, call_next):
+async def add_session_id_cookie(request: Request, call_next):
+    """
+    This middleware adds a session id from the browser cookie, which will be
+    eventually validated after a password check to ensure access to protected routes
+    during the entire lifetime of the session cookie
+    """
     session_id = request.cookies.get("session_id")
-
     if not session_id:
         session_id = str(uuid.uuid4())
-        response = await call_next(request)
-        response.set_cookie(key="session_id", value=session_id, httponly=True, samesite="Lax")
-    else:
-        response = await call_next(request)
-
+    response = await call_next(request)
+    response.set_cookie(key="session_id", value=session_id, httponly=True, samesite="Lax")
     return response
+
+
+class RequiresLoginException(Exception):
+    pass
+
+
+@app.exception_handler(RequiresLoginException)
+async def exception_handler(request: Request, e: RequiresLoginException) -> Response:
+    return RedirectResponse(url=f"/login?next_url={e.args[0]['next_url']}")
+
+
+def require_validated_session(request: Request):
+    session_id = request.cookies.get("session_id")
+    if not session_id or session_id not in VALIDATED_SESSIONS:
+        raise RequiresLoginException({"next_url": request.url.path})
+
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_get(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.post("/login")
+async def login_post(login_params: LoginParams, request: Request=None):
+    if login_params.password == settings.UPLOAD_SECRET:
+        session_id = request.cookies.get("session_id")
+        if session_id:
+            VALIDATED_SESSIONS.add(session_id)
+            return RedirectResponse(login_params.next_url, status_code=status.HTTP_303_SEE_OTHER)
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown session")
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong password")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -153,6 +187,16 @@ async def run_query(query_params: QueryParams, page_params: PageParams):
     return await paginate(app.state.db_client.bntl_coll, query, page_params, DBEntryModel)
 
 
+@app.post("/query")
+async def query_route(query_params: QueryParams, limit: int=100, skip: int=0) -> List[DBEntryModel]:
+    """
+    API route for querying the database
+    """
+    query = build_query(**query_params.model_dump())
+    cursor = app.state.db_client.find(query, limit=limit, skip=skip)
+    return await cursor.to_list(length=None)
+
+
 @app.get("/quickQuery")
 async def quick_query(request: Request,
                       query_params: QueryParams=Depends(),
@@ -161,7 +205,6 @@ async def quick_query(request: Request,
     Shortcut query route for the database without registering queries in the db.
     It is only meant to be used in quick-queries like links pointing to authors or keywords.
     """
-    logger.info(page_params)
     results = await run_query(query_params, page_params)
     # add source
     source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
@@ -191,40 +234,6 @@ async def paginate_route(query_id: str, request: Request,
         {"request": request, "source": f"/paginate?query_id={query_id}", **results.model_dump()})
 
 
-@app.get("/vectorQuery")
-async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends(), vector_params: VectorParams=Depends()):
-    """
-    Vector-based query route using the document id
-    """
-    logger.info(vector_params)
-    try:
-        hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
-    except MissingVectorException as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Vector DB not running")
-
-    hits_mapping = {item["doc_id"]: item["score"] for item in hits}
-
-    def transform(item):
-        item["score"] = hits_mapping[item["doc_id"]]
-        return item
-
-    query = {"_id": {"$in": [bson.objectid.ObjectId(item["doc_id"]) for item in hits]}}
-    # overwrite pagination, since we are not using it for now
-    page_params.size = 100
-    results = await paginate(app.state.db_client.bntl_coll, query, page_params, VectorEntryModel, transform)
-
-    # ensure we sort by score unless differently specified
-    if not page_params.sort_author and not page_params.sort_year:
-        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
-
-    # add source
-    source = "/vectorQuery?doc_id=" + doc_id
-    return templates.TemplateResponse(
-        "results.html", {"request": request, "source": source, **results.model_dump()})
-
-
 @app.get("/get-query-history")
 async def get_query_history(request: Request):
     """
@@ -243,6 +252,41 @@ async def item(doc_id: str, request: Request):
         "item.html", {"request": request, "item": item})
 
 
+@app.get("/vectorQuery")
+async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends(), vector_params: VectorParams=Depends()):
+    """
+    Vector-based query route using the document id
+    """
+    try:
+        hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
+    except MissingVectorException as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Vector DB not running")
+
+    hits_mapping = {item["doc_id"]: item["score"] for item in hits}
+
+    def transform(item):
+        item["score"] = hits_mapping[item["doc_id"]]
+        return item
+
+    # overwrite pagination, since we are not using it for now
+    page_params.size = 100
+    results = await paginate(
+        app.state.db_client.bntl_coll, 
+        {"_id": {"$in": [ObjectId(item["doc_id"]) for item in hits]}}, 
+        page_params, VectorEntryModel, transform)
+
+    # ensure we sort by score unless differently specified
+    if not page_params.sort_author and not page_params.sort_year:
+        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
+
+    # add source
+    source = "/vectorQuery?doc_id=" + doc_id
+    return templates.TemplateResponse(
+        "results.html", {"request": request, "source": source, **results.model_dump()})
+
+
 @app.get("/count")
 async def index():
     """
@@ -251,18 +295,7 @@ async def index():
     return {"message": {"Estimated document count": await app.state.db_client.count()}}
 
 
-@app.post("/query")
-async def query_route(query_params: QueryParams, limit: int=100, skip: int=0) -> List[DBEntryModel]:
-    """
-    API route for querying the database
-    """
-    query = build_query(**query_params.model_dump())
-    logger.info(query)
-    cursor = app.state.db_client.find(query, limit=limit, skip=skip)
-    return await cursor.to_list(length=None)
-
-
-@app.post("/upload-file")
+@app.post("/upload-file", dependencies=[Depends(require_validated_session)])
 async def upload(file: UploadFile = File(...), 
                  chunk: int = Form(...), 
                  total_chunks: int = Form(...),
@@ -276,7 +309,7 @@ async def upload(file: UploadFile = File(...),
     return
 
 
-@app.get("/check-upload-status/{file_id}", response_model=FileUploadModel)
+@app.get("/check-upload-status/{file_id}", response_model=FileUploadModel, dependencies=[Depends(require_validated_session)])
 async def check_upload_status(file_id: str):
     status = await app.state.db_client.find_upload_status(file_id)
     if not status:
@@ -284,12 +317,12 @@ async def check_upload_status(file_id: str):
     return status
 
 
-@app.get("/get-upload-history", response_model=List[FileUploadModel])
+@app.get("/get-upload-history", response_model=List[FileUploadModel], dependencies=[Depends(require_validated_session)])
 async def get_upload_history():
     return await app.state.db_client.get_upload_history()
 
 
-@app.get("/get-upload-log")
+@app.get("/get-upload-log", dependencies=[Depends(require_validated_session)])
 async def get_upload_log(file_id: str):
     log_filename = utils.get_log_filename(file_id)
     filename = await app.state.db_client.get_upload_filename(file_id)
@@ -302,7 +335,7 @@ async def get_upload_log(file_id: str):
         raise HTTPException(status_code=404, detail="File not found")
 
 
-@app.get("/upload", response_class=HTMLResponse)
+@app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
 async def upload_page(request: Request):
     """
     Upload route
@@ -330,10 +363,10 @@ async def revectorize_task():
             await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
             await a_logger.info("Done indexing")
         else:
-            a_logger.info("Couldn't get vectors during reindex operation")
+            await a_logger.info("Couldn't get vectors during reindex operation")
 
 
-@app.post("/revectorize")
+@app.post("/revectorize", dependencies=[Depends(require_validated_session)])
 async def revectorize(background_tasks: BackgroundTasks):
     background_tasks.add_task(revectorize_task)
     return "Ok"
@@ -355,30 +388,3 @@ if __name__ == '__main__':
                 port=settings.PORT,
                 workers=settings.WORKERS,
                 reload=args.debug)
-
-
-# vc = VectorClient()
-# vecs, _ = await vc.get_vectors()
-# # vectors2 = await dc.vectors_coll.find().to_list(length=None)
-# dc = await DBClient.create()
-# docs = await dc.find()
-# len(docs) == len(vecs)
-# v_ids = [vec.payload['doc_id'] for vec in vecs]
-# d_ids = [str(doc["_id"]) for doc in docs]
-# set(d_ids) == set(v_ids)
-# len(set(d_ids).difference(set(v_ids))) # 293717
-# len(set(v_ids).difference(set(d_ids))) # 0
-# len(set(v_ids).intersection(set(d_ids))) # 1000
-# vecs_db = await dc.vectors_coll.find().to_list(length=None)
-# v_ids2 = [str(doc['_id']) for doc in vecs_db]
-
-# len(d_ids), len(v_ids)
-# set(d_ids) == set(v_ids2)
-# len(set(d_ids).difference(set(v_ids2))) # 293717
-# len(set(v_ids2).difference(set(d_ids))) # 0
-# len(set(v_ids2).intersection(set(d_ids))) # 1000
-
-# set(d_ids) == set(v_ids2)
-# len(set(d_ids).difference(set(v_ids2))) # 293717
-# len(set(v_ids2).difference(set(d_ids))) # 0
-# len(set(v_ids2).intersection(set(d_ids))) # 1000

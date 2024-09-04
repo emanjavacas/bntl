@@ -21,6 +21,7 @@ async def main():
         for f in os.listdir(settings.UPLOAD_LOG_DIR):
             os.remove(os.path.join(settings.UPLOAD_LOG_DIR, f))
 
+    # TODO: remove revectorize-* files
 
 if __name__ == '__main__':
     asyncio.run(main())

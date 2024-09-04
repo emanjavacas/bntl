@@ -117,3 +117,8 @@ class FileUploadModel(BaseModel):
     date_uploaded: datetime
     current_status: StatusModel
     history: List[StatusModel]
+
+
+class LoginParams(BaseModel):
+    password: str
+    next_url: str
