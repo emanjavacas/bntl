@@ -1,5 +1,12 @@
 
 $(document).ready(function(){
+
+    function registerError(msg) {
+        $('#feedback').text(msg);
+        $('#feedback').addClass("text-danger");
+        $('#card').addClass('border-danger');
+    }
+
     $('#login-form').submit(function(event) {
         event.preventDefault();
 
@@ -14,18 +21,15 @@ $(document).ready(function(){
             xhrFields: { withCredentials: true },
             success: function(response) {
                 if (response.status_code == 401) {
-                    $('#feedback').text(response.detail);
-                    $('#feedback').addClass("text-danger");
-                    $('#card').addClass('border-danger');
-                    console.log($('#feedback'));
+                    registerError(response.detail);
+                } else if (response.status_code == 303) {
+                    window.location.href = nextUrl;
+                } else {
+                    registerError("Unknown response.")
                 }
-
             },
             error: function(response) {
-                console.log("Response", response);
-                $('#feedback').text("Unknown error, try again later.");
-                $('#feedback').addClass("text-danger");
-                $('#card').addClass('border-danger');
+                registerError("Unknown error, try again later.");
             }
         });
     });

@@ -115,7 +115,8 @@ async def login_post(login_params: LoginParams, request: Request=None):
         session_id = request.cookies.get("session_id")
         if session_id:
             VALIDATED_SESSIONS.add(session_id)
-            return RedirectResponse(login_params.next_url, status_code=status.HTTP_303_SEE_OTHER)
+            return JSONResponse({"status_code": status.HTTP_303_SEE_OTHER})
+            # RedirectResponse(login_params.next_url, status_code=status.HTTP_303_SEE_OTHER)
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown session")
     else:
