@@ -20,16 +20,15 @@ $(document).ready(function(){
             contentType: 'application/json',
             xhrFields: { withCredentials: true },
             success: function(response) {
-                if (response.status_code == 401) {
-                    registerError(response.detail);
-                } else if (response.status_code == 303) {
+                if (response.status_code == 303) {
                     window.location.href = nextUrl;
                 } else {
                     registerError("Unknown response.")
                 }
             },
-            error: function(response) {
-                registerError("Unknown error, try again later.");
+            error: function(resp) {
+                resp = JSON.parse(resp.responseText);
+                registerError(resp.detail);
             }
         });
     });

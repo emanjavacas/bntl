@@ -27,7 +27,7 @@ $(document).ready(function() {
         })
     })
 
-    // search.html
+    // advanced search on search.html
     $('#searchForm').on('submit', function (event) {
         $("#loadingModal").modal("show");
         event.preventDefault();
@@ -57,12 +57,11 @@ $(document).ready(function() {
         });
     });
 
-    // index.html
+    // full text search on index.html
     $('#fullText').on('submit', function (event) {
         $("#loadingModal").modal("show");
         event.preventDefault();
-        const formData = {}
-        formData["full_text"] = $(this).serializeArray()[0].value;
+        const formData = {"full_text": $(this).serializeArray()[0].value}
         $.ajax({
             type: 'POST',
             url: '/registerQuery',
@@ -70,7 +69,58 @@ $(document).ready(function() {
             contentType: 'application/json',
             success: function(response) {
                 window.location.href = '/paginate?query_id=' + response.query_id;
+            },
+            error: function(response) {
+                console.log("Error", response);
             }
         });
     });
+    
+    // search within results on results.html
+    $('#withinForm').on('submit', function (event) {
+        $('#loadingModal').modal("show");
+        event.preventDefault();
+        const queryStr = $(this).serializeArray()[0].value;
+        const queryId = new URLSearchParams(window.location.search).get("query_id");
+        fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr).then(
+            function(resp){
+                if (resp.ok) {window.location.href = resp.url}
+            }
+        ).catch(
+            function(resp){console.log(resp)}
+        )
+    });
+
+    // keyword autocomplete
+    const keywordsCache = {};
+    $('#keywords-input').autocomplete({
+        minLength: 3,
+        select: function(event, ui) {
+            console.log("Selected, " + ui.item.value);
+        },
+        source: function(request, response) {
+            // cache
+            const term = request.term;
+            if (term in keywordsCache) {
+                response(keywordsCache[term]); 
+                return; 
+            }
+
+            // fetch from DB
+            $.ajax({
+                url: "/query-keywords",
+                type: "GET",
+                data: {query: term},
+                success: function(data) {
+                    keywordsCache[term] = data;
+                    response(data);
+                },
+                error: function(data) {
+                    console.log(data);
+                    response(data);
+                }
+            });
+        }
+    });
+
 });

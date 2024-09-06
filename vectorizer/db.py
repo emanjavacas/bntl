@@ -29,12 +29,12 @@ class DBClient():
         # ensure unique index
         logger.info("Creating DB indices")
         await self.tasks_coll.create_index("task_id", unique=True)
-        await self.vectors_coll.create_index(["task_id", "vector_id"], unique=True)
+        await self.vectors_coll.create_index(["task_id", "vector_id", "doc_id"], unique=True)
     
     def close(self):
         self.db_client.close()
 
-    async def create_task(self, task_id, texts) -> TaskModel:
+    async def create_task(self, task_id, texts, doc_ids) -> TaskModel:
         # create task
         task = TaskModel(task_id=task_id,
                          current_status=create_new_status(Status.VECTORIZING),
@@ -42,8 +42,8 @@ class DBClient():
         await self.tasks_coll.insert_one(task.model_dump())
         # create vector entries
         await self.vectors_coll.insert_many(
-            [VectorModel(task_id=task_id, vector_id=idx, text=text).model_dump()
-             for idx, text in enumerate(texts)])
+            [VectorModel(task_id=task_id, vector_id=idx, doc_id=doc_id, text=text).model_dump()
+             for idx, (text, doc_id) in enumerate(zip(texts, doc_ids))])
         # done
         logger.info(f"Created task [{task_id}]")
         return task.model_dump()
@@ -54,8 +54,6 @@ class DBClient():
         return doc
 
     async def update_task_status(self, task_id, status, **status_info):
-        logger.info(f"Task [{task_id}] updated to status: {status}")
-        logger.info("Status info: " + str(status_info))
         old_status = (await self.get_task(task_id))["current_status"]
         # update task status
         task_update = await self.tasks_coll.update_one(
@@ -63,13 +61,15 @@ class DBClient():
             {"$set": {"current_status": create_new_status(status, **status_info).model_dump()},
              "$push": {"history": old_status}}, 
              upsert=True)
+        logger.info(f"Task [{task_id}] updated to status: {status}")
+        logger.info("Status info: " + str(status_info))
         return task_update
     
-    async def store_vectors(self, task_id, vectors):
+    async def store_vectors(self, task_id, vectors, doc_ids):
         await self.vectors_coll.bulk_write(
-            [UpdateOne({"task_id": task_id, "vector_id": idx},
+            [UpdateOne({"task_id": task_id, "doc_id": doc_id, "vector_id": vector_id},
                         {"$set": {"vector": vector}})
-                for idx, vector in enumerate(vectors)])
+                for vector_id, (doc_id, vector) in enumerate(zip(doc_ids, vectors))])
     
     async def _clear_up(self):
         await self.vectors_coll.drop()

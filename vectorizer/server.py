@@ -12,7 +12,7 @@ import torch
 
 from vectorizer.model_manager import ModelManagerFE, ModelManagerStella
 from vectorizer.settings import setup_logger, settings
-from vectorizer.models import Status, TaskModel
+from vectorizer.models import Status, TaskModel, VectorizeParams
 from vectorizer.db import DBClient
 
 
@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Vectorizer Backend", lifespan=lifespan)
 
 
-async def vectorize_task(task_id, texts):
+async def vectorize_task(task_id, texts, doc_ids):
     attempts = 0
 
     while attempts < settings.MAX_RETRIES:
@@ -47,7 +47,7 @@ async def vectorize_task(task_id, texts):
                 vectors = vectors.tolist()
                 app.state.model_manager.move_model_to_cpu()
                 # Update the task status to done
-                await app.state.db_client.store_vectors(task_id, vectors)
+                await app.state.db_client.store_vectors(task_id, vectors, doc_ids)
                 await app.state.db_client.update_task_status(task_id, Status.DONE)
                 break
             except Exception as e:
@@ -72,10 +72,11 @@ async def vectorize_task(task_id, texts):
 
 
 @app.post("/vectorize")
-async def vectorize(task_id: str, texts: List[str], background_tasks: BackgroundTasks):
+async def vectorize(params: VectorizeParams, background_tasks: BackgroundTasks):
+    task_id, texts, doc_ids = params.task_id, params.texts, params.doc_ids
     try:
-        task = await app.state.db_client.create_task(task_id, texts)
-        background_tasks.add_task(vectorize_task, task_id, texts)
+        task = await app.state.db_client.create_task(task_id, texts, doc_ids)
+        background_tasks.add_task(vectorize_task, task_id, texts, doc_ids)
         return task
     except pymongo.errors.DuplicateKeyError:
         raise HTTPException(status_code=500, detail="Document already vectorized")

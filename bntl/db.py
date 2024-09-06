@@ -101,6 +101,7 @@ class DBClient():
     def __init__ (self) -> None:
         self.mongodb_client1 = motor.AsyncIOMotorClient(settings.BNTL_URI)
         self.bntl_coll = self.mongodb_client1[settings.BNTL_DB][settings.BNTL_COLL]
+        self.keywords_coll = self.mongodb_client1[settings.BNTL_DB][settings.KEYWORDS_COLL]
         self.mongodb_client2 = motor.AsyncIOMotorClient(settings.LOCAL_URI)
         self.query_coll = self.mongodb_client2[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client2[settings.LOCAL_DB][settings.UPLOAD_COLL]
@@ -124,6 +125,7 @@ class DBClient():
             logger.info("Indices for atlas need to be created online")
         else:
             await self.bntl_coll.create_index({"$**": "text"})
+        await self.keywords_coll.create_index({"keyword": "text"}, unique=True)
         # ensure index on file_id (this may generate collisions)
         await self.upload_coll.create_index("file_id", unique=True)
     
@@ -136,11 +138,12 @@ class DBClient():
 
     # document collection
     async def insert_documents(self, documents, logger=logger, progress_callback=None, callback_batch=500):
-        done = []
+        done, keywords = [], []
         for doc_idx, doc in enumerate(documents):
             try:
                 doc = prepare_document(doc)
                 doc_id = (await self.bntl_coll.insert_one(doc)).inserted_id
+                keywords.extend(doc.get('keywords', []) or [])
                 done.append(str(doc_id))
             except YearFormatException as e:
                 await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
@@ -157,6 +160,17 @@ class DBClient():
 
             if progress_callback is not None and doc_idx > 0 and doc_idx % callback_batch == 0:
                 await utils.maybe_await(progress_callback(doc_idx))
+
+        try:
+            await utils.maybe_await(logger.info("Indexing {} keywords...".format(len(keywords))))
+            result = await self.keywords_coll.insert_many(
+                [{"keyword": keyword} for keyword in set(keywords) if keyword],
+                ordered=False)
+            await utils.maybe_await(logger.info("Indexed {} new keywords".format(len(result))))
+        except pymongo.errors.BulkWriteError as e:
+            dups = len([e for e in e.details['writeErrors'] if e['code'] == 11000])
+            new = e.details['nInserted']
+            await utils.maybe_await(logger.info("Indexed {} new and rejected {} dup keywords".format(new, dups)))
 
         return done
 
@@ -248,88 +262,25 @@ class DBClient():
     async def find_upload_status(self, file_id):
         return await self.upload_coll.find_one({"file_id": file_id})
 
+    # keywords
+    async def find_keywords_by_prefix(self, prefix:str, limit=10) -> List[str]:
+        keywords = await self.keywords_coll.find(
+            {"keyword": {"$regex": "^" + prefix + ".*", "$options": "i"}}, limit=limit
+        ).to_list(length=None)
+        return [item["keyword"] for item in keywords]
+
     def close(self):
         self.mongodb_client1.close()
         self.mongodb_client2.close()
 
     async def _clear_up(self): # DANGER
         await self.bntl_coll.drop()
+        await self.keywords_coll.drop()
         await self.query_coll.drop()
         await self.upload_coll.drop()
         # ensure we recreate the indices
         await self.ensure_indices()
 
-
-def build_query(type_of_reference=None,
-                title=None,
-                year=None,
-                author=None,
-                keywords=None,
-                use_regex_title=False,
-                use_case_title=False,
-                use_regex_author=False,
-                use_case_author=False,
-                use_regex_keywords=False,
-                use_case_keywords=False,
-                full_text=None):
-    """
-    Transform an incoming query into a MongoDB-ready query
-    """
-
-    if full_text: # shortcut
-        return {"full_text": full_text}
-
-    query = []
-
-    if type_of_reference is not None:
-        query.append({"type_of_reference": type_of_reference})
-
-    if title is not None:
-        if use_regex_title:
-            title = {"$regex": title}
-            if not use_case_title:
-                title["$options"] = "i"
-        query.append({"$or": [{"title": title},
-                              {"secondary_title": title},
-                              {"tertiary_title": title}]})
-
-    if year is not None:
-        if "-" in year: # year range
-            start, end = year.split('-')
-            start, end = int(start), int(end)
-            query.append({"$or": [{"$and": [{"year": {"$gte": start}},
-                                            {"year": {"$lt": end}}]},
-                                  {"$and": [{"end_year": {"$gte": start}},
-                                            {"end_year": {"$lt": end}}]}]})
-        else:
-            query.append({"$and": [{"year": {"$gte": int(year)}},
-                                   {"end_year": {"$lte": int(year) + 1}}]})
-
-    if author is not None:
-        if use_regex_author:
-            author = {"$regex": author}
-            if not use_case_author:
-                author["$options"] = "i"
-        query.append({"$or": [{"authors": author},
-                              {"first_authors": author},
-                              {"secondary_authors": author},
-                              {"tertiary_authors": author}]})
-
-    if keywords is not None:
-        if use_regex_keywords:
-            keywords = {"$regex": keywords}
-            if not use_case_keywords:
-                keywords["$options"] = "i"
-        query.append({"keywords": keywords})
-
-    if len(query) > 1:
-        query = {"$and": query}
-    elif len(query) == 1:
-        query = query[0]
-    else:
-        query = {}
-
-    return query
 
 
 

@@ -2,7 +2,7 @@
 import uuid
 from datetime import datetime
 
-from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union
+from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union, Any
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -85,6 +85,7 @@ class _PagedResponseModel(BaseModel, Generic[T]):
     to_page: int
     total_pages: int
     items: List[T]
+    parent_n_hits: Optional[int] = None # n_hits of previous query
 
 
 class PageParams(BaseModel):
@@ -109,6 +110,7 @@ class StatusModel(BaseModel):
     status: str
     date_updated: Optional[datetime]
     progress: Optional[float] = Field(ge=0, le=1, default=None)
+    detail: Optional[Any] = Field(default=None)
 
 
 class FileUploadModel(BaseModel):

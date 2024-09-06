@@ -2,7 +2,7 @@
 import io
 import os
 import logging
-from typing import List
+from typing import List, Callable
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
@@ -12,18 +12,19 @@ import humanize
 import aiofiles
 
 from fastapi import FastAPI, Request, Depends, Response, status
-from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form
+from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from bntl.db import DBClient, build_query
 from bntl.vector import VectorClient, MissingVectorException
-from bntl.models import QueryParams, DBEntryModel, VectorEntryModel, VectorParams, FileUploadModel, LoginParams
+from bntl.db import DBClient
+from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
+from bntl.models import DBEntryModel, VectorEntryModel, FileUploadModel
+from bntl.pagination import paginate, paginate_within
+from bntl.upload import Status, FileUploadManager, convert_to_text
 from bntl.settings import settings, setup_logger
-from bntl.pagination import paginate, PageParams
-from bntl.upload import Status, FileUploadManager, get_doc_text, convert_to_text
 from bntl import utils
 
 from vectorizer import client
@@ -177,27 +178,6 @@ async def register_query(query_params: QueryParams, request: Request):
     return JSONResponse(content={"query_id": str(query_id)})
 
 
-async def run_query(query_params: QueryParams, page_params: PageParams):
-    """
-    General query logic for all incoming browser search activity
-    """
-    if not isinstance(query_params, dict):
-        query_params = query_params.model_dump()
-    query = build_query(**query_params)
-    logger.info(query)
-    return await paginate(app.state.db_client.bntl_coll, query, page_params, DBEntryModel)
-
-
-@app.post("/query")
-async def query_route(query_params: QueryParams, limit: int=100, skip: int=0) -> List[DBEntryModel]:
-    """
-    API route for querying the database
-    """
-    query = build_query(**query_params.model_dump())
-    cursor = app.state.db_client.find(query, limit=limit, skip=skip)
-    return await cursor.to_list(length=None)
-
-
 @app.get("/quickQuery")
 async def quick_query(request: Request,
                       query_params: QueryParams=Depends(),
@@ -206,7 +186,7 @@ async def quick_query(request: Request,
     Shortcut query route for the database without registering queries in the db.
     It is only meant to be used in quick-queries like links pointing to authors or keywords.
     """
-    results = await run_query(query_params, page_params)
+    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBEntryModel)
     # add source
     source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
     return templates.TemplateResponse(
@@ -214,8 +194,7 @@ async def quick_query(request: Request,
 
 
 @app.get("/paginate")
-async def paginate_route(query_id: str, request: Request,
-                         page_params: PageParams=Depends()):
+async def paginate_route(query_id: str, request: Request, page_params: PageParams=Depends()):
     """
     Paginate route when moving forward and backward on a given query
     """
@@ -224,7 +203,8 @@ async def paginate_route(query_id: str, request: Request,
     if not query_data:
         return JSONResponse(status_code=404, content={"error": "Query not found"})
 
-    results = await run_query(query_data['query_params'], page_params)
+    query_params = QueryParams.model_validate(query_data['query_params'])
+    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBEntryModel)
     # store total on query database for preview & last accessed
     await app.state.db_client.update_query(
         query_id, session_id, 
@@ -233,6 +213,24 @@ async def paginate_route(query_id: str, request: Request,
     return templates.TemplateResponse(
         "results.html",
         {"request": request, "source": f"/paginate?query_id={query_id}", **results.model_dump()})
+
+
+@app.get("/paginateWithin")
+async def paginate_within_route(query_id: str, query_str: str, request: Request, page_params: PageParams=Depends()):
+    """
+    Paginate route for recursive queries
+    """
+    session_id = request.cookies.get("session_id")
+    query_data = await app.state.db_client.get_query(query_id, session_id)
+    if not query_data:
+        return JSONResponse(status_code=404, content={"error": "Query not found"})
+
+    query_params = QueryParams.model_validate(query_data['query_params'])
+    results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBEntryModel)
+
+    source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
+    return templates.TemplateResponse(
+        "results.html", {"request": request, "is_within": True, "source": source, **results.model_dump()})
 
 
 @app.get("/get-query-history")
@@ -306,7 +304,7 @@ async def upload(file: UploadFile = File(...),
         await app.state.db_client.register_upload(file_id, file.filename, Status.UPLOADING)
     app.state.file_upload.add_chunk(file_id, chunk, await file.read())
     if chunk == total_chunks - 1:
-        background_tasks.add_task(app.state.file_upload.process_file, file_id)
+        background_tasks.add_task(app.state.file_upload.process_file_task, file_id)
     return
 
 
@@ -352,16 +350,15 @@ async def revectorize_task():
     async with utils.AsyncLogger(task_id) as a_logger:
         await a_logger.info("Starting revectorize task: {}".format(task_id))
         docs = await app.state.db_client.find()
+        doc_ids = [str(doc["_id"]) for doc in docs]
+        texts = [convert_to_text(doc, ignore_keywords=True) for doc in docs],
         await a_logger.info("Revectorizing {} documents...".format(len(docs)))
         vectors = await client.vectorize(
-                task_id,
-                [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs],
-                app.state.db_client.vectors_coll,
-                logger=a_logger)
+            app.state.db_client.vectors_coll, task_id, texts, doc_ids, logger=a_logger)
         if vectors:
             await app.state.vector_client._clear_up()
             await a_logger.info("Indexing...")
-            await app.state.vector_client.insert(vectors, [str(doc["_id"]) for doc in docs])
+            await app.state.vector_client.insert(vectors, doc_ids)
             await a_logger.info("Done indexing")
         else:
             await a_logger.info("Couldn't get vectors during reindex operation")
@@ -371,6 +368,11 @@ async def revectorize_task():
 async def revectorize(background_tasks: BackgroundTasks):
     background_tasks.add_task(revectorize_task)
     return "Ok"
+
+
+@app.get("/query-keywords")
+async def query_keywords(query: str=Query(..., min_length=3)):
+    return await app.state.db_client.find_keywords_by_prefix(query)
 
 
 if __name__ == '__main__':

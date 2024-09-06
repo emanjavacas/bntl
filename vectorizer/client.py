@@ -17,10 +17,11 @@ from vectorizer.utils import maybe_await
 logger = logging.getLogger(__name__)
 
 
-async def post_task(task_id: str, texts: List[str]):
+async def post_task(task_id: str, texts: List[str], doc_ids: List[str]):
     async with aiohttp.ClientSession() as session:
-        async with session.post(
-            'http://0.0.0.0:{}/vectorize?task_id={}'.format(settings.PORT, task_id), json=texts) as resp:
+        url = 'http://0.0.0.0:{}/vectorize'.format(settings.PORT)
+        data = {"task_id": task_id, "texts": texts, "doc_ids": doc_ids}
+        async with session.post(url, json=data) as resp:
                 return await resp.json()
 
 
@@ -41,14 +42,15 @@ def get_retry_time(n_docs):
     return 10
 
 
-async def vectorize(task_id: str, texts: List[str], vectors_coll: AsyncIOMotorCollection, 
+async def vectorize(vectors_coll: AsyncIOMotorCollection, task_id: str, 
+                    texts: List[str], doc_ids: Union[None, List[str]]=None, 
                     retry_time: Union[None, float]=None, timeout: float=3600 * 2,
                     logger=logger) -> Union[List[float] | None]:
     """
     Start vectorize task and monitor the status until done, error or timeout
     """
     retry_time = retry_time or get_retry_time(len(texts))
-    resp = await post_task(task_id, texts)
+    resp = await post_task(task_id, texts, doc_ids or list(map(str, range(len(texts)))))
 
     # handle 500's, etc...
     if "status_code" in resp:

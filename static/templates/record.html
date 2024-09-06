@@ -1,19 +1,43 @@
 
+{%- 
+  set refMap = {
+    'ADVS': "Audio",
+    'BOOK': "Boek",
+    'CHAP': "Artikel uit Boek",
+    'EJOUR': "Website",
+    'JFULL': "Tijdschriftartikel",
+    'JOUR': "Tijdschrift",
+    'WEB': "Website"
+} 
+-%}
+
 <div class="row">
   <div class="col text-end">
-    <span class="text-end pe-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Permalink">
-      <a target="_blank" href="/item?doc_id={{item.doc_id}}"><img width="20px" src="/static/assets/img/permalink.svg"></a>
-    </span>  
-    <span class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="Find similar documents">
-      <a href="/vectorQuery?doc_id={{item.doc_id}}&limit=10"><img width="25px" src="/static/assets/img/microchip-ai_12400758.svg"></a>
-    </span>
+    <div class="btn-group dropstart">
+      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      </button>
+      <ul class="dropdown-menu text-center">
+        <li>
+          <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.doc_id}}">
+            <span class="float-start">Permalink</span>
+            <span class="float-end"><img width="15px" src="/static/assets/img/permalink.svg"></span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="/vectorQuery?doc_id={{item.doc_id}}&limit=10">
+          <span class="float-start">Vector query</span>
+          <span class="float-end"><img width="18px" src="/static/assets/img/microchip-ai_12400758.svg"></span>            
+          </a>
+        </li>
+      </ul>
     </div>
+
 </div>
 <div class="row small">
   <div class="col-10">
     <!-- type of reference -->
     <div class="row fw-bold">Publicatietype</div>
-    <div class="row">{{item.type_of_reference}}</div>
+    <div class="row">{{refMap[item.type_of_reference]}}</div>
     <!-- year -->
     <div class="row fw-bold pt-3">Jaar</div>
     <div class="row px-0">{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
@@ -50,7 +74,7 @@
     {% endif %}
     </div>
     <!-- keywords -->
-    <div class="row fw-bold pt-3">Keywords</div>
+    <div class="row fw-bold pt-3">Trefwoorden</div>
     {% if item.keywords %}
         {% for keyword in item.keywords %}
         <div class="row">

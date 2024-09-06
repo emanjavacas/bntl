@@ -18,7 +18,8 @@ class VectorClient:
     Client for a Vector database using QDrant
     """
     def __init__(self) -> None:
-        self.qdrant_client = AsyncQdrantClient(location="localhost", port=settings.QDRANT_PORT)
+        self.qdrant_client = AsyncQdrantClient(
+            location="localhost", port=settings.QDRANT_PORT, timeout=100)
         self.collection_name = settings.QDRANT_COLL
 
     async def find_vector_by_id(self, doc_id):
@@ -41,8 +42,14 @@ class VectorClient:
         _, *hits = hits # skip self similarity
         return [{"doc_id": hit.payload["doc_id"], "score": hit.score} for hit in hits]
 
-    async def insert(self, vectors, ids, batch_size=1000):
-        assert len(vectors) == len(ids)
+    async def count(self):
+        return (await self.qdrant_client.count(self.collection_name)).count
+
+    async def insert(self, vectors, doc_ids, batch_size=500):
+        """
+        Vector ingestion logic
+        """
+        assert len(vectors) == len(doc_ids)
         vectors = np.array(vectors)
         if not await self.qdrant_client.collection_exists(self.collection_name):
             await self.qdrant_client.create_collection(
@@ -53,14 +60,14 @@ class VectorClient:
                 field_name="doc_id",
                 field_schema="uuid")
 
-        cur = (await self.qdrant_client.count(self.collection_name)).count
+        cur = await self.count()
         for i in tqdm(range(0, vectors.shape[0], batch_size)):
             points = []
             for v_id, vector in enumerate(vectors[i:i+batch_size]):
                 points.append(PointStruct(
                     id=cur + i + v_id,
                     vector=vector.tolist(),
-                    payload={"doc_id": ids[i + v_id]}))
+                    payload={"doc_id": doc_ids[i + v_id]}))
             await self.qdrant_client.upsert(
                 collection_name=self.collection_name,
                 points=points)
@@ -68,6 +75,9 @@ class VectorClient:
         return True
     
     async def get_vectors(self):
+        """
+        Utility function to retrieve vectors from the database
+        """
         hits, _ = await self.qdrant_client.scroll(
             self.collection_name, with_vectors=False, limit=500_000)
         return hits

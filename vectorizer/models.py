@@ -34,6 +34,13 @@ class TaskModel(BaseModel):
 
 class VectorModel(BaseModel):
     task_id: str
-    vector_id: int
+    doc_id: str # doc_id mapping to bntl.doc_id
+    vector_id: int # just an integer to index input order
     text: str
     vector: Optional[List[float]] = []
+
+
+class VectorizeParams(BaseModel):
+    task_id: str
+    texts: List[str]
+    doc_ids: List[str]

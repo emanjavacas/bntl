@@ -83,6 +83,7 @@ $(document).ready(function(){
             status === STATUS.UNKNOWNERROR ||
             status === STATUS.UNKNOWNFORMAT ||
             status === STATUS.VECTORIZINGERROR ||
+            status === STATUS.VECTORINDEXINGERROR ||
             status === STATUS.EMPTYFILE)
     }
 
@@ -117,7 +118,7 @@ $(document).ready(function(){
                     statusClass = 'bg-info'; break;
                 case STATUS.DONE:
                     statusClass = 'bg-success'; break;
-                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE: case STATUS.VECTORIZINGERROR:
+                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE: case STATUS.VECTORIZINGERROR: case STATUS.VECTORINDEXINGERROR:
                     statusClass = 'bg-danger'
             }
             const listItem = li({ class: 'list-group-item' },

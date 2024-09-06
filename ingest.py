@@ -8,7 +8,7 @@ import aiofiles
 from bntl import utils
 from bntl.db import DBClient
 from bntl.vector import VectorClient
-from bntl.upload import convert_to_text, get_doc_text
+from bntl.upload import convert_to_text
 from vectorizer import client
 
 
@@ -38,8 +38,9 @@ async def main(path):
         await logger.info("Vectorizing...")
         task_id = str(uuid.uuid4())
         docs = await db_client.find({"_id": {"$in": [bson.objectid.ObjectId(id) for id in done]}})
-        texts = [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in docs]
-        vectors = await client.vectorize(task_id, texts, db_client.vectors_coll, logger=logger)
+        texts = [convert_to_text(doc, ignore_keywords=True) for doc in docs]
+        doc_ids = [str(doc["_id"]) for doc in docs]
+        vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
 
         # insert to qdrant
         if vectors:

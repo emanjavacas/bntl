@@ -16,13 +16,26 @@
 } 
 -%}
 
+{%- 
+  set refMap = {
+    'ADVS': "Audio",
+    'BOOK': "Boek",
+    'CHAP': "Artikel uit Boek",
+    'EJOUR': "Website",
+    'JFULL': "Tijdschriftartikel",
+    'JOUR': "Tijdschrift",
+    'WEB': "Website"
+} 
+-%}
+
+
 <div class="row">
     <div class="col">
-        <h3 class="text-uppercase">ZOEKRESULTATEN</h3>
+        <h3 class="text-uppercase">ZOEKRESULTATEN {% if is_within %}op laatst zoekje{% endif %}</h3>
     </div>
 <div class="row">
     <div class="col fw-light px-3 py-3 small">
-        {{n_hits}} Zoekresultaten
+        {{n_hits}} Zoekresultaten {% if is_within %}van {{parent_n_hits}} in laatst zoekje{% endif %}
     </div>
 </div>
 
@@ -30,8 +43,10 @@
   <div class="col">
     <nav class="navbar navbar-light py-0" style="background-color: #e3f2fd;">
       <div class="container-fluid">
+        <!-- sorting -->
         <span class="navbar-text small">
           Sorteer op 
+        <!-- author -->
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Auteur</a>
           <a class="btn btn-sm {% if sort_author == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
@@ -43,6 +58,7 @@
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
+        <!-- year -->
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Jaar</a>
           <a class="btn btn-sm {% if sort_year == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
@@ -55,6 +71,7 @@
           </a>
         </div>
         </span>
+        <!-- page size -->
         {% if source.startswith("/vector") %}
         <span class="navbar-text small justify-content-end">Topresultaten
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
@@ -67,7 +84,7 @@
           </div>
         </span>
         {% else %}
-        <span class="navbar-text small justify-content-end">Zoekresultaten per pagina
+        <span class="navbar-text small justify-content-end">Pagina
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if size == targetSize %}disabled{% endif %}" role="button"
@@ -83,6 +100,23 @@
   </div>
 </div>
 
+<!-- search within results -->
+{% if not is_within %}
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+      <div class="container-fluid justify-content-end">
+        <form id="withinForm" class="d-flex">
+          <input name="within" class="form-control me-2" type="search" placeholder="Zoek binnen resultaat" aria-label="Search" required>
+          <button class="btn btn-sm btn-outline-secondary" type="submit">Zoek</button>
+        </form>
+      </div>
+    </nav>
+  </div>
+</div>
+{% endif %}
+
+<!-- results -->
 <div class="row">
   <div class="col">
     <div class="accordion accordion-flush" id="searchItems">
@@ -95,7 +129,7 @@
                 <span style="font-size:10px;" class="text-small position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{ item.score|round(3, 'floor') }}</span>
               {% endif %}
             </span>
-            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{item.type_of_reference}}">
+            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{refMap[item.type_of_reference]}}">
               <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
             </span>
             <span class="text-muted small pe-2">
@@ -130,6 +164,7 @@
   </div>
 </div>
 
+<!-- pagination -->
 <div class="row">
   <div class="col">
     <nav class="navbar navbar-light py-0" style="background-color: #e3f2fd;">

@@ -22,6 +22,7 @@ class Status:
     UNKNOWNERROR = 'Unknown error'
     UNKNOWNFORMAT = 'Unknown input format'
     VECTORIZINGERROR = 'Error while vectorizing'
+    VECTORINDEXINGERROR = 'Vector indexing error'
     VECTORIZINGTIMEOUT = 'Vectorization timed out'
     EMPTYFILE = 'Empty input file' # can happen if all documents fail to validate
     DONE = 'Done'
@@ -45,6 +46,7 @@ def get_doc_text(doc) -> Dict[str, str]:
 
 
 def convert_to_text(doc, ignore_keywords=False) -> str:
+    doc = get_doc_text(doc)
     output = doc.get("title", "") or ""
     if doc["keywords"] and not ignore_keywords:
         output += "; " + doc["keywords"]
@@ -83,43 +85,57 @@ class FileUploadManager:
             return await self.db_client.insert_documents(
                 documents, logger=a_logger, progress_callback=callback)
 
-    async def process_file(self, file_id: str):
+    async def process_file_task(self, file_id: str):
         """
         When upload is finished, this method collects data from memory, validates input documents,
-        ingests them into the database, vectorizes them and indexes the vectors.
+        ingests them into the database, vectorizes them and indexes the vectors. This is a background
+        task, and thus we need to process all possible exceptions to avoid silent failing.
         """
         async with utils.AsyncLogger(utils.get_log_filename(file_id)) as a_logger:
             # collect data
             await a_logger.info("Collecting data from upload: {}".format(file_id))
-            file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
             try:
+                file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
                 documents = rispy.loads(file_data.decode())
+                await a_logger.info("Received {} documents".format(len(documents)))
+                # validate and ingest
+                await a_logger.info("Indexing data...")
+                await self.update_status(file_id, Status.INDEXING, progress=0)
             except rispy.parser.ParseError as e:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT)
                 return
-            await a_logger.info("Received {} documents".format(len(documents)))
-            # validate and ingest
-            await a_logger.info("Indexing data...")
-            await self.update_status(file_id, Status.INDEXING, progress=0)
-            doc_ids = await self.insert_documents(documents, file_id)
+            try:
+                doc_ids = await self.insert_documents(documents, file_id)
+            except Exception as e:
+                await self.update_status(file_id, Status.UNKNOWNERROR, detail=str(e))
             if len(doc_ids) == 0:
                 # no valid documents
                 await a_logger.info("Couldn't validate any documents from upload")
                 await self.update_status(file_id, Status.EMPTYFILE)
                 return
             # vectorization
-            await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
-            await self.update_status(file_id, Status.VECTORIZING, progress=0)
-            data = await self.db_client.find({"_id": {"$in": [ObjectId(id) for id in doc_ids]}})
-            vectors = await client.vectorize(
-                file_id,
-                [convert_to_text(get_doc_text(doc), ignore_keywords=True) for doc in data],
-                self.db_client.vectors_coll,
-                logger=a_logger)
-            if vectors:
-                await a_logger.info("Indexing...")
-                await self.vector_client.insert(vectors, [str(doc["_id"]) for doc in data])
+            vectors = None
+            try:
+                data = await self.db_client.find({"_id": {"$in": [ObjectId(id) for id in doc_ids]}})
+                await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
+                await self.update_status(file_id, Status.VECTORIZING, progress=0)
+                texts = [convert_to_text(doc, ignore_keywords=True) for doc in data]
+                doc_ids = [str(doc["_id"]) for doc in data]
+                vectors = await client.vectorize(
+                    self.db_client.vectors_coll, file_id, texts, doc_ids, logger=a_logger)
+            except Exception as e:
+                await a_logger.info("Exception while vectorizing: [{}]".format(str(e)))
+                return
+            finally:
+                if not vectors:
+                    await self.update_status(file_id, Status.VECTORIZINGERROR)
+                    return
+            try:
+                await a_logger.info("Indexing vectors...")
+                await self.vector_client.insert(vectors, doc_ids)
                 await self.update_status(file_id, Status.DONE)
-            else:
-                await self.update_status(file_id, Status.VECTORIZINGERROR)
+            except Exception as e:
+                await self.update_status(file_id, Status.VECTORINDEXINGERROR, detail=str(e))
+                return
+
             await a_logger.info("Exit job.")
