@@ -124,7 +124,7 @@
       <div class="accordion-item" data-docId="{{item.doc_id}}">
         <h2 class="accordion-header" id="flush-heading-{{loop.index}}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse-{{loop.index}}">
-            <span class="btn btn-primary position-relative pe-2">{{loop.index + (page - 1) * size}}.
+            <span class="btn btn-secondary position-relative pe-2">{{loop.index + (page - 1) * size}}.
               {% if item["score"] %}
                 <span style="font-size:10px;" class="text-small position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{ item.score|round(3, 'floor') }}</span>
               {% endif %}

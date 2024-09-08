@@ -2,7 +2,7 @@
 import io
 import os
 import logging
-from typing import List, Callable
+from typing import List
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
@@ -10,6 +10,7 @@ import uuid
 from bson.objectid import ObjectId
 import humanize
 import aiofiles
+import rispy
 
 from fastapi import FastAPI, Request, Depends, Response, status
 from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form, Query
@@ -22,7 +23,7 @@ from bntl.vector import VectorClient, MissingVectorException
 from bntl.db import DBClient
 from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
 from bntl.models import DBEntryModel, VectorEntryModel, FileUploadModel
-from bntl.pagination import paginate, paginate_within
+from bntl.pagination import paginate, paginate_within, build_query
 from bntl.upload import Status, FileUploadManager, convert_to_text
 from bntl.settings import settings, setup_logger
 from bntl import utils
@@ -373,6 +374,39 @@ async def revectorize(background_tasks: BackgroundTasks):
 @app.get("/query-keywords")
 async def query_keywords(query: str=Query(..., min_length=3)):
     return await app.state.db_client.find_keywords_by_prefix(query)
+
+
+@app.get("/export-record")
+async def export_record(doc_id: str, format: str):
+    doc = await app.state.db_client.find_one(doc_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
+
+    if format == "ris":
+        return StreamingResponse(io.BytesIO(rispy.dumps([doc]).encode()))
+    elif format == "bib":
+        return StreamingResponse(io.BytesIO(utils.ris2bib(rispy.dumps([doc]))))
+    else:
+        raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
+
+
+@app.get("/export-query")
+async def export_query(query_id: str, format: str, request: Request):
+    session_id = request.cookies.get("session_id")
+    query_data = await app.state.db_client.get_query(query_id, session_id)
+    if not query_data:
+        return HTTPException(status_code=404, detail="Query not found")
+
+    query_params = QueryParams.model_validate(query_data['query_params'])
+    query = build_query(**query_params.model_dump())
+
+    docs = await app.state.db_client.find(query, limit=settings.MAX_EXPORT_RESULTS)
+    if format == "ris":
+        return StreamingResponse(io.BytesIO(rispy.dumps(docs).encode()))
+    elif format == "bib":
+        return StreamingResponse(io.BytesIO(utils.ris2bib(rispy.dumps(docs))))
+    else:
+        raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
 
 
 if __name__ == '__main__':

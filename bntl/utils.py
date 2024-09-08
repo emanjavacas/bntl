@@ -63,3 +63,35 @@ class AsyncLogger:
         await self.log(message)
 
 
+async def ris2xml(ris_data):
+    proc = await asyncio.create_subprocess_exec(
+        "ris2xml",
+        stdin=asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+
+    xmlout, stderr = await proc.communicate(input=ris_data.encode())
+    if proc.returncode == 0:
+        return xmlout.decode()
+    else:
+        raise Exception(f"Process failed with exit code {proc.returncode}")
+
+
+async def xml2bib(xml_data):
+    proc = await asyncio.create_subprocess_exec(
+        "xml2bib",
+        "--no-bom", "-w",
+        stdin=asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+
+    xmlout, stderr = await proc.communicate(input=xml_data.encode())
+    if proc.returncode == 0:
+        return xmlout.decode()
+    else:
+        raise Exception(f"Process failed with exit code {proc.returncode}")
+
+
+async def ris2bib(ris_data):
+    xml_data = await ris2xml(ris_data)
+    return await xml2bib(xml_data)

@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     UPLOAD_SECRET: str = Field(help="Secret to run the upload logic")
 
     WITHIN_MAX_RESULTS: int = Field(help="Restrict results of original query to this number when doing recursive query", default=300_000)
+    MAX_EXPORT_RESULTS: int = Field(help="Maximum number of documents to be exported", default=100)
 
     QDRANT_PORT: int = Field(help="Port used by QDrant (usually 6333)")
     QDRANT_COLL: str = Field(default="bntl")
