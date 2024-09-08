@@ -30,13 +30,13 @@
 
 
 <div class="row">
-    <div class="col">
-        <h3 class="text-uppercase">ZOEKRESULTATEN {% if is_within %}op laatst zoekje{% endif %}</h3>
-    </div>
+  <div class="col">
+    <h3 class="text-uppercase">ZOEKRESULTATEN {% if is_within %}op laatst zoekje{% endif %}</h3>
+  </div>
 <div class="row">
-    <div class="col fw-light px-3 py-3 small">
-        {{n_hits}} Zoekresultaten {% if is_within %}van {{parent_n_hits}} in laatst zoekje{% endif %}
-    </div>
+  <div class="fw-light px-3 py-3 small">
+    {{n_hits}} Zoekresultaten {% if is_within %}van {{parent_n_hits}} in laatst zoekje{% endif %}
+  </div>
 </div>
 
 <div class="row">
@@ -106,9 +106,22 @@
   <div class="col">
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
       <div class="container-fluid justify-content-end">
-        <form id="withinForm" class="d-flex">
-          <input name="within" class="form-control me-2" type="search" placeholder="Zoek binnen resultaat" aria-label="Search" required>
-          <button class="btn btn-sm btn-outline-secondary" type="submit">Zoek</button>
+        <form id="withinForm">
+          <div class="input-group">
+            <input name="within" class="form-control" type="search" placeholder="Zoek binnen resultaat" aria-label="Search" required>
+            <button class="btn btn-sm btn-outline-secondary" type="submit">Zoek</button>
+            <button class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=ris">Export .ris <img width="15px" src="/static/assets/img/export.png"></a>
+              </li>
+              <li>
+                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=bib">Export .bib <img width="15px" src="/static/assets/img/export.png"></a>
+              </li>
+            </ul>
+          </div>
         </form>
       </div>
     </nav>

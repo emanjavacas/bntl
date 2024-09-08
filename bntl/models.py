@@ -51,6 +51,11 @@ class DBEntryModel(EntryModel):
     hash: str = Field(help="Enable duplicate detection")
 
 
+class SourceModel(BaseModel):
+    doc_id: str = Field(help="Doc id pointing to the EntryModel doc_id")
+    source: Dict[Any, Any] = Field(help="Input source for the document in BSON format")
+
+
 class VectorEntryModel(DBEntryModel):
     score: float = Field(help="Vector similarity")
 

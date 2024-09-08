@@ -1,5 +1,4 @@
 
 PORT = 8000
 QDRANT_PORT = 6333
-BNTL_URI = "localhost:27017"
 LOCAL_URI = "localhost:27017"

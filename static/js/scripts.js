@@ -82,7 +82,7 @@ $(document).ready(function() {
         event.preventDefault();
         const queryStr = $(this).serializeArray()[0].value;
         const queryId = new URLSearchParams(window.location.search).get("query_id");
-        fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr).then(
+        fetch("/paginate-within?query_id=" + queryId + "&query_str=" + queryStr).then(
             function(resp){
                 if (resp.ok) {window.location.href = resp.url}
             }

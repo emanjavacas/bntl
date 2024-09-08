@@ -6,7 +6,7 @@ import logging
 import hashlib
 from pydantic import ValidationError
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import pymongo
 import motor.motor_asyncio as motor
@@ -99,19 +99,18 @@ class DBClient():
     - optimize the communication between client and server during search
     """
     def __init__ (self) -> None:
-        self.mongodb_client1 = motor.AsyncIOMotorClient(settings.BNTL_URI)
-        self.bntl_coll = self.mongodb_client1[settings.BNTL_DB][settings.BNTL_COLL]
-        self.keywords_coll = self.mongodb_client1[settings.BNTL_DB][settings.KEYWORDS_COLL]
-        self.mongodb_client2 = motor.AsyncIOMotorClient(settings.LOCAL_URI)
-        self.query_coll = self.mongodb_client2[settings.LOCAL_DB][settings.QUERY_COLL]
-        self.upload_coll = self.mongodb_client2[settings.LOCAL_DB][settings.UPLOAD_COLL]
+        self.mongodb_client = motor.AsyncIOMotorClient(settings.LOCAL_URI)
+        self.bntl_coll = self.mongodb_client[settings.LOCAL_DB][settings.BNTL_COLL]
+        self.source_coll = self.mongodb_client[settings.LOCAL_DB][settings.SOURCE_COLL]
+        self.keywords_coll = self.mongodb_client[settings.BNTL_DB][settings.KEYWORDS_COLL]
+        self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
+        self.upload_coll = self.mongodb_client[settings.LOCAL_DB][settings.UPLOAD_COLL]
         # vectorize database to retrieve vectors when done
-        self.vectors_coll = self.mongodb_client2[v_settings.VECTORIZER_DB][v_settings.VECTORS_COLL]
+        self.vectors_coll = self.mongodb_client[v_settings.VECTORIZER_DB][v_settings.VECTORS_COLL]
 
     @classmethod
     async def create(cls):
         self = cls()
-        self.is_atlas = utils.is_atlas(settings.BNTL_URI)
         self.unique_refs = await self.bntl_coll.distinct("type_of_reference")
         await self.ensure_indices()
         return self
@@ -120,11 +119,9 @@ class DBClient():
         # ensure unique index
         logger.info("Creating DB indices")
         await self.bntl_coll.create_index("hash", unique=True)
+        await self.source_coll.create_index("doc_id", unique=True)
         # ensure text search index
-        if self.is_atlas:
-            logger.info("Indices for atlas need to be created online")
-        else:
-            await self.bntl_coll.create_index({"$**": "text"})
+        await self.bntl_coll.create_index({"$**": "text"})
         await self.keywords_coll.create_index({"keyword": "text"}, unique=True)
         # ensure index on file_id (this may generate collisions)
         await self.upload_coll.create_index("file_id", unique=True)
@@ -133,16 +130,16 @@ class DBClient():
         return await self.bntl_coll.estimated_document_count()
 
     async def ping(self):
-        await self.mongodb_client1.admin.command('ping')
-        await self.mongodb_client2.admin.command('ping')
+        await self.mongodb_client.admin.command('ping')
 
     # document collection
     async def insert_documents(self, documents, logger=logger, progress_callback=None, callback_batch=500):
         done, keywords = [], []
-        for doc_idx, doc in enumerate(documents):
+        for doc_idx, source_doc in enumerate(documents):
             try:
-                doc = prepare_document(doc)
+                doc = prepare_document(source_doc)
                 doc_id = (await self.bntl_coll.insert_one(doc)).inserted_id
+                await self.source_coll.insert_one({"doc_id": str(doc_id), "source": source_doc})
                 keywords.extend(doc.get('keywords', []) or [])
                 done.append(str(doc_id))
             except YearFormatException as e:
@@ -176,7 +173,10 @@ class DBClient():
 
     async def find(self, query=None, limit=0, skip=0):
         cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
-        return await cursor.to_list(length=None)
+        results = await cursor.to_list(length=None)
+        for item in results:
+            item['doc_id'] = str(item.pop("_id"))
+        return results
     
     async def find_one(self, doc_id):
         item = await self.bntl_coll.find_one({"_id": bson.objectid.ObjectId(doc_id)})
@@ -194,15 +194,14 @@ class DBClient():
             items.append(item)
             count += 1
         return items
+    
+    async def get_doc_source(self, doc_id: str) -> Dict:
+        doc = await self.source_coll.find_one({"doc_id": doc_id})
+        return doc["source"]
 
-    async def full_text_search(self, string, fuzzy=False, **fuzzy_kwargs):
-        if not self.is_atlas:
-            raise ValueError("full_text_search requires Atlas deployment")
-        
-        query = {"query": string, "path": {"wildcard": "*"}}
-        if fuzzy: query["fuzzy"] = fuzzy_kwargs
-
-        return await self.bntl_coll.aggregate([{"$search": {"index": "default", "text": query}}])
+    async def get_docs_source(self, doc_ids: List[str]) -> List[Dict]:
+        docs = await self.source_coll.find({"doc_id": {"$in": doc_ids}}).to_list(length=None)
+        return [doc["source"] for doc in docs]
 
     # query collection
     async def get_session_queries(self, session_id) -> List[QueryModel]:
@@ -270,14 +269,14 @@ class DBClient():
         return [item["keyword"] for item in keywords]
 
     def close(self):
-        self.mongodb_client1.close()
-        self.mongodb_client2.close()
+        self.mongodb_client.close()
 
     async def _clear_up(self): # DANGER
         await self.bntl_coll.drop()
         await self.keywords_coll.drop()
         await self.query_coll.drop()
         await self.upload_coll.drop()
+        await self.source_coll.drop()
         # ensure we recreate the indices
         await self.ensure_indices()
 

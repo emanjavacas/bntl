@@ -19,79 +19,84 @@
       <ul class="dropdown-menu text-center">
         <li>
           <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.doc_id}}">Permalink <img width="15px" src="/static/assets/img/permalink.svg">
-            <!-- <span class="float-start">Permalink</span> -->
-            <!-- <span class="float-end"><img width="15px" src="/static/assets/img/permalink.svg"></span> -->
           </a>
         </li>
         <li>
           <a class="dropdown-item" href="/vectorQuery?doc_id={{item.doc_id}}&limit=10">Vector query <img width="18px" src="/static/assets/img/microchip-ai_12400758.svg">
-          <!-- <span class="float-start">Vector query</span> -->
-          <!-- <span class="float-end"><img width="18px" src="/static/assets/img/microchip-ai_12400758.svg"></span>             -->
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=bib">Export .bib <img width="15px" src="/static/assets/img/export.png">
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=ris">Export .ris <img width="15px" src="/static/assets/img/export.png">
           </a>
         </li>
       </ul>
     </div>
-
-</div>
-<div class="row small">
-  <div class="col-10">
-    <!-- type of reference -->
-    <div class="row fw-bold">Publicatietype</div>
-    <div class="row">{{refMap[item.type_of_reference]}}</div>
-    <!-- year -->
-    <div class="row fw-bold pt-3">Jaar</div>
-    <div class="row px-0">{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
-    <!-- title -->
-    <div class="row fw-bold pt-3">Titelbeschrijving</div>
-    <div class="row px-0">
-      <span>{{item.title}}
-        {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
-        {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}
-      </span>
-    </div>    
-    <!-- authors -->
-    <div class="row fw-bold pt-3">Auteurs</div>
-    <div class="row">
-    {% if item.authors %}
-        {% for author in item.authors %}
-            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-        {% endfor %}
-    {% endif %}
-    {% if item.first_authors %}
-        {% for author in item.first_authors %}
-            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-        {% endfor %}
-    {% endif %}
-    {% if item.secondary_authors %}
-        {% for author in item.secondary_authors %}
-            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-        {% endfor %}
-    {% endif %}
-    {% if item.tertiary_authors %}
-        {% for author in item.tertiary_authors %}
-            <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-        {% endfor %}
-    {% endif %}
-    </div>
-    <!-- keywords -->
-    <div class="row fw-bold pt-3">Trefwoorden</div>
-    {% if item.keywords %}
-        {% for keyword in item.keywords %}
-        <div class="row">
-            <a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a>
-        </div>
-        {% endfor %}
-    {% else %}Geen opgegeven
-    {% endif %}
-    <!-- URL -->
-    <div class="row fw-bold pt-3">URL</div>
-    <div class="row">
-      {% if item.urls %}
-        {% for url in item.urls %}
-          <a class="px-0" href="{{url}}">{{url}}</a>
-        {% endfor %}
-      {% else %}Geen url opgegeven
-    {% endif %}
+  </div>
+  <div class="row small">
+    <div class="col-10">
+      <!-- type of reference -->
+      <div class="row fw-bold">Publicatietype</div>
+      <div class="row">{{refMap[item.type_of_reference]}}</div>
+      <!-- year -->
+      <div class="row fw-bold pt-3">Jaar</div>
+      <div class="row px-0">{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
+      <!-- title -->
+      <div class="row fw-bold pt-3">Titelbeschrijving</div>
+      <div class="row px-0">
+        <span>{{item.title}}
+          {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
+          {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}
+        </span>
+      </div>    
+      <!-- authors -->
+      <div class="row fw-bold pt-3">Auteurs</div>
+      <div class="row">
+      {% if item.authors %}
+          {% for author in item.authors %}
+              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
+          {% endfor %}
+      {% endif %}
+      {% if item.first_authors %}
+          {% for author in item.first_authors %}
+              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
+          {% endfor %}
+      {% endif %}
+      {% if item.secondary_authors %}
+          {% for author in item.secondary_authors %}
+              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
+          {% endfor %}
+      {% endif %}
+      {% if item.tertiary_authors %}
+          {% for author in item.tertiary_authors %}
+              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
+          {% endfor %}
+      {% endif %}
+      </div>
+      <!-- keywords -->
+      <div class="row fw-bold pt-3">Trefwoorden</div>
+      {% if item.keywords %}
+          {% for keyword in item.keywords %}
+          <div class="row">
+              <a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a>
+          </div>
+          {% endfor %}
+      {% else %}Geen opgegeven
+      {% endif %}
+      <!-- URL -->
+      <div class="row fw-bold pt-3">URL</div>
+      <div class="row">
+        {% if item.urls %}
+          {% for url in item.urls %}
+            <a class="px-0" href="{{url}}">{{url}}</a>
+          {% endfor %}
+        {% else %}Geen url opgegeven
+      {% endif %}
+      </div>
     </div>
   </div>
 </div>
+

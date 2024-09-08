@@ -213,10 +213,13 @@ async def paginate_route(query_id: str, request: Request, page_params: PageParam
 
     return templates.TemplateResponse(
         "results.html",
-        {"request": request, "source": f"/paginate?query_id={query_id}", **results.model_dump()})
+        {"request": request, 
+         "query_id": query_id, 
+         "source": f"/paginate?query_id={query_id}", 
+         **results.model_dump()})
 
 
-@app.get("/paginateWithin")
+@app.get("/paginate-within")
 async def paginate_within_route(query_id: str, query_str: str, request: Request, page_params: PageParams=Depends()):
     """
     Paginate route for recursive queries
@@ -229,7 +232,7 @@ async def paginate_within_route(query_id: str, query_str: str, request: Request,
     query_params = QueryParams.model_validate(query_data['query_params'])
     results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBEntryModel)
 
-    source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
+    source = f"/paginate-within?query_id={query_id}&query_str={query_str}"
     return templates.TemplateResponse(
         "results.html", {"request": request, "is_within": True, "source": source, **results.model_dump()})
 
@@ -378,16 +381,18 @@ async def query_keywords(query: str=Query(..., min_length=3)):
 
 @app.get("/export-record")
 async def export_record(doc_id: str, format: str):
-    doc = await app.state.db_client.find_one(doc_id)
+    doc = await app.state.db_client.get_doc_source(doc_id)
     if not doc:
         raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
     if format == "ris":
-        return StreamingResponse(io.BytesIO(rispy.dumps([doc]).encode()))
+        output = rispy.dumps([doc])
     elif format == "bib":
-        return StreamingResponse(io.BytesIO(utils.ris2bib(rispy.dumps([doc]))))
+        output = await utils.ris2bib(rispy.dumps([doc]))
     else:
         raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
+    
+    return StreamingResponse(io.BytesIO(output.encode()))
 
 
 @app.get("/export-query")
@@ -401,12 +406,15 @@ async def export_query(query_id: str, format: str, request: Request):
     query = build_query(**query_params.model_dump())
 
     docs = await app.state.db_client.find(query, limit=settings.MAX_EXPORT_RESULTS)
+    sources = await app.state.db_client.get_docs_source([doc['doc_id'] for doc in docs])
+
     if format == "ris":
-        return StreamingResponse(io.BytesIO(rispy.dumps(docs).encode()))
+        output = rispy.dumps(sources)
     elif format == "bib":
-        return StreamingResponse(io.BytesIO(utils.ris2bib(rispy.dumps(docs))))
+        output = await utils.ris2bib(rispy.dumps(sources))
     else:
         raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
+    return StreamingResponse(io.BytesIO(output.encode()))
 
 
 if __name__ == '__main__':
