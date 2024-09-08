@@ -16,116 +16,115 @@
 
 {% block content %}
 <div class="row gy-5 gx-5">
-    <!-- infobox -->
-    <div class="col-xs-12 col-md-6">
-        <div class="row">
-            <div class="card border-secondary px-0">
-                <div class="card-header">
-                    <h4>BIBLIOGRAFIE</h4>
-                    <h4 class="text-muted small">VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP</h4>
-                </div>
-                <div class="card-body">
-                    <p class="fs-6 card-text">
-                    De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
-                    uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten. 
-                    </br>
-                    We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
-                    kan u mee nadenken over de BNTL van de toekomst. 
-                    </p>
-                    <p class="text-end"><a href="/about">Lees verder...</a></p>
-                </div>
-            </div>
+  <!-- infobox -->
+  <div class="col-xs-12 col-md-6">
+    <div class="row">
+      <div class="card border-secondary px-0">
+        <div class="card-header">
+          <h4>BIBLIOGRAFIE</h4>
+          <h4 class="text-muted small">VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP</h4>
         </div>
-        <div class="row fw-light px-3 pt-3">
-            <div class="col">
-                Dit database maakt gebruikt van <a href="https://www.zotero.org"><img width=60 src="/static/assets/img/zotero-logo.svg"></a>
-            </div>
+        <div class="card-body">
+          <p class="fs-6 card-text">
+          De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
+          uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten. 
+          </br>
+          We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
+          kan u mee nadenken over de BNTL van de toekomst. 
+          </p>
+          <p class="text-end"><a href="/about">Lees verder...</a></p>
         </div>
-        <hr>
-        <div class="row fw-light px-3">
-            <div class="col">
-                Bekijk ook de Friese bibliografie: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
-            </div>
-        </div>
-        <hr>
-        <div class="row fw-light px-3">
-            <div class="col">
-                Digitale Bibliografie voor die Afrikaanse Taalkunde <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="row fw-light px-3 pt-3">
+      <div class="col">
+        Dit database maakt gebruikt van <a href="https://www.zotero.org"><img width=60 src="/static/assets/img/zotero-logo.svg"></a>
+      </div>
+    </div>
+    <hr>
+    <div class="row fw-light px-3">
+      <div class="col">
+        Bekijk ook de Friese bibliografie: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
+      </div>
+    </div>
+    <hr>
+    <div class="row fw-light px-3">
+      <div class="col">
+        Digitale Bibliografie voor die Afrikaanse Taalkunde <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
+      </div>
+    </div>
+  </div>
 
-    <!-- searchbox -->
-    <div class="col-xs-12 col-md-6 order-first order-md-1">
-        <div class="row">
-            <form id="fullText">
-                <div class="input-group">
-                    <div class="form-floating flex-grow-1">
-                        <input type="text" class="form-control" name="full_text">
-                        <label for="code1">Zoek op</label>
-                    </div>
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">zoeken</button>
+  <!-- searchbox -->
+  <div class="col-xs-12 col-md-6 order-first order-md-1">
+    <div class="container px-0">
+      <div class="row">
+        <form id="fullText">
+          <div class="input-group">
+            <input type="text" class="form-control" name="full_text" placeholder="Volledig tekstzoek">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">zoeken</button>
+          </div>
+        </form>
+      </div>
+      <div class="row pt-2">
+        <p class="text-end"><a href="/search">geavanceerd zoeken</a></p>
+        <p class="text-end"><a href="/get-query-history">zoekgeschiedenis</a></p>
+      </div>
+      <!-- last added -->
+      <div class="row pt-2">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <nav class="navbar navbar-light py-0" style="background-color: #e3f2fd;">
+                <div class="container-fluid">
+                  <span class="navbar-text small">Laatste toegevoegde documenten</span>
+                  <span class="navbar-text small pull-end">Aantal={{total_documents}}</span> 
                 </div>
-                <div class="fw-light small px-2">Voer een volledige tekstzoekopdracht uit over alle velden van de bibliografische vermeldingen. </div>
-            </form>
-        </div>
-        <div class="row pt-2">
-            <p class="text-end"><a href="/search">geavanceerd zoeken</a></p>
-            <p class="text-end"><a href="/get-query-history">zoekgeschiedenis</a></p>
-        </div>
-        <!-- last added -->
-        <div class="row pt-2 d-flex justify-content-center pb-3">
-            <div class="row">
-                <div class="col">
-                  <nav class="navbar navbar-light py-0" style="background-color: #e3f2fd;">
-                    <div class="container-fluid">
-                      <span class="navbar-text small">Laatste toegevoegde documenten</span>
-                      <span class="navbar-text small pull-end">Aantal={{total_documents}}</span> 
-                    </div>
-                  </nav>
-                </div>
+              </nav>
             </div>
-            <div class="row">
-                <div class="col">
-                  <div class="accordion" id="searchItems">
-                    {% for item in last_added %}
-                    <div class="accordion-item" data-docId="{{item.doc_id}}">
-                      <h2 class="accordion-header" id="flush-heading-{{loop.index}}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse-{{loop.index}}">
-                          <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{item.type_of_reference}}">
-                            <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="accordion" id="searchItems">
+                {% for item in last_added %}
+                <div class="accordion-item" data-docId="{{item.doc_id}}">
+                  <h2 class="accordion-header" id="flush-heading-{{loop.index}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse-{{loop.index}}">
+                      <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{item.type_of_reference}}">
+                        <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
+                      </span>
+                      <div class="container">
+                        <div class="row">
+                          <span class="text-muted small pe-2">
+                            {% if item.unknown_tag and "AV" in item.unknown_tag %}
+                                {{item.unknown_tag["AV"][0]}}
+                            {% else %}
+                                {{item.title}}
+                            {% endif %}  
                           </span>
-                          <div class="container">
-                            <div class="row">
-                                <span class="text-muted small pe-2">
-                                    {% if item.unknown_tag and "AV" in item.unknown_tag %}
-                                      {{item.unknown_tag["AV"][0]}}
-                                    {% else %}
-                                      {{item.title}}
-                                    {% endif %}  
-                                  </span>
-                            </div>
-                            <div class="row pt-1 pb-0">
-                                <div class="card-text text-end"><small class="text-muted">{{ item.date_added.strftime('%Y-%m-%d %H:%M') }}</small></div>
-                            </div>
-                          </div>
-                        </button>
-                      </h2>
-                      <div id="flush-collapse-{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{loop.index}}" data-bs-parent="#searchItems">
-                        <div class="accordion-body">
-                          {% include "record.html" %}
+                        </div>
+                        <div class="row pt-1 pb-0">
+                          <div class="card-text text-end"><small class="text-muted">{{ item.date_added.strftime('%Y-%m-%d %H:%M') }}</small></div>
                         </div>
                       </div>
+                    </button>
+                  </h2>
+                  <div id="flush-collapse-{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{loop.index}}" data-bs-parent="#searchItems">
+                    <div class="accordion-body">
+                      {% include "record.html" %}
                     </div>
-                    {% endfor %}
                   </div>
                 </div>
-              </div>
+                {% endfor %}        
+            </div>
+          </div>
         </div>
+      </div>
+      <!-- end of last added -->
     </div>
-
+  </div>
 </div>
+{% endblock %}
+
 {% include "loading_modal.html" %}
 {% include "error_modal.html" %}
-
-{% endblock %}
