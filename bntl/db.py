@@ -211,10 +211,6 @@ class DBClient():
         cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
         return await cursor.to_list(length=None)
 
-    async def get_query(self, query_id: str, session_id: str):
-        return await self.query_coll.find_one(
-            {'_id': bson.objectid.ObjectId(query_id), "session_id": session_id})
-
     async def find_query(self, session_id: str, query_params: Optional[QueryParams]=None):
         # validate existing query
         return await self.query_coll.find_one(
