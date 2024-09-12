@@ -91,36 +91,42 @@ $(document).ready(function() {
         )
     });
 
-    // keyword autocomplete
-    const keywordsCache = {};
-    $('#keywords-input').autocomplete({
-        minLength: 3,
-        select: function(event, ui) {
-            console.log("Selected, " + ui.item.value);
-        },
-        source: function(request, response) {
-            // cache
-            const term = request.term;
-            if (term in keywordsCache) {
-                response(keywordsCache[term]); 
-                return; 
-            }
+    // autocomplete
+    function getAutocomplete(field) {
+        cache = {} // should be a queue
 
-            // fetch from DB
-            $.ajax({
-                url: "/query-keywords",
-                type: "GET",
-                data: {query: term},
-                success: function(data) {
-                    keywordsCache[term] = data;
-                    response(data);
-                },
-                error: function(data) {
-                    console.log(data);
-                    response(data);
+        return {
+            minLength: 3,
+            select: function(event, ui) {
+                console.log("Selected, " + ui.item.value);
+            },
+            source: function(request, response) {
+                // cache
+                const term = request.term;
+                if (term in cache) {
+                    response(cache[term]); 
+                    return; 
                 }
-            });
+                // fetch from DB
+                $.ajax({
+                    url: "/query-autocomplete",
+                    type: "GET",
+                    data: {query: term, field: field},
+                    success: function(data) {
+                        cache[term] = data;
+                        response(data);
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            }
         }
-    });
+    }
+
+    $('#keywords-input').autocomplete(getAutocomplete("keywords"));
+    $('#author-input').autocomplete(getAutocomplete("author"));
+    $('#title-input').autocomplete(getAutocomplete("title"));
 
 });

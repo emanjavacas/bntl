@@ -1,14 +1,16 @@
 
 import re
 import json
-import bson
+from bson.objectid import ObjectId
+import uuid
 import logging
 import hashlib
 from pydantic import ValidationError
 from datetime import datetime, timezone
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 
 import pymongo
+from pymongo import InsertOne
 import motor.motor_asyncio as motor
 
 from bntl.settings import settings
@@ -98,11 +100,22 @@ class DBClient():
     - show query history per user
     - optimize the communication between client and server during search
     """
+    # this is a mapping from fields in the indexed documents to the fields in the query params
+    AUTOCOMPLETE_TARGETS = {
+        "keywords": "keywords", 
+        "authors": "author",
+        "first_authors": "author", 
+        "secondary_authors": "author", 
+        "tertiary_authors": "author",
+        "title": "title",
+        "secondary_title": "title",
+        "tertiary_title": "title"}
+
     def __init__ (self) -> None:
         self.mongodb_client = motor.AsyncIOMotorClient(settings.LOCAL_URI)
         self.bntl_coll = self.mongodb_client[settings.LOCAL_DB][settings.BNTL_COLL]
         self.source_coll = self.mongodb_client[settings.LOCAL_DB][settings.SOURCE_COLL]
-        self.keywords_coll = self.mongodb_client[settings.BNTL_DB][settings.KEYWORDS_COLL]
+        self.autocomplete_coll = self.mongodb_client[settings.BNTL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client[settings.LOCAL_DB][settings.UPLOAD_COLL]
         # vectorize database to retrieve vectors when done
@@ -122,7 +135,8 @@ class DBClient():
         await self.source_coll.create_index("doc_id", unique=True)
         # ensure text search index
         await self.bntl_coll.create_index({"$**": "text"})
-        await self.keywords_coll.create_index({"keyword": "text"}, unique=True)
+        await self.autocomplete_coll.create_index(("field", "value"), unique=True)
+        await self.autocomplete_coll.create_index({"field": "text", "value": "text"})
         # ensure index on file_id (this may generate collisions)
         await self.upload_coll.create_index("file_id", unique=True)
     
@@ -133,41 +147,77 @@ class DBClient():
         await self.mongodb_client.admin.command('ping')
 
     # document collection
+    @staticmethod
+    def collete_autocomplete(docs):
+        """
+        Collect all autocomplete information
+        """
+        autocomplete = set()
+        for doc in docs:
+            for target, field in DBClient.AUTOCOMPLETE_TARGETS.items():
+                values: Union[List[str], str] = doc.get(target, []) or [] # it may exist but have a None value
+                values: List[str] = [values] if isinstance(values, str) else values # wrap
+                autocomplete.update(set([(field, value) for value in values]))
+        return [{"field": field, "value": value} for field, value in autocomplete]
+
     async def insert_documents(self, documents, logger=logger, progress_callback=None, callback_batch=500):
-        done, keywords = [], []
-        for doc_idx, source_doc in enumerate(documents):
+        doc_idx, done = -1, []
+
+        for batch_id, start in enumerate(range(0, len(documents), callback_batch)):
+            end, docs = start + callback_batch, []
+            # collect documents
+            for source_doc in documents[start: end]:
+                doc_idx += 1
+                # validate
+                try:
+                    doc = prepare_document(source_doc)
+                    doc_id = ObjectId()
+                    doc["_id"] = doc_id
+                    docs.append({'doc': doc, 'source': utils.default_to_regular(source_doc)})
+                except YearFormatException as e:
+                    await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
+                    await utils.maybe_await(logger.info(str(e)))
+                except MissingFieldException as e:
+                    await utils.maybe_await(logger.info("Dropping document #{} due to missing field".format(doc_idx)))
+                    await utils.maybe_await(logger.info(str(e)))
+                except ValidationError as e:
+                    await utils.maybe_await(logger.info("Dropping document #{} due to wrong data format".format(doc_idx)))
+                    await utils.maybe_await(logger.info(str(e)))
+
+            errors = []
             try:
-                doc = prepare_document(source_doc)
-                doc_id = (await self.bntl_coll.insert_one(doc)).inserted_id
-                await self.source_coll.insert_one({"doc_id": str(doc_id), "source": source_doc})
-                keywords.extend(doc.get('keywords', []) or [])
-                done.append(str(doc_id))
-            except YearFormatException as e:
-                await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
-                await utils.maybe_await(logger.info(str(e)))
-            except MissingFieldException as e:
-                await utils.maybe_await(logger.info("Dropping document #{} due to missing field".format(doc_idx)))
-                await utils.maybe_await(logger.info(str(e)))
-            except ValidationError as e:
-                await utils.maybe_await(logger.info("Dropping document #{} due to wrong data format".format(doc_idx)))
-                await utils.maybe_await(logger.info(str(e)))
-            except pymongo.errors.DuplicateKeyError as e:
-                await utils.maybe_await(logger.info("Dropping document #{} due to duplicate".format(doc_idx)))
-                await utils.maybe_await(logger.info(str(e)))
+                await utils.maybe_await(logger.info("Batch-{}: Indexing {} documents".format(batch_id, len(docs))))
+                await self.bntl_coll.bulk_write([InsertOne(item['doc']) for item in docs], ordered=False)
+            except pymongo.errors.BulkWriteError as e:
+                errors = []
+                for err in e.details['writeErrors']:
+                    errors.append(err['index'])
+                    if err['code'] == 11000:
+                        await utils.maybe_await(logger.info("Dropping duplicate document #{}".format(start + err['index'])))
+            finally:
+                errors = set(errors)
+                done.extend([str(item["doc"]["_id"]) for idx, item in enumerate(docs) if idx not in errors])
+                # index source documents
+                try:
+                    await self.source_coll.bulk_write([
+                        InsertOne({"doc_id": str(item["doc"]["_id"]), "source": item["source"]})
+                        for idx, item in enumerate(docs) if idx not in errors], ordered=False)
+                except pymongo.errors.BulkWriteError as e:
+                    await utils.maybe_await(logger.info("Got {}/{} errors while indexing source data".format(
+                        len(e.details['writeErrors']), len(docs))))
+                # index autocomplete data
+                autocomplete = DBClient.collete_autocomplete(
+                    [item["doc"] for idx, item in enumerate(docs) if idx not in errors])
+                try:
+                    await utils.maybe_await(logger.info("Indexing {} autocomplete items".format(len(autocomplete))))
+                    await self.autocomplete_coll.bulk_write(
+                        [InsertOne(item) for item in autocomplete], ordered=False)
+                except pymongo.errors.BulkWriteError as e:
+                    await utils.maybe_await(logger.info("Got {}/{} errors while indexing autocomplete items".format(
+                        len(e.details['writeErrors']), len(autocomplete))))
 
-            if progress_callback is not None and doc_idx > 0 and doc_idx % callback_batch == 0:
+            if progress_callback is not None:
                 await utils.maybe_await(progress_callback(doc_idx))
-
-        try:
-            await utils.maybe_await(logger.info("Indexing {} keywords...".format(len(keywords))))
-            result = await self.keywords_coll.insert_many(
-                [{"keyword": keyword} for keyword in set(keywords) if keyword],
-                ordered=False)
-            await utils.maybe_await(logger.info("Indexed {} new keywords".format(len(result))))
-        except pymongo.errors.BulkWriteError as e:
-            dups = len([e for e in e.details['writeErrors'] if e['code'] == 11000])
-            new = e.details['nInserted']
-            await utils.maybe_await(logger.info("Indexed {} new and rejected {} dup keywords".format(new, dups)))
 
         return done
 
@@ -177,9 +227,9 @@ class DBClient():
         for item in results:
             item['doc_id'] = str(item.pop("_id"))
         return results
-    
+
     async def find_one(self, doc_id):
-        item = await self.bntl_coll.find_one({"_id": bson.objectid.ObjectId(doc_id)})
+        item = await self.bntl_coll.find_one({"_id": ObjectId(doc_id)})
         if item:
             item["doc_id"] = str(item.pop("_id"))
         return item
@@ -210,6 +260,9 @@ class DBClient():
         """
         cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
         return await cursor.to_list(length=None)
+    
+    async def get_query(self, query_id: str, session_id: str):
+        return await self.query_coll.find_one({"_id": ObjectId(query_id), "session_id": session_id})
 
     async def find_query(self, session_id: str, query_params: Optional[QueryParams]=None):
         # validate existing query
@@ -226,7 +279,7 @@ class DBClient():
 
     async def update_query(self, query_id: str, session_id: str, data):
         return await self.query_coll.update_one(
-            {"session_id": session_id, "_id": bson.objectid.ObjectId(query_id)},
+            {"session_id": session_id, "_id": ObjectId(query_id)},
             {"$set": data})
     
     # upload documents
@@ -258,18 +311,18 @@ class DBClient():
         return await self.upload_coll.find_one({"file_id": file_id})
 
     # keywords
-    async def find_keywords_by_prefix(self, prefix:str, limit=10) -> List[str]:
-        keywords = await self.keywords_coll.find(
-            {"keyword": {"$regex": "^" + prefix + ".*", "$options": "i"}}, limit=limit
+    async def find_autocomplete_by_prefix(self, field: str, prefix: str, limit=10) -> List[str]:
+        output = await self.autocomplete_coll.find(
+            {"field": field, "value": {"$regex": "^" + prefix + ".*", "$options": "i"}}, limit=limit
         ).to_list(length=None)
-        return [item["keyword"] for item in keywords]
+        return [item["value"] for item in output]
 
     def close(self):
         self.mongodb_client.close()
 
     async def _clear_up(self): # DANGER
         await self.bntl_coll.drop()
-        await self.keywords_coll.drop()
+        await self.autocomplete_coll.drop()
         await self.query_coll.drop()
         await self.upload_coll.drop()
         await self.source_coll.drop()

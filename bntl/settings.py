@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
     BNTL_COLL: str = Field(help="MongoDB BNTL collection name", default="bntl")
     SOURCE_COLL: str = Field(help="Collection name for storing source data", default="source")
-    KEYWORDS_COLL: str = Field(help="MongoDB keywords collection name", default="keywords")
+    AUTOCOMPLETE_COLL: str = Field(help="MongoDB keywords collection name", default="autocomplete")
     BNTL_DB: str = Field(help="MongoDB BNTL database name", default="bntl")
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
     UPLOAD_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="upload")

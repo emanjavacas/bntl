@@ -374,9 +374,9 @@ async def revectorize(background_tasks: BackgroundTasks):
     return "Ok"
 
 
-@app.get("/query-keywords")
-async def query_keywords(query: str=Query(..., min_length=3)):
-    return await app.state.db_client.find_keywords_by_prefix(query)
+@app.get("/query-autocomplete")
+async def query_autocomplete(field: str, query: str=Query(..., min_length=3)):
+    return await app.state.db_client.find_autocomplete_by_prefix(field, query)
 
 
 @app.get("/export-record")

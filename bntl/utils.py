@@ -1,6 +1,6 @@
 
 import os
-import urllib
+from collections import defaultdict
 from datetime import datetime, timezone
 import asyncio
 
@@ -12,11 +12,10 @@ from bntl.settings import settings
 def identity(item): return item
 
 
-def is_atlas(uri):
-    """
-    Check if the current URI corresponds to a Cloud Atlas database
-    """
-    return urllib.parse.urlparse(uri).netloc.endswith("mongodb.net")
+def default_to_regular(d):
+    if isinstance(d, (defaultdict, dict)):
+        d = {k: default_to_regular(v) for k, v in d.items()}
+    return d
 
 
 def get_log_filename(file_id):

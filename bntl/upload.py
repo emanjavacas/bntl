@@ -102,7 +102,7 @@ class FileUploadManager:
                 await a_logger.info("Indexing data...")
                 await self.update_status(file_id, Status.INDEXING, progress=0)
             except rispy.parser.ParseError as e:
-                await self.update_status(file_id, Status.UNKNOWNFORMAT)
+                await self.update_status(file_id, Status.UNKNOWNFORMAT, detail=str(e))
                 return
             try:
                 doc_ids = await self.insert_documents(documents, file_id)

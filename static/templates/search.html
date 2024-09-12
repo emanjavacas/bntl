@@ -48,42 +48,17 @@
             </div>
           </div>
 
-          {% for screen, key in [("author", "Auteur"), ("title", "Titelbeschrijving")] %}
+          {% for key, screen in [("author", "Auteur"), ("title", "Titelbeschrijving"), ("keywords", "Trefwoorden")] %}          
           <div class="row">
             <div class="col">
               <div class="form-floating flex-grow-1 py-2">
-              <input id="{{screen}}-input" type="text" class="form-control" name="{{screen}}" placeholder="test">
-                <label for="{{screen}}">{{key}}</label>
-              </div>
-              <div class="form-check form-switch form-check-inline form-check-reverse float-end">
-                <label class="form-check-label" for="use_case_{{screen}}">                 
-                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Use case">
-                    <img width="16px" src="/static/assets/img/letter-case-capitalize.svg">
-                  </span>
-                </label>
-                <input id="{{screen}}_case_id" class="form-check-input" role="switch" type="checkbox" name="use_case_{{screen}}">
-              </div>
-              <div class="form-check form-check-inline form-check-reverse form-switch float-end">
-                <label class="form-check-label" for="use_regex_{{screen}}">
-                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Use regex">
-                    <img width="14px" src="/static/assets/img/regex.svg">
-                  </span>
-                </label>
-                <input id="{{screen}}_regex_id" class="form-check-input" role="switch" type="checkbox" name="use_regex_{{screen}}">
+                <input id="{{key}}-input" type="text" class="form-control" name="{{key}}" placeholder="test">
+                <label for="{{key}}">{{screen}}</label>
+                <div id="{{key}}-dropdown" class="dropdown-menu" style="display: none;"></div>
               </div>
             </div>
           </div>
           {% endfor %}
-
-          <div class="row">
-            <div class="col">
-              <div class="form-floating flex-grow-1 py-2">
-                <input id="keywords-input" type="text" class="form-control" name="keywords" placeholder="test">
-                <label for="keywords">Trefwoorden</label>
-                <div id="keywords-dropdown" class="dropdown-menu" style="display: none;"></div>
-              </div>
-            </div>
-          </div>
 
           <!-- button -->
           <div class="row pt-2 text-center">
