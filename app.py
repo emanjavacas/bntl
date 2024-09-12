@@ -74,6 +74,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
+templates.env.filters["doc_repr"] = utils.DOC_REPR.render_doc
 
 
 @app.middleware("http")

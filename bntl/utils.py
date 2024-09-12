@@ -2,9 +2,12 @@
 import os
 from collections import defaultdict
 from datetime import datetime, timezone
+from typing import List, Union
 import asyncio
 
-import aiofiles, aioconsole
+from rispy.config import TAG_KEY_MAPPING
+import aiofiles
+import aioconsole
 
 from bntl.settings import settings
 
@@ -94,3 +97,61 @@ async def xml2bib(xml_data):
 async def ris2bib(ris_data):
     xml_data = await ris2xml(ris_data)
     return await xml2bib(xml_data)
+
+
+def replace_ris(repr):
+    for key, value in TAG_KEY_MAPPING.items():
+        repr = repr.replace(key, value)
+    return repr
+
+
+def maybe_list(inp: Union[List[str], str]):
+    if isinstance(inp, list):
+        if len(inp) == 1:
+            return inp[0]
+        *firsts, last = inp
+        return ', '.join(firsts) + " & " + last
+    return inp
+
+
+class DOC_REPR:
+    JOUR = "[AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    BOOK = "[AU]. [TI]. [CY]: [PB], [PY]. [EP] p."
+    BOOK_2EDS = "[A2] (red.). [TI]. [CY]: [PB], [PY]. [EP] p."
+    CHAP = "[A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]."
+    EJOUR = "[AU]. [TI]. Op: [JO]: [VL]."
+    WEB = "[AU]. [TI]. [PY]."
+    JFULL = "[TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    ADVS = "[AU]. [TI]. [CY]: [PB], [PY]."
+
+    @staticmethod
+    def get_repr_type(doc):
+        if doc['type_of_reference'] == "JOUR":
+            return DOC_REPR.JOUR
+        elif doc['type_of_reference'] == "BOOK":
+            if doc.get('secondary_authors') is not None:
+                # ignore authors
+                return DOC_REPR.BOOK_2EDS
+            return DOC_REPR.BOOK
+        elif doc['type_of_reference'] == "CHAP":
+            return DOC_REPR.CHAP
+        elif doc['type_of_reference'] == "JFULL":
+            return DOC_REPR.JFULL
+        elif doc['type_of_reference'] == "WEB":
+            return DOC_REPR.WEB
+        elif doc['type_of_reference'] == "ADVS":
+            return DOC_REPR.ADVS
+        elif doc['type_of_reference'] == 'EJOUR':
+            return DOC_REPR.EJOUR
+        else:
+            raise ValueError("Unknown publication type: {}".format(doc['type_of_reference']))
+
+    @staticmethod
+    def render_doc(doc):
+        repr_str = DOC_REPR.get_repr_type(doc)
+        repr_str = replace_ris(repr_str.replace("[", "{").replace("]", "}"))
+        # unwrap lists
+        kwargs = {k: maybe_list(v) for k, v in doc.items()}
+        # handle missing keys
+        kwargs = defaultdict(lambda: "N/A", kwargs)
+        return repr_str.format_map(kwargs)

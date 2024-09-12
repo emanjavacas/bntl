@@ -98,11 +98,7 @@
                       <div class="container">
                         <div class="row">
                           <span class="text-muted small pe-2">
-                            {% if item.unknown_tag and "AV" in item.unknown_tag %}
-                                {{item.unknown_tag["AV"][0]}}
-                            {% else %}
-                                {{item.title}}
-                            {% endif %}  
+                            {{ item | doc_repr }}
                           </span>
                         </div>
                         <div class="row pt-1 pb-0">

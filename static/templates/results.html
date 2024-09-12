@@ -148,23 +148,7 @@
               <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
             </span>
             <span class="text-muted small pe-2">
-              {% if item.unknown_tag and "AV" in item.unknown_tag %}
-                {{item.unknown_tag["AV"][0]}}
-              {% else %}
-                {{item.title}}
-                {% if item.authors %}
-                  <span class="fst-italic">
-                  {% for author in item.authors %}
-                      {{author}}
-                  {% endfor %}
-                  {% if item.first_authors %}
-                    {% for author in item.first_authors %}
-                      {{author}}
-                    {% endfor %}
-                  {% endif %}
-                  </span>
-                {% endif %}
-              {% endif %}  
+             {{ item | doc_repr }}
             </span>    
           </button>
         </h2>
