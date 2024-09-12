@@ -152,6 +152,8 @@ class DOC_REPR:
         repr_str = replace_ris(repr_str.replace("[", "{").replace("]", "}"))
         # unwrap lists
         kwargs = {k: maybe_list(v) for k, v in doc.items()}
+        # drop None items
+        kwargs = {k: v for k, v in kwargs.items() if v}
         # handle missing keys
         kwargs = defaultdict(lambda: "N/A", kwargs)
         return repr_str.format_map(kwargs)
