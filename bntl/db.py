@@ -194,6 +194,9 @@ class DBClient():
                     errors.append(err['index'])
                     if err['code'] == 11000:
                         await utils.maybe_await(logger.info("Dropping duplicate document #{}".format(start + err['index'])))
+            except pymongo.errors.InvalidOperation as e:
+                await utils.maybe_await(logger.info("No documents to index, exiting..."))
+                return []
             finally:
                 errors = set(errors)
                 done.extend([str(item["doc"]["_id"]) for idx, item in enumerate(docs) if idx not in errors])

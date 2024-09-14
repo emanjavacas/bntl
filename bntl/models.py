@@ -1,12 +1,96 @@
 
 import uuid
 from datetime import datetime
+from string import Formatter
 
 from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union, Any
-from pydantic import BaseModel, Field, ConfigDict
+from typing_extensions import Self
+from pydantic import BaseModel, Field, ConfigDict, model_validator
+from enum import Enum
+
+from rispy.config import TAG_KEY_MAPPING
+
+from bntl import utils
 
 
 T = TypeVar("T")
+
+
+def format_str_from_ris(repr_str):
+    """
+    Substitute RIS fields with the corresponding fields in the parsed document
+    """
+    for key, value in TAG_KEY_MAPPING.items():
+        repr_str = repr_str.replace(key, value)
+    return repr_str.replace("[", "{").replace("]", "}")
+
+
+class DocScreen:
+    """
+    This class handles required fields on the basis of the screen representation
+    """
+
+    # JOUR = "[AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    # BOOK = "[AU]. [TI]. [CY]: [PB], [PY]. [EP] p."
+    # BOOK_2EDS = "[A2] (red.). [TI]. [CY]: [PB], [PY]. [EP] p."
+    # CHAP = "[A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]."
+    # EJOUR = "[AU]. [TI]. Op: [JO]: [VL]."
+    # WEB = "[AU]. [TI]. [PY]."
+    # JFULL = "[TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    # ADVS = "[AU]. [TI]. [CY]: [PB], [PY]."
+    JOUR = "[AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    BOOK = "[AU]. [TI]. [CY]: [PB], [PY]."
+    BOOK_2EDS = "[A2] (red.). [TI]. [CY]: [PB], [PY]."
+    CHAP = "[A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]."
+    EJOUR = "[AU]. [TI]. Op: [JO]: [VL]."
+    WEB = "[AU]. [TI]. [PY]."
+    JFULL = "[TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
+    ADVS = "[AU]. [TI]. [CY]: [PB], [PY]."
+
+
+    @staticmethod
+    def get_repr_str(doc):
+        """
+        Find type of screenname based on document structure
+        """
+        if doc['type_of_reference'] == "JOUR":
+            return DocScreen.JOUR
+        elif doc['type_of_reference'] == "BOOK":
+            if doc.get('secondary_authors') is not None:
+                # ignore authors
+                return DocScreen.BOOK_2EDS
+            return DocScreen.BOOK
+        elif doc['type_of_reference'] == "CHAP":
+            return DocScreen.CHAP
+        elif doc['type_of_reference'] == "JFULL":
+            return DocScreen.JFULL
+        elif doc['type_of_reference'] == "WEB":
+            return DocScreen.WEB
+        elif doc['type_of_reference'] == "ADVS":
+            return DocScreen.ADVS
+        elif doc['type_of_reference'] == 'EJOUR':
+            return DocScreen.EJOUR
+        else:
+            raise ValueError(f"Unknown publication type: {doc['type_of_reference']}")
+
+    @staticmethod
+    def find_missing_fields(doc):
+        repr_str = format_str_from_ris(DocScreen.get_repr_str(doc))
+        missing = []
+        for _, fname, _, _ in Formatter().parse(format_str_from_ris(repr_str)):
+            if not fname: continue
+            if not doc.get(fname):
+                missing.append(fname)
+        return missing
+
+    @staticmethod
+    def render_doc(doc):
+        repr_str = format_str_from_ris(DocScreen.get_repr_str(doc))
+        kwargs = {k: utils.maybe_list(v) for k, v in doc.items()}
+        return repr_str.format_map(kwargs)
+
+
+TypeOfReference = Literal["JOUR", "BOOK", "CHAP", "EJOUR", "WEB", "JFULL", "ADVS"]
 
 
 class EntryModel(BaseModel):
@@ -16,10 +100,11 @@ class EntryModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
     # this is stored for convenience (enable year range queries)
     end_year: Optional[Union[int|str]] = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)", default="")
+    # required
+    type_of_reference: TypeOfReference = Field(help="Record format")
 
     # source fields (fields encountered in first db dump, it may fail)
     title: Optional[str] = Field(help="Title of the record", default=None)
-    type_of_reference: Optional[str] = Field(help="Record format", default=None)
     year: Optional[Union[int|str]] = Field(help="Year of record publication in string format", default="")
     label: Optional[str] = Field(help="Zotero export validation result", default=None)
     name_of_database: Optional[str] = Field(help="BNTL metadata", default=None)
@@ -43,6 +128,13 @@ class EntryModel(BaseModel):
     research_notes: Optional[str] = Field(default=None)
     keywords: Optional[List[str]] = Field(default=None)
     unknown_tag: Optional[Dict[str, List[str]]] = Field(default=None)
+
+    @model_validator(mode="before")
+    def check_document_type(self) -> Self:
+        missing = DocScreen.find_missing_fields(self)
+        if missing:
+            raise ValueError({"missing_fields": missing, "repr_type": DocScreen.get_repr_str(self)})
+        return self
 
 
 class DBEntryModel(EntryModel):

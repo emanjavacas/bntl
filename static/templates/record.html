@@ -1,16 +1,3 @@
-
-{%- 
-  set refMap = {
-    'ADVS': "Audio",
-    'BOOK': "Boek",
-    'CHAP': "Artikel uit Boek",
-    'EJOUR': "Website",
-    'JFULL': "Tijdschriftartikel",
-    'JOUR': "Tijdschrift",
-    'WEB': "Website"
-} 
--%}
-
 <div class="row">
   <div class="col text-end">
     <div class="btn-group dropstart">
@@ -37,66 +24,187 @@
     </div>
   </div>
   <div class="row small">
-    <div class="col-10">
+    <div class="col-10 px-1">
       <!-- type of reference -->
-      <div class="row fw-bold">Publicatietype</div>
-      <div class="row">{{refMap[item.type_of_reference]}}</div>
+      <div class="row pb-2">
+        <span><span class="fw-bold pe-2">Publicatietype</span><span>{{refMap[item.type_of_reference]}}</span></span>
+      </div>
       <!-- year -->
-      <div class="row fw-bold pt-3">Jaar</div>
-      <div class="row px-0">{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</div>
+      <div class="row pb-2">
+        <span><span class="fw-bold pe-2">Jaar</span>
+        <span>{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</span>
+        </span>
+      </div>
       <!-- title -->
-      <div class="row fw-bold pt-3">Titelbeschrijving</div>
-      <div class="row px-0">
+      <div class="row pb-2">
+        <span><span class="fw-bold pe-2">Titelbeschrijving</span>
         <span>{{item.title}}
           {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
-          {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}
+          {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}</span>
         </span>
-      </div>    
-      <!-- authors -->
-      <div class="row fw-bold pt-3">Auteurs</div>
-      <div class="row">
-      {% if item.authors %}
-          {% for author in item.authors %}
-              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-          {% endfor %}
-      {% endif %}
-      {% if item.first_authors %}
-          {% for author in item.first_authors %}
-              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-          {% endfor %}
-      {% endif %}
-      {% if item.secondary_authors %}
-          {% for author in item.secondary_authors %}
-              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-          {% endfor %}
-      {% endif %}
-      {% if item.tertiary_authors %}
-          {% for author in item.tertiary_authors %}
-              <a class="px-0" href="/quickQuery?author={{author}}">{{author}}</a>
-          {% endfor %}
-      {% endif %}
       </div>
+      <!-- authors -->
+      <div class="row pb-0">
+        <span>
+          <span class="fw-bold pe-2">Auteur(s)</span>
+          <ul class="pb-0">
+            {% if item.authors %}
+            {% for author in item.authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% endfor %}
+            {% endif %}
+            {% if item.first_authors %}
+            {% for author in item.first_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% endfor %}
+            {% endif %}
+            {% if item.secondary_authors %}
+            {% for author in item.secondary_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% endfor %}
+            {% endif %}
+            {% if item.tertiary_authors %}
+            {% for author in item.tertiary_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% endfor %}
+            {% endif %}
+          </ul>
+        </span>
+      </div>
+      <!-- abstract -->
+      {% if item.abstract %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Extra informatie</span>
+          <span>{{item.abstract}}</span>
+        </span>
+      </div>
+      {% endif %}
       <!-- keywords -->
-      <div class="row fw-bold pt-3">Trefwoorden</div>
       {% if item.keywords %}
+      <div class="row pb-0">
+        <span>
+          <span class="fw-bold pe-2">Trefwoord(en)</span>
+          <ul class="pb-0">
           {% for keyword in item.keywords %}
-          <div class="row">
-              <a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a>
-          </div>
+            <li><a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a></li>
           {% endfor %}
-      {% else %}Geen opgegeven
+          </ul>
+        </span>
+      </div>
       {% endif %}
       <!-- URL -->
-      <div class="row fw-bold pt-3">URL</div>
-      <div class="row">
-        {% if item.urls %}
+      {% if item.urls %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">URL (link naar open acces)</span>
+          <ul class="pb-0">
           {% for url in item.urls %}
-            <a class="px-0" href="{{url}}">{{url}}</a>
+            <li><a class="px-0" href="{{url}}">{{url}}</a></li>
           {% endfor %}
-        {% else %}Geen url opgegeven
-      {% endif %}
+        </ul>
+        </span>
       </div>
+      {% endif %}
+      <!-- pages -->
+      {% if item.start_page %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Pagina(s)</span>
+          <span>{{item.start_page}}{% if item.end_page %}-{{item.end_page}}{% endif %}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- journal_name -->
+      {% if item.journal_name %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Tijdschrift</span>
+          <span>{{item.journal_name}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- volume -->
+      {% if item.volume %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Volume</span>
+          <span>{{item.volume}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- number -->
+      {% if item.number %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Nummer</span>
+          <span>{{item.number}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- research_notes -->
+      {% if item.research_notes %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Recensie/Reactie</span>
+          <span>{{item.research_notes}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- issn -->
+      {% if item.issn %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">ISBN-nummer</span>
+          <span>{{item.issn}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- place_published -->
+      {% if item.place_published %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Plaats van uitgave</span>
+          <span>{{item.place_published}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- publisher -->
+      {% if item.publisher %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Uitgeverij</span>
+          <span>{{item.publisher}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- notes_abstract -->
+      {% if item.notes_abstract %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Oude notatie</span>
+          <span>{{item.notes_abstract}}</span>
+        </span>
+      </div>     
+      {% endif %} 
+      <!-- custom3 -->
+      {% if item.custom3 %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Titelbeschrijving boek</span>
+          <span>{{item.custom3}}</span>
+        </span>
+      </div>
+      {% endif %}
+      <!-- custom4 -->
+      {% if item.custom4 %}
+      <div class="row pb-2">
+        <span>
+          <span class="fw-bold pe-2">Gerelateerde artikels</span>
+          <span>{{item.custom4}}</span>
+        </span>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
-

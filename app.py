@@ -23,6 +23,7 @@ from bntl.vector import VectorClient, MissingVectorException
 from bntl.db import DBClient
 from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
 from bntl.models import DBEntryModel, VectorEntryModel, FileUploadModel
+from bntl.models import DocScreen
 from bntl.pagination import paginate, paginate_within, build_query
 from bntl.upload import Status, FileUploadManager, convert_to_text
 from bntl.settings import settings, setup_logger
@@ -74,7 +75,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
-templates.env.filters["doc_repr"] = utils.DOC_REPR.render_doc
+templates.env.filters["doc_repr"] = DocScreen.render_doc
 
 
 @app.middleware("http")

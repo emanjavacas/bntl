@@ -1,3 +1,48 @@
+{%- set imgMap = {
+      'ADVS': "cddvd",
+      'BOOK': "boek",
+      'CHAP': "artikelboek",
+      'EJOUR': "artikelwebpage",
+      'JFULL': "artikeltijdschrift",
+      'JOUR': "tijdschriftofreeks",
+      'WEB': "website"
+    }
+-%}
+{%- set refMap = {
+      'ADVS': "Audio",
+      'BOOK': "Boek",
+      'CHAP': "Artikel uit Boek",
+      'EJOUR': "Website",
+      'JFULL': "Tijdschriftartikel",
+      'JOUR': "Tijdschrift",
+      'WEB': "Website"} 
+-%}
+
+{%- set screenNames = {
+      'type_of_reference': 'Publicatietype',
+      'year': 'Publicatiejaar',
+      'title': 'Titel',
+      'secondary_title': 'Boektitel',
+      'authors': 'Auteur(s)',
+      'first_authors': 'Auteur(s)',
+      'secondary_authors': 'Redacteur(s)',
+      'keywords': 'Trefwoord(en)',
+      'urls': 'URL (link naar open acces)',
+      'abstract': 'Extra informatie',
+      'start_page': 'Startpagina',
+      'end_page': 'Eindpagina',
+      'journal_name': 'Tijdschrift',
+      'volume': 'Volume',
+      'number': 'Nummer',
+      'research_notes': 'Recensie/Reactie',
+      'issn': 'ISBN-nummer',
+      'place_published': 'Plaats van uitgave',
+      'publisher': 'Uitgeverij',
+      'notes_abstract': 'Oude notatie',
+      'custom3': 'Titelbeschrijving boek',
+      'custom4': 'Gerelateerde artikels'}
+-%}
+
 <!DOCTYPE html>
 <html class="h-100" lang="en">
     <head>
