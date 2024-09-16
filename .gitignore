@@ -9,3 +9,5 @@ venv
 *.lock
 
 secret_settings.toml
+
+static/translations/*/LC_MESSAGES/*.mo
