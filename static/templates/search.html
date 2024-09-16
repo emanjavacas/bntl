@@ -1,13 +1,13 @@
 {% extends "template.html" %}
 
-{% block title %}Search{% endblock %}
+{% block title %}{{ _('Zoeken') }}{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col">
     <div class="card border-secondary px-0">
       <div class="card-header">
-        <h3 class="text-uppercase">Geavanceerd zoeken</h3>
+        <h3 class="text-uppercase">{{ _('Geavanceerd zoeken') }}</h3>
       </div>
       <div class="card-body">
         <form id="searchForm" class="needs-validation" novalidate>
@@ -19,12 +19,12 @@
                   {% for rType in type_of_reference %}
                     <option value="{{rType}}">{{rType}}</option>
                   {% endfor %}
-                  <option value="" selected>Kies er een</option>
+                  <option value="" selected>{{ _('Kies er een') }}</option>
                 </select>
-                <label for="type_of_reference">Publicatie type</label>
+                <label for="type_of_reference">{{ _('Publicatie type') }}</label>
                 <div class="row fw-light px-2">
                   <div class="col small">
-                    Choose a reference type
+                    {{ _('Kies een publicatietype') }}
                   </div>
                 </div>
               </div>
@@ -36,12 +36,12 @@
               <div class="form-floating flex-grow-1 py-2">
                 <input type="text" class="form-control" name="year" placeholder="1987" pattern="[0-9]{4}(-[0-9]{4})?">
                 <div class="invalid-feedback">
-                Invalid
+                {{ _('Ongeldig') }}
                 </div>
                 <label for="year">Jaar</label>
                 <div class="row fw-light px-2">
                   <div class="col small">
-                    Use year or range (e.g. 1987-2024)
+                    {{ _('Jaar of periode') }} (e.g. 1987-2024)
                   </div>
                 </div>
               </div>
@@ -63,7 +63,7 @@
           <!-- button -->
           <div class="row pt-2 text-center">
             <div class="col">
-              <button type="submit" class="btn btn-primary">Zoek</button>
+              <button type="submit" class="btn btn-primary">{{ _('Zoek') }}</button>
             </div>
           </div>
         </form>

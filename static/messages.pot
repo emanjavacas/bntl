@@ -1,0 +1,344 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-16 13:08+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: static/templates/about.html:8
+msgid "Over de BNTL"
+msgstr ""
+
+#: static/templates/about.html:9
+msgid "Wat"
+msgstr ""
+
+#: static/templates/about.html:11
+msgid ""
+"De BNTL is een basistool van de neerlandistiek. Elk onderzoek, elke "
+"paper, elke presentatie\n"
+"        start met een zoekactie in de BNTL.\n"
+"        De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van "
+"publicaties over\n"
+"        Nederlandse taal- en letterkunde uit de periode 1940 tot heden "
+"(dus geen primaire\n"
+"        literatuur), waar mogelijk met een link naar de digitale "
+"volledige teksten."
+msgstr ""
+
+#: static/templates/about.html:17
+msgid "Missie en doelstelling"
+msgstr ""
+
+#: static/templates/about.html:19
+msgid ""
+"Het Vlaamse Bureau voor de Bibliografie van de Neerlandistiek werd in "
+"1969 opgericht met\n"
+"        het doel de publicaties die verschijnen op het gebied van de "
+"neerlandistiek te\n"
+"        inventariseren en te ontsluiten en dat in de meest ruime zin:\n"
+"        taal- en letterkunde van de middeleeuwen tot heden, inclusief "
+"publicaties over het literaire\n"
+"        leven, de productie en verspreiding van teksten (codicologie, "
+"boek- en drukgeschiedenis,\n"
+"        kunstgeschiedenis, uitgeverijen en publieke media, prijzen, ...),"
+" of de plaats van taal en tekst\n"
+"        in de geschiedenis van onderwijs, kerk, politiek enzovoort."
+msgstr ""
+
+#: static/templates/about.html:27
+msgid "Voor wie"
+msgstr ""
+
+#: static/templates/about.html:29
+msgid ""
+"Voor neerlandici in binnen- en buitenland, maar ook voor een brede "
+"doelgroep van\n"
+"        (kunst)historici, bibliotheekmedewerkers, publicisten en, "
+"vanzelfsprekend, studenten en\n"
+"        leerlingen."
+msgstr ""
+
+#: static/templates/about.html:33 static/templates/history.html:3
+msgid "Geschiedenis"
+msgstr ""
+
+#: static/templates/about.html:35
+msgid ""
+"In 1969 werd een aanvang genomen met het excerperen van publicaties met "
+"het oog op een\n"
+"        bibliografie van de Nederlandse taal- en letterkunde. De BNTL "
+"startte in 1970 op papier."
+msgstr ""
+
+#: static/templates/about.html:40
+msgid ""
+"In 2008 werd de BNTL een website. Sinds oktober 2024 is die website "
+"helemaal vernieuwd\n"
+"        met extra aandacht voor de duurzame bewaring van de data, een "
+"betere doorzoekbaarheid\n"
+"        en meer toegang tot open access-artikelen."
+msgstr ""
+
+#: static/templates/error_modal.html:12
+msgid "Sluiten"
+msgstr ""
+
+#: static/templates/history.html:9
+msgid "Zoekgeschiedenis"
+msgstr ""
+
+#: static/templates/history.html:24 static/templates/record.html:30
+msgid "Publicatietype"
+msgstr ""
+
+#: static/templates/history.html:31 static/templates/record.html:34
+#: static/templates/results.html:38
+msgid "Jaar"
+msgstr ""
+
+#: static/templates/history.html:35
+msgid "Titel"
+msgstr ""
+
+#: static/templates/history.html:50 static/templates/results.html:26
+msgid "Auteur"
+msgstr ""
+
+#: static/templates/history.html:65
+msgid "Trefwoorden"
+msgstr ""
+
+#: static/templates/history.html:85
+msgid "treffers"
+msgstr ""
+
+#: static/templates/index.html:12
+msgid "BIBLIOGRAFIE"
+msgstr ""
+
+#: static/templates/index.html:13
+msgid "VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP"
+msgstr ""
+
+#: static/templates/index.html:17
+msgid ""
+"De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties"
+" over Nederlandse taal- en letterkunde \n"
+"          uit de periode 1940 tot heden (dus geen primaire literatuur), "
+"waar mogelijk met een link naar de digitale volledige teksten."
+msgstr ""
+
+#: static/templates/index.html:20
+msgid ""
+"We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de "
+"bibliografie. Met het invullen van de <a class=\"link-dark link-offset-2 "
+"link-underline-opacity-25 link-underline-opacity-100-hover\" "
+"href=\"https://goo.gl/forms/F7g9vbzBfzj14EdS2\">gebruikersenquête</a>\n"
+"          kan u mee nadenken over de BNTL van de toekomst."
+msgstr ""
+
+#: static/templates/index.html:23
+msgid "Lees verder"
+msgstr ""
+
+#: static/templates/index.html:29
+msgid "Dit database maakt gebruikt van"
+msgstr ""
+
+#: static/templates/index.html:35
+msgid "Bekijk ook de Friese bibliografie"
+msgstr ""
+
+#: static/templates/index.html:41
+msgid "Digitale Bibliografie voor die Afrikaanse Taalkunde"
+msgstr ""
+
+#: static/templates/index.html:53 static/templates/template.html:85
+msgid "zoeken"
+msgstr ""
+
+#: static/templates/index.html:58
+msgid "geavanceerd zoeken"
+msgstr ""
+
+#: static/templates/index.html:59
+msgid "zoekgeschiedenis"
+msgstr ""
+
+#: static/templates/index.html:69
+msgid "Laatst toegevoegde documenten"
+msgstr ""
+
+#: static/templates/index.html:70
+msgid "Aantal"
+msgstr ""
+
+#: static/templates/login.html:15
+msgid "Voer uw wachtwoord in"
+msgstr ""
+
+#: static/templates/login.html:17
+msgid "Indienen"
+msgstr ""
+
+#: static/templates/record.html:16
+msgid ".bib exporteren"
+msgstr ""
+
+#: static/templates/record.html:20
+msgid ".ris exporteren"
+msgstr ""
+
+#: static/templates/record.html:40
+msgid "Titelbeschrijving"
+msgstr ""
+
+#: static/templates/record.html:49
+msgid "Auteur(s)"
+msgstr ""
+
+#: static/templates/record.html:78
+msgid "Extra informatie"
+msgstr ""
+
+#: static/templates/record.html:87
+msgid "Trefwoord(en)"
+msgstr ""
+
+#: static/templates/record.html:100
+msgid "URL (link naar open acces)"
+msgstr ""
+
+#: static/templates/record.html:113
+msgid "Pagina(s)"
+msgstr ""
+
+#: static/templates/record.html:122
+msgid "Tijdschrift"
+msgstr ""
+
+#: static/templates/record.html:131
+msgid "Volume"
+msgstr ""
+
+#: static/templates/record.html:140
+msgid "Nummer"
+msgstr ""
+
+#: static/templates/record.html:149
+msgid "Recensie/Reactie"
+msgstr ""
+
+#: static/templates/record.html:158
+msgid "ISBN-nummer"
+msgstr ""
+
+#: static/templates/record.html:167
+msgid "Plaats van uitgave"
+msgstr ""
+
+#: static/templates/record.html:176
+msgid "Uitgeverij"
+msgstr ""
+
+#: static/templates/record.html:185
+msgid "Oude notatie"
+msgstr ""
+
+#: static/templates/record.html:194
+msgid "Titelbeschrijving boek"
+msgstr ""
+
+#: static/templates/record.html:203
+msgid "Gerelateerde artikels"
+msgstr ""
+
+#: static/templates/results.html:3
+msgid "Resultaten"
+msgstr ""
+
+#: static/templates/results.html:9
+msgid "ZOEKRESULTATEN"
+msgstr ""
+
+#: static/templates/results.html:9
+msgid "op laatst zoekje"
+msgstr ""
+
+#: static/templates/results.html:13
+msgid "Zoekresultaten"
+msgstr ""
+
+#: static/templates/results.html:13
+msgid "van"
+msgstr ""
+
+#: static/templates/results.html:13
+msgid "in laatst zoekje"
+msgstr ""
+
+#: static/templates/results.html:23
+msgid "Sorteer op"
+msgstr ""
+
+#: static/templates/results.html:51
+msgid "Topresultaten"
+msgstr ""
+
+#: static/templates/results.html:62
+msgid "Pagina"
+msgstr ""
+
+#: static/templates/results.html:87 static/templates/search.html:66
+msgid "Zoek"
+msgstr ""
+
+#: static/templates/search.html:3
+msgid "Zoeken"
+msgstr ""
+
+#: static/templates/search.html:10
+msgid "Geavanceerd zoeken"
+msgstr ""
+
+#: static/templates/search.html:22
+msgid "Kies er een"
+msgstr ""
+
+#: static/templates/search.html:24
+msgid "Publicatie type"
+msgstr ""
+
+#: static/templates/search.html:27
+msgid "Kies een publicatietype"
+msgstr ""
+
+#: static/templates/search.html:39
+msgid "Ongeldig"
+msgstr ""
+
+#: static/templates/search.html:44
+msgid "Jaar of periode"
+msgstr ""
+
+#: static/templates/template.html:88
+msgid "help"
+msgstr ""
+
+#: static/templates/template.html:91
+msgid "over de BNTL"
+msgstr ""
+

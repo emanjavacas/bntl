@@ -13,11 +13,11 @@
           </a>
         </li>
         <li>
-          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=bib">Export .bib <img width="15px" src="/static/assets/img/export.png">
+          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=bib">{{ _('.bib exporteren') }}<img width="15px" src="/static/assets/img/export.png">
           </a>
         </li>
         <li>
-          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=ris">Export .ris <img width="15px" src="/static/assets/img/export.png">
+          <a class="dropdown-item" target="_blank" href="/export-record?doc_id={{item.doc_id}}&format=ris">{{ _('.ris exporteren') }}<img width="15px" src="/static/assets/img/export.png">
           </a>
         </li>
       </ul>
@@ -27,17 +27,17 @@
     <div class="col-10 px-1">
       <!-- type of reference -->
       <div class="row pb-2">
-        <span><span class="fw-bold pe-2">Publicatietype</span><span>{{refMap[item.type_of_reference]}}</span></span>
+        <span><span class="fw-bold pe-2">{{ _('Publicatietype') }}</span><span>{{refMap[item.type_of_reference]}}</span></span>
       </div>
       <!-- year -->
       <div class="row pb-2">
-        <span><span class="fw-bold pe-2">Jaar</span>
+        <span><span class="fw-bold pe-2">{{ _('Jaar') }}</span>
         <span>{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</span>
         </span>
       </div>
       <!-- title -->
       <div class="row pb-2">
-        <span><span class="fw-bold pe-2">Titelbeschrijving</span>
+        <span><span class="fw-bold pe-2">{{ _('Titelbeschrijving') }}</span>
         <span>{{item.title}}
           {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
           {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}</span>
@@ -46,7 +46,7 @@
       <!-- authors -->
       <div class="row pb-0">
         <span>
-          <span class="fw-bold pe-2">Auteur(s)</span>
+          <span class="fw-bold pe-2">{{ _('Auteur(s)') }}</span>
           <ul class="pb-0">
             {% if item.authors %}
             {% for author in item.authors %}
@@ -75,7 +75,7 @@
       {% if item.abstract %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Extra informatie</span>
+          <span class="fw-bold pe-2">{{ _('Extra informatie') }}</span>
           <span>{{item.abstract}}</span>
         </span>
       </div>
@@ -84,7 +84,7 @@
       {% if item.keywords %}
       <div class="row pb-0">
         <span>
-          <span class="fw-bold pe-2">Trefwoord(en)</span>
+          <span class="fw-bold pe-2">{{ _('Trefwoord(en)') }}</span>
           <ul class="pb-0">
           {% for keyword in item.keywords %}
             <li><a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a></li>
@@ -97,7 +97,7 @@
       {% if item.urls %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">URL (link naar open acces)</span>
+          <span class="fw-bold pe-2">{{ _('URL (link naar open acces)') }}</span>
           <ul class="pb-0">
           {% for url in item.urls %}
             <li><a class="px-0" href="{{url}}">{{url}}</a></li>
@@ -110,7 +110,7 @@
       {% if item.start_page %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Pagina(s)</span>
+          <span class="fw-bold pe-2">{{ _('Pagina(s)') }}</span>
           <span>{{item.start_page}}{% if item.end_page %}-{{item.end_page}}{% endif %}</span>
         </span>
       </div>
@@ -119,7 +119,7 @@
       {% if item.journal_name %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Tijdschrift</span>
+          <span class="fw-bold pe-2">{{ _('Tijdschrift') }}</span>
           <span>{{item.journal_name}}</span>
         </span>
       </div>
@@ -128,7 +128,7 @@
       {% if item.volume %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Volume</span>
+          <span class="fw-bold pe-2">{{ _('Volume') }}</span>
           <span>{{item.volume}}</span>
         </span>
       </div>
@@ -137,7 +137,7 @@
       {% if item.number %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Nummer</span>
+          <span class="fw-bold pe-2">{{ _('Nummer') }}</span>
           <span>{{item.number}}</span>
         </span>
       </div>
@@ -146,7 +146,7 @@
       {% if item.research_notes %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Recensie/Reactie</span>
+          <span class="fw-bold pe-2">{{ _('Recensie/Reactie') }}</span>
           <span>{{item.research_notes}}</span>
         </span>
       </div>
@@ -155,7 +155,7 @@
       {% if item.issn %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">ISBN-nummer</span>
+          <span class="fw-bold pe-2">{{ _('ISBN-nummer') }}</span>
           <span>{{item.issn}}</span>
         </span>
       </div>
@@ -164,7 +164,7 @@
       {% if item.place_published %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Plaats van uitgave</span>
+          <span class="fw-bold pe-2">{{ _('Plaats van uitgave') }}</span>
           <span>{{item.place_published}}</span>
         </span>
       </div>
@@ -173,7 +173,7 @@
       {% if item.publisher %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Uitgeverij</span>
+          <span class="fw-bold pe-2">{{ _('Uitgeverij') }}</span>
           <span>{{item.publisher}}</span>
         </span>
       </div>
@@ -182,7 +182,7 @@
       {% if item.notes_abstract %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Oude notatie</span>
+          <span class="fw-bold pe-2">{{ _('Oude notatie') }}</span>
           <span>{{item.notes_abstract}}</span>
         </span>
       </div>     
@@ -191,7 +191,7 @@
       {% if item.custom3 %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Titelbeschrijving boek</span>
+          <span class="fw-bold pe-2">{{ _('Titelbeschrijving boek') }}</span>
           <span>{{item.custom3}}</span>
         </span>
       </div>
@@ -200,7 +200,7 @@
       {% if item.custom4 %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">Gerelateerde artikels</span>
+          <span class="fw-bold pe-2">{{ _('Gerelateerde artikels') }}</span>
           <span>{{item.custom4}}</span>
         </span>
       </div>

@@ -1,12 +1,12 @@
 {% extends "template.html" %}
 
-{% block title %}Geschiedenis{% endblock %}
+{% block title %}{{ _('Geschiedenis') }}{% endblock %}
 
 {% block content %}
 
 <div class="row">
   <div class="col">
-    <h3 class="pb-3">Zoekgeschiedenis</h3>
+    <h3 class="pb-3">{{ _('Zoekgeschiedenis') }}</h3>
     <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1 row-cols-xs-1 g-2">
       {% for query in queries %}
       <div class="col">
@@ -21,18 +21,18 @@
               <li><span class="fw-bold">Fulltext: </span>"{{query.query_params.full_text}}"</li>
               {% endif %}
               {% if query.query_params.type_of_reference %}
-              <li><span class="fw-bold">Publicatietype: </span>
+              <li><span class="fw-bold">{{ _('Publicatietype') }}: </span>
                 <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{query.query_params.type_of_reference}}">
                   <img src="/static/assets/img/{{imgMap[query.query_params.type_of_reference]}}.png">
                 </span>
               </li>
               {% endif %}
               {% if query.query_params.year %}
-              <li><span class="fw-bold">Jaar: </span>"{{query.query_params.year}}"</li>
+              <li><span class="fw-bold">{{ _('Jaar') }}: </span>"{{query.query_params.year}}"</li>
               {% endif %}
 
               {% if query.query_params.title %}
-              <li><span class="fw-bold">Title: </span>"{{query.query_params.title}}"
+              <li><span class="fw-bold">{{ _('Titel') }}: </span>"{{query.query_params.title}}"
                 {% if query.query_params.use_regex_title %}
                 <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
                   <img width="10px" src="/static/assets/img/regex.svg">
@@ -47,7 +47,7 @@
               {% endif %}
 
               {% if query.query_params.author %}
-              <li><span class="fw-bold">Auteur: </span>"{{query.query_params.author}}"
+              <li><span class="fw-bold">{{ _('Auteur') }}: </span>"{{query.query_params.author}}"
                 {% if query.query_params.use_regex_author %}
                 <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
                   <img width="10px" src="/static/assets/img/regex.svg">
@@ -62,7 +62,7 @@
               {% endif %}
 
               {% if query.query_params.keywords %}
-              <li><span class="fw-bold">Trefwoorden: </span>"{{query.query_params.keywords}}"
+              <li><span class="fw-bold">{{ _('Trefwoorden') }}: </span>"{{query.query_params.keywords}}"
                 {% if query.query_params.use_regex_keywords %}
                 <span data-bs-toggle="tooltip" data-bs-placement="top" title="Using regex">
                   <img width="10px" src="/static/assets/img/regex.svg">
@@ -82,7 +82,7 @@
             <div class="row">
               <div class="col-4">
                 {% if query.n_hits %}
-                <span class="badge bg-light text-dark">{{ query.n_hits }} hits</span>
+                <span class="badge bg-light text-dark">{{ query.n_hits }} {{ _('treffers') }}</span>
                 {% endif %}
               </div>
               <div class="col-8">

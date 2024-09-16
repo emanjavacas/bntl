@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi_babel import BabelConfigs, BabelMiddleware
 
 from bntl.vector import VectorClient, MissingVectorException
 from bntl.db import DBClient
@@ -70,12 +71,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
+
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
 templates.env.filters["doc_repr"] = DocScreen.render_doc
+# babel
+babel_configs = BabelConfigs(
+    ROOT_DIR=__file__,
+    BABEL_DEFAULT_LOCALE="en",
+    BABEL_TRANSLATION_DIRECTORY=settings.BABEL_TRANSLATIONS_DIR)
+app.add_middleware(BabelMiddleware, babel_configs=babel_configs, jinja2_templates=templates)
 
 
 @app.middleware("http")
@@ -93,16 +101,23 @@ async def add_session_id_cookie(request: Request, call_next):
     return response
 
 
+# login logic
 class RequiresLoginException(Exception):
     pass
 
 
 @app.exception_handler(RequiresLoginException)
 async def exception_handler(request: Request, e: RequiresLoginException) -> Response:
+    """
+    Redirect to login upon unauthorized request to required-login endpoint
+    """
     return RedirectResponse(url=f"/login?next_url={e.args[0]['next_url']}")
 
 
 def require_validated_session(request: Request):
+    """
+    Dependency injection for protected routes
+    """
     session_id = request.cookies.get("session_id")
     if not session_id or session_id not in VALIDATED_SESSIONS:
         raise RequiresLoginException({"next_url": request.url.path})
@@ -120,7 +135,6 @@ async def login_post(login_params: LoginParams, request: Request=None):
         if session_id:
             VALIDATED_SESSIONS.add(session_id)
             return JSONResponse({"status_code": status.HTTP_303_SEE_OTHER})
-            # RedirectResponse(login_params.next_url, status_code=status.HTTP_303_SEE_OTHER)
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown session")
     else:

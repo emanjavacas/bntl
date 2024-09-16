@@ -9,36 +9,36 @@
     <div class="row">
       <div class="card border-secondary px-0">
         <div class="card-header">
-          <h4>BIBLIOGRAFIE</h4>
-          <h4 class="text-muted small">VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP</h4>
+          <h4>{{ _('BIBLIOGRAFIE') }}</h4>
+          <h4 class="text-muted small">{{ _('VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP') }}</h4>
         </div>
         <div class="card-body">
           <p class="fs-6 card-text">
-          De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
-          uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten. 
+          {{ _('De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
+          uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten.') }}
           </br>
-          We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
-          kan u mee nadenken over de BNTL van de toekomst. 
+          {{ _('We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
+          kan u mee nadenken over de BNTL van de toekomst.') | safe }}
           </p>
-          <p class="text-end"><a href="/about">Lees verder...</a></p>
+          <p class="text-end"><a href="/about">{{ _('Lees verder') }}...</a></p>
         </div>
       </div>
     </div>
     <div class="row fw-light px-3 pt-3">
       <div class="col">
-        Dit database maakt gebruikt van <a href="https://www.zotero.org"><img width=60 src="/static/assets/img/zotero-logo.svg"></a>
+        {{ _('Dit database maakt gebruikt van') }} <a href="https://www.zotero.org"><img width=60 src="/static/assets/img/zotero-logo.svg"></a>
       </div>
     </div>
     <hr>
     <div class="row fw-light px-3">
       <div class="col">
-        Bekijk ook de Friese bibliografie: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
+        {{ _('Bekijk ook de Friese bibliografie') }}: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
       </div>
     </div>
     <hr>
     <div class="row fw-light px-3">
       <div class="col">
-        Digitale Bibliografie voor die Afrikaanse Taalkunde <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
+        {{ _('Digitale Bibliografie voor die Afrikaanse Taalkunde') }}: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
       </div>
     </div>
   </div>
@@ -50,13 +50,13 @@
         <form id="fullText">
           <div class="input-group">
             <input type="text" class="form-control" name="full_text" placeholder="Volledig tekstzoek" required>
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">zoeken</button>
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">{{ _('zoeken') }}</button>
           </div>
         </form>
       </div>
       <div class="row pt-2">
-        <p class="text-end"><a href="/search">geavanceerd zoeken</a></p>
-        <p class="text-end"><a href="/get-query-history">zoekgeschiedenis</a></p>
+        <p class="text-end"><a href="/search">{{ _('geavanceerd zoeken') }}</a></p>
+        <p class="text-end"><a href="/get-query-history">{{ _('zoekgeschiedenis') }}</a></p>
       </div>
       <!-- last added -->
       <div class="row pt-2">
@@ -66,8 +66,8 @@
             <div class="col">
               <nav class="navbar navbar-light py-0" style="background-color: #e3f2fd;">
                 <div class="container-fluid">
-                  <span class="navbar-text small">Laatste toegevoegde documenten</span>
-                  <span class="navbar-text small pull-end">Aantal={{total_documents}}</span> 
+                  <span class="navbar-text small">{{ _('Laatst toegevoegde documenten') }}</span>
+                  <span class="navbar-text small pull-end">{{ _('Aantal') }}={{total_documents}}</span> 
                 </div>
               </nav>
             </div>

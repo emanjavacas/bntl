@@ -1,16 +1,16 @@
 {% extends "template.html" %}
 
-{% block title %}Results{% endblock %}
+{% block title %}{{ _('Resultaten') }}{% endblock %}
 
 {% block content %}
 
 <div class="row">
   <div class="col">
-    <h3 class="text-uppercase">ZOEKRESULTATEN {% if is_within %}op laatst zoekje{% endif %}</h3>
+    <h3 class="text-uppercase">{{ _('ZOEKRESULTATEN') }} {% if is_within %}{{ _('op laatst zoekje') }}{% endif %}</h3>
   </div>
 <div class="row">
   <div class="fw-light px-3 py-3 small">
-    {{n_hits}} Zoekresultaten {% if is_within %}van {{parent_n_hits}} in laatst zoekje{% endif %}
+    {{n_hits}} {{ _('Zoekresultaten') }} {% if is_within %}{{ _('van') }} {{parent_n_hits}} {{ _('in laatst zoekje') }}{% endif %}
   </div>
 </div>
 
@@ -20,10 +20,10 @@
       <div class="container-fluid">
         <!-- sorting -->
         <span class="navbar-text small">
-          Sorteer op 
+          {{ _('Sorteer op') }} 
         <!-- author -->
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
-          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Auteur</a>
+          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Auteur') }}</a>
           <a class="btn btn-sm {% if sort_author == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
              href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}">
               <i class="bi bi-caret-up-fill"></i>
@@ -35,7 +35,7 @@
         </div>
         <!-- year -->
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
-          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">Jaar</a>
+          <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Jaar') }}</a>
           <a class="btn btn-sm {% if sort_year == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
              href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}">
               <i class="bi bi-caret-up-fill"></i>
@@ -48,7 +48,7 @@
         </span>
         <!-- page size -->
         {% if source.startswith("/vector") %}
-        <span class="navbar-text small justify-content-end">Topresultaten
+        <span class="navbar-text small justify-content-end">{{ _('Topresultaten') }}
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetLimit in [10, 20, 50] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if limit == targetLimit %}disabled{% endif %}" role="button"
@@ -59,7 +59,7 @@
           </div>
         </span>
         {% else %}
-        <span class="navbar-text small justify-content-end">Pagina
+        <span class="navbar-text small justify-content-end">{{ _('Pagina') }}
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if size == targetSize %}disabled{% endif %}" role="button"
@@ -84,17 +84,17 @@
         <form id="withinForm">
           <div class="input-group">
             <input name="within" class="form-control" type="search" placeholder="Zoek binnen resultaat" aria-label="Search" required>
-            <button class="btn btn-sm btn-outline-secondary" type="submit">Zoek</button>
+            <button class="btn btn-sm btn-outline-secondary" type="submit">{{ _('Zoek') }}</button>
             {% if query_id %}
             <button class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <span class="visually-hidden">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=ris">Export .ris <img width="15px" src="/static/assets/img/export.png"></a>
+                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=ris">.ris exporteren<img width="15px" src="/static/assets/img/export.png"></a>
               </li>
               <li>
-                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=bib">Export .bib <img width="15px" src="/static/assets/img/export.png"></a>
+                <a class="dropdown-item" target="_blank" href="/export-query?query_id={{query_id}}&format=bib">.bib exporteren<img width="15px" src="/static/assets/img/export.png"></a>
               </li>
             </ul>
             {% endif %}
