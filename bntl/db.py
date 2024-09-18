@@ -170,7 +170,7 @@ class DBClient():
                 doc_idx += 1
                 # validate
                 try:
-                    doc = prepare_document(source_doc)
+                    doc = prepare_document(dict(source_doc))
                     doc_id = ObjectId()
                     doc["_id"] = doc_id
                     docs.append({'doc': doc, 'source': utils.default_to_regular(source_doc)})
@@ -186,8 +186,10 @@ class DBClient():
 
             errors = []
             try:
+                # index documents
                 await utils.maybe_await(logger.info("Batch-{}: Indexing {} documents".format(batch_id, len(docs))))
-                await self.bntl_coll.bulk_write([InsertOne(item['doc']) for item in docs], ordered=False)
+                if docs:
+                    await self.bntl_coll.bulk_write([InsertOne(item['doc']) for item in docs], ordered=False)
             except pymongo.errors.BulkWriteError as e:
                 errors = []
                 for err in e.details['writeErrors']:
@@ -197,24 +199,29 @@ class DBClient():
             except pymongo.errors.InvalidOperation as e:
                 await utils.maybe_await(logger.info("No documents to index, exiting..."))
                 return []
+            
             finally:
                 errors = set(errors)
                 done.extend([str(item["doc"]["_id"]) for idx, item in enumerate(docs) if idx not in errors])
+                
                 # index source documents
+                source_docs = [InsertOne({"doc_id": str(item["doc"]["_id"]), "source": item["source"]}) 
+                               for idx, item in enumerate(docs) if idx not in errors]
                 try:
-                    await self.source_coll.bulk_write([
-                        InsertOne({"doc_id": str(item["doc"]["_id"]), "source": item["source"]})
-                        for idx, item in enumerate(docs) if idx not in errors], ordered=False)
+                    if source_docs:
+                        await utils.maybe_await(logger.info("Indexing {} source documents".format(len(source_docs))))
+                        await self.source_coll.bulk_write(source_docs, ordered=False)
                 except pymongo.errors.BulkWriteError as e:
                     await utils.maybe_await(logger.info("Got {}/{} errors while indexing source data".format(
                         len(e.details['writeErrors']), len(docs))))
+                
                 # index autocomplete data
                 autocomplete = DBClient.collete_autocomplete(
                     [item["doc"] for idx, item in enumerate(docs) if idx not in errors])
                 try:
-                    await utils.maybe_await(logger.info("Indexing {} autocomplete items".format(len(autocomplete))))
-                    await self.autocomplete_coll.bulk_write(
-                        [InsertOne(item) for item in autocomplete], ordered=False)
+                    if autocomplete:
+                        await utils.maybe_await(logger.info("Indexing {} autocomplete items".format(len(autocomplete))))
+                        await self.autocomplete_coll.bulk_write([InsertOne(item) for item in autocomplete], ordered=False)
                 except pymongo.errors.BulkWriteError as e:
                     await utils.maybe_await(logger.info("Got {}/{} errors while indexing autocomplete items".format(
                         len(e.details['writeErrors']), len(autocomplete))))

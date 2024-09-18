@@ -235,7 +235,7 @@ async def paginate_route(query_id: str, request: Request, page_params: PageParam
          **results.model_dump()})
 
 
-@app.get("/paginate-within")
+@app.get("/paginateWithin")
 async def paginate_within_route(query_id: str, query_str: str, request: Request, page_params: PageParams=Depends()):
     """
     Paginate route for recursive queries
@@ -248,12 +248,12 @@ async def paginate_within_route(query_id: str, query_str: str, request: Request,
     query_params = QueryParams.model_validate(query_data['query_params'])
     results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBEntryModel)
 
-    source = f"/paginate-within?query_id={query_id}&query_str={query_str}"
+    source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
     return templates.TemplateResponse(
         "results.html", {"request": request, "is_within": True, "source": source, **results.model_dump()})
 
 
-@app.get("/get-query-history")
+@app.get("/getQueryHistory")
 async def get_query_history(request: Request):
     """
     Query history route
@@ -292,9 +292,10 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     # overwrite pagination, since we are not using it for now
     page_params.size = 100
     results = await paginate(
-        app.state.db_client.bntl_coll, 
-        {"_id": {"$in": [ObjectId(item["doc_id"]) for item in hits]}}, 
-        page_params, VectorEntryModel, transform)
+        app.state.db_client.bntl_coll,
+        QueryParams(), page_params, VectorEntryModel, 
+        within_ids=[ObjectId(item["doc_id"]) for item in hits],
+        transform=transform)
 
     # ensure we sort by score unless differently specified
     if not page_params.sort_author and not page_params.sort_year:
@@ -314,7 +315,7 @@ async def index():
     return {"message": {"Estimated document count": await app.state.db_client.count()}}
 
 
-@app.post("/upload-file", dependencies=[Depends(require_validated_session)])
+@app.post("/uploadFile", dependencies=[Depends(require_validated_session)])
 async def upload(file: UploadFile = File(...), 
                  chunk: int = Form(...), 
                  total_chunks: int = Form(...),
@@ -328,7 +329,7 @@ async def upload(file: UploadFile = File(...),
     return
 
 
-@app.get("/check-upload-status/{file_id}", response_model=FileUploadModel, dependencies=[Depends(require_validated_session)])
+@app.get("/checkUploadStatus/{file_id}", response_model=FileUploadModel, dependencies=[Depends(require_validated_session)])
 async def check_upload_status(file_id: str):
     status = await app.state.db_client.find_upload_status(file_id)
     if not status:
@@ -336,12 +337,12 @@ async def check_upload_status(file_id: str):
     return status
 
 
-@app.get("/get-upload-history", response_model=List[FileUploadModel], dependencies=[Depends(require_validated_session)])
+@app.get("/getUploadHistory", response_model=List[FileUploadModel], dependencies=[Depends(require_validated_session)])
 async def get_upload_history():
     return await app.state.db_client.get_upload_history()
 
 
-@app.get("/get-upload-log", dependencies=[Depends(require_validated_session)])
+@app.get("/getUploadLog", dependencies=[Depends(require_validated_session)])
 async def get_upload_log(file_id: str):
     log_filename = utils.get_log_filename(file_id)
     filename = await app.state.db_client.get_upload_filename(file_id)
@@ -390,12 +391,12 @@ async def revectorize(background_tasks: BackgroundTasks):
     return "Ok"
 
 
-@app.get("/query-autocomplete")
-async def query_autocomplete(field: str, query: str=Query(..., min_length=3)):
+@app.get("/getCompletions")
+async def get_completions(field: str, query: str=Query(..., min_length=3)):
     return await app.state.db_client.find_autocomplete_by_prefix(field, query)
 
 
-@app.get("/export-record")
+@app.get("/exportRecord")
 async def export_record(doc_id: str, format: str):
     doc = await app.state.db_client.get_doc_source(doc_id)
     if not doc:
@@ -411,7 +412,7 @@ async def export_record(doc_id: str, format: str):
     return StreamingResponse(io.BytesIO(output.encode()))
 
 
-@app.get("/export-query")
+@app.get("/exportQuery")
 async def export_query(query_id: str, format: str, request: Request):
     session_id = request.cookies.get("session_id")
     query_data = await app.state.db_client.get_query(query_id, session_id)

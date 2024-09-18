@@ -33,7 +33,7 @@ $(document).ready(function(){
                 formData.append('total_chunks', totalChunks);
                 formData.append('file_id', fileId);
                 $.ajax({
-                    url: '/upload-file',
+                    url: '/uploadFile',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -90,7 +90,7 @@ $(document).ready(function(){
     function checkStatus(fileId) {
         var interval = setInterval(function() {
             $.ajax({
-                url: `/check-upload-status/${fileId}`,
+                url: `/checkUploadStatus/${fileId}`,
                 type: 'GET',
                 success: function(response) {
                     updateFileStatus(fileId, response.current_status.status, response.current_status.progress);
@@ -163,7 +163,7 @@ $(document).ready(function(){
     van.add($("#entryPoint"), Card());
     // recall upload history
     $.ajax({
-        url: "get-upload-history",
+        url: "getUploadHistory",
         type: 'GET',
         success: function(response) {
             $.each(response, function(index, item) {
@@ -202,7 +202,7 @@ class FileList {
 function downloadLog(fileId) {
     const a = document.createElement('a');
     a.style.display = 'none';
-    a.href = `/get-upload-log?file_id=${fileId}`;
+    a.href = `/getUploadLog?file_id=${fileId}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -99,7 +99,7 @@ def parse_sort(page_params: PageParams):
     return sort
 
 
-async def paginate(coll, 
+async def paginate(coll,
                    query_params: QueryParams,
                    page_params: PageParams,
                    ResponseModel: BaseModel,
