@@ -31,7 +31,7 @@ async def main(path):
         # insert documents
         await logger.info("Inserting {} docs from file: {}".format(len(docs), path))
         async def callback(progress):
-            await logger.info("Inserted {} from {} documents.".format(progress, len(docs)))
+            await logger.info("Processed {}/{} documents.".format(progress, len(docs)))
         done = await db_client.insert_documents(docs, logger=logger, progress_callback=callback)
         
         # vectorize
