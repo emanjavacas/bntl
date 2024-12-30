@@ -98,36 +98,3 @@ async def ris2bib(ris_data):
     return await xml2bib(xml_data)
 
 
-def maybe_list(inp: Union[List[str], str]):
-    if isinstance(inp, list):
-        if len(inp) == 1:
-            return inp[0]
-        *firsts, last = inp
-        return ', '.join(firsts) + " & " + last
-    return inp
-
-
-RIS2DOC_SCREENNAMES = {
-    "TY": "Publicatietype",
-    "PY": "Publicatiejaar",
-    "TI": "Titel",
-    "T2": "Boektitel",
-    "AB": "Extra informatie",
-    "UR": "URL (link naar open acces)",
-    "AU": "Auteur(s)",
-    "A1": "Auteur(s)",
-    "A2": "Redacteur(s)",
-    "KW": "Trefwoord(en)",
-    "SP": "Startpagina",
-    "EP": "Eindpagina",
-    "JO": "Tijdschrift",
-    "VL": "Volume",
-    "IS": "Nummer",
-    "RN": "Recensie/Reactie",
-    "SN": "ISBN-nummer",
-    "CY": "Plaats van uitgave",
-    "PB": "Uitgeverij",
-    "N2": "Oude notatie",
-    "C3": "Titelbeschrijving boek",
-    "C4": "Gerelateerde artikels"
-}

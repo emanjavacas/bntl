@@ -73,7 +73,9 @@ pip install poetry
 Besides the package, you'll need to provide a MongoDB and QDrant databases. These don't need
 to live locally in your same server, but could potentially be remote and cloud-managed.
 
-### MongoDB
+### Databases
+
+#### MongoDB
 
 For a local install on ubuntu you can follow this link: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/#std-label-install-mdb-community-ubuntu
 
@@ -81,4 +83,7 @@ For a local install on ubuntu you can follow this link: https://www.mongodb.com/
 
 For a local install on ubuntu, it's recommended to use docker: https://qdrant.tech/documentation/guides/installation/
 
+### Bib
 
+you need bibutils
+sudo apt install bibutils

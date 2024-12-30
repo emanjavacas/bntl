@@ -1,154 +1,227 @@
 
 import uuid
 from datetime import datetime
-from string import Formatter
 
 from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union, Any
 from typing_extensions import Self
 from pydantic import BaseModel, Field, ConfigDict, model_validator
-from enum import Enum
-
-from rispy.config import TAG_KEY_MAPPING
-
-from bntl import utils
 
 
-T = TypeVar("T")
+def _render_authors(authors):
+    output = ""
+    if len(authors) == 1:
+        output += authors[0]
+    elif len(authors) == 2:
+        output += " & ".join(authors)
+    else:
+        output += ", ".join(authors[:-1]) + " & " + authors[-1]
+    return output
 
 
-def format_str_from_ris(repr_str):
-    """
-    Substitute RIS fields with the corresponding fields in the parsed document
-    """
-    for key, value in TAG_KEY_MAPPING.items():
-        repr_str = repr_str.replace(key, value)
-    return repr_str.replace("[", "{").replace("]", "}")
-
-
-class DocScreen:
-    """
-    This class handles required fields on the basis of the screen representation
-    """
-
-    # JOUR = "[AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
-    # BOOK = "[AU]. [TI]. [CY]: [PB], [PY]. [EP] p."
-    # BOOK_2EDS = "[A2] (red.). [TI]. [CY]: [PB], [PY]. [EP] p."
-    # CHAP = "[A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]."
-    # EJOUR = "[AU]. [TI]. Op: [JO]: [VL]."
-    # WEB = "[AU]. [TI]. [PY]."
-    # JFULL = "[TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
-    # ADVS = "[AU]. [TI]. [CY]: [PB], [PY]."
-    JOUR = "[AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
-    BOOK = "[AU]. [TI]. [CY]: [PB], [PY]."
-    BOOK_2EDS = "[A2] (red.). [TI]. [CY]: [PB], [PY]."
-    CHAP = "[A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]."
-    EJOUR = "[AU]. [TI]. Op: [JO]: [VL]."
-    WEB = "[AU]. [TI]. [PY]."
-    JFULL = "[TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [IS], [SP]-[EP]."
-    ADVS = "[AU]. [TI]. [CY]: [PB], [PY]."
-
-
-    @staticmethod
-    def get_repr_str(doc):
+class Node:
+    def __init__(self, field, pre="", post="", separator=", ", list_renderer=None):
         """
-        Find type of screenname based on document structure
+        Initialize a Node.
+
+        :param field: The field key to extract from the record.
+        :param pre: Prefix to add before the field value if it exists.
+        :param post: Suffix to add after the field value if it exists.
+        :param separator: Separator to use if multiple values exist for the field.
         """
-        if doc['type_of_reference'] == "JOUR":
-            return DocScreen.JOUR
-        elif doc['type_of_reference'] == "BOOK":
-            if doc.get('secondary_authors') is not None:
-                # ignore authors
-                return DocScreen.BOOK_2EDS
-            return DocScreen.BOOK
-        elif doc['type_of_reference'] == "CHAP":
-            return DocScreen.CHAP
-        elif doc['type_of_reference'] == "JFULL":
-            return DocScreen.JFULL
-        elif doc['type_of_reference'] == "WEB":
-            return DocScreen.WEB
-        elif doc['type_of_reference'] == "ADVS":
-            return DocScreen.ADVS
-        elif doc['type_of_reference'] == 'EJOUR':
-            return DocScreen.EJOUR
+        self.field = field
+        self.pre = pre
+        self.post = post
+        self.separator = separator
+        self.list_renderer = list_renderer
+        self.next_node = None
+
+    def __add__(self, other):
+        """
+        Chain nodes together using the `+` operator.
+
+        :param other: Another Node to chain.
+        :return: The current Node with the next_node linked.
+        """
+        if not isinstance(other, Node):
+            raise TypeError("Can only add another Node instance.")
+        current = self
+        while current.next_node:
+            current = current.next_node
+        current.next_node = other
+        return self
+
+    def render(self, record):
+        """
+        Render the field value for this node and any chained nodes.
+
+        :param record: A dictionary representing the RIS record.
+        :return: The rendered string for this node and its chain.
+        """
+        value = record.get(self.field)
+        if isinstance(value, list):
+            if self.list_renderer is not None:
+                value = self.list_renderer(value)
+            else:
+                value = self.separator.join(value)
+        elif value is None:
+            value = ""
+
+        rendered = f"{self.pre}{value}{self.post}" if value else ""
+
+        if self.next_node:
+            return rendered + self.next_node.render(record)
+        return rendered
+
+
+# [AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]. 
+JOUR_renderer = (
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
+    Node("title", post=". ") +
+    Node("journal_name", pre="In: ", post=": ") +
+    Node("volume", post=" ") +
+    Node("year", pre="(", post=") ") +
+    Node("number", post=", ") +
+    Node("start_page") +
+    Node("end_page", pre="-", post=". ")
+)
+
+# [AU]. [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
+BOOK_renderer = (
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
+    Node("title", post=". ") +
+    Node("place_published", post=": ") +
+    Node("publisher", post=", ") +
+    Node("year", post=". ") +
+    Node("start_page", post=" p. ") +
+    Node("secondary_title", pre="(", post="; ") +
+    Node("SV", post="). ")
+)
+
+# [A2] (red.). [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
+BOOK_2EDS_renderer = (
+    Node("secondary_authors", post="(red.). ") +
+    Node("title", post=". ") +
+    Node("place_published", post=": ") +
+    Node("publisher", post=", ") +
+    Node("year", post=". ") +
+    Node("start_page", post=" p. ") +
+    Node("secondary_title", pre="(", post="; ") +
+    Node("SV", post="). ")
+)
+
+# [AU]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]. ([T3]; [SV]).
+CHAP_renderer = (
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
+    Node("title", post=". ") +
+    Node("secondary_author", pre="In: ", post="(red.). ") +
+    Node("secondary_title", post=". ") +
+    Node("place_published", post=": ") +
+    Node("publisher", post=", ") +
+    Node("year", post=", ") +
+    Node("start_page", pre=" p. ") +
+    Node("end_page", pre="-", post=". ") +
+    Node("tertiary_title", pre="(", post="; ") +
+    Node("SV", post="). ")
+)
+
+# [AU]. [TI]. [PY].
+WEB_renderer = (
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
+    Node("title", post=". ") +
+    Node("year", post=".")
+)
+
+# [TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [SV], [SP] p.
+JFULL_renderer = (
+    Node("title", post=". ") +
+    Node("journal_name", pre="Speciaal nummer van: ", post=": ") +
+    Node("volume", post=" ") +
+    Node("year", pre="(", post=") ") +
+    Node("SV", post=", ") +
+    Node("start_page", post=" p.")
+)
+
+# [AU]. [TI]. [CY]: [PB], [PY].
+ADVS_renderer = (
+    Node("first_author", post=". ", list_renderer=_render_authors) +
+    Node("title", post=". ") +
+    Node("place_published", post=": ") +
+    Node("publisher", post=", ") +
+    Node("year", post=".")
+)
+
+
+def get_record_screen_name(record):
+    if record["type_of_reference"] == "JOUR":
+        return JOUR_renderer.render(record)
+    elif record["type_of_reference"] == "BOOK":
+        if record.get("secondary_author"):
+            return BOOK_2EDS_renderer.render(record)
         else:
-            raise ValueError(f"Unknown publication type: {doc['type_of_reference']}")
-
-    @staticmethod
-    def find_missing_fields(doc):
-        repr_str = format_str_from_ris(DocScreen.get_repr_str(doc))
-        missing = []
-        for _, fname, _, _ in Formatter().parse(format_str_from_ris(repr_str)):
-            if not fname: continue
-            if not doc.get(fname):
-                missing.append(fname)
-        return missing
-
-    @staticmethod
-    def render_doc(doc):
-        repr_str = format_str_from_ris(DocScreen.get_repr_str(doc))
-        kwargs = {k: utils.maybe_list(v) for k, v in doc.items()}
-        return repr_str.format_map(kwargs)
+            return BOOK_renderer.render(record)
+    elif record["type_of_reference"] == "CHAP":
+        return CHAP_renderer.render(record)
+    elif record["type_of_reference"] == "WEB":
+        return WEB_renderer.render(record)
+    elif record["type_of_reference"] == "JFULL":
+        return JFULL_renderer.render(record)
+    elif record["type_of_reference"] == "ADVS":
+        return ADVS_renderer.render(record)
+    else:
+        raise ValueError("Unknown reference type: {}".format(record["type_of_reference"]))
 
 
 TypeOfReference = Literal["JOUR", "BOOK", "CHAP", "EJOUR", "WEB", "JFULL", "ADVS"]
 
 
-class EntryModel(BaseModel):
+class DocumentModel(BaseModel):
     """
-    Entry model on the basis of the 
+    Document as it comes in from the ris parser
     """
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
-    # this is stored for convenience (enable year range queries)
-    end_year: Optional[Union[int|str]] = Field(help="Custom-made field to deal with range years (e.g. 1987-2024)", default="")
-    # required
-    type_of_reference: TypeOfReference = Field(help="Record format")
+    
+    id: str = Field(help="Zotero ID") # ID
+    type_of_reference: TypeOfReference = Field(help="Record format") # TY
 
-    # source fields (fields encountered in first db dump, it may fail)
-    title: Optional[str] = Field(help="Title of the record", default=None)
-    year: Optional[Union[int|str]] = Field(help="Year of record publication in string format", default="")
-    label: Optional[str] = Field(help="Zotero export validation result", default=None)
-    name_of_database: Optional[str] = Field(help="BNTL metadata", default=None)
-    secondary_title: Optional[str] = Field(default=None)
-    tertiary_title: Optional[str] = Field(default=None)
-    authors: Optional[List[str]] = Field(default=None)
-    first_authors: Optional[List[str]] = Field(default=None)
-    secondary_authors: Optional[List[str]] = Field(default=None)
-    tertiary_authors: Optional[List[str]] = Field(default=None)
-    journal_name: Optional[str] = Field(default=None)
-    end_page: Optional[str] = Field(default=None)
-    start_page: Optional[str] = Field(default=None)
-    volume: Optional[str] = Field(default=None)
-    number: Optional[str] = Field(default=None)
-    edition: Optional[str] = Field(default=None)
-    issn: Optional[str] = Field(default=None)
-    publisher: Optional[str] = Field(default=None)
-    place_published: Optional[str] = Field(default=None)
-    urls: Optional[List[str]] = Field(default=None)
-    note: Optional[str] = Field(default=None)
-    research_notes: Optional[str] = Field(default=None)
-    keywords: Optional[List[str]] = Field(default=None)
-    unknown_tag: Optional[Dict[str, List[str]]] = Field(default=None)
-
-    @model_validator(mode="before")
-    def check_document_type(self) -> Self:
-        missing = DocScreen.find_missing_fields(self)
-        if missing:
-            raise ValueError({"missing_fields": missing, "repr_type": DocScreen.get_repr_str(self)})
-        return self
+    keywords: Optional[List[str]] = Field(help="Keywords", default=None) # KW
+    first_authors: Optional[List[str]] = Field(help="Authors", default=None) # A1
+    secondary_authors: Optional[List[str]] = Field(help="Editor", default=None) # A2
+    tertiary_authors: Optional[List[str]] = Field(help="Translator", default=None) # A3
+    primary_title: Optional[str] = Field(help="Title", default=None) # T1
+    secondary_title: Optional[str] = Field(help="Book Title/Series", default=None) # T2
+    tertiary_title: Optional[str] = Field(help="Series/Special issue", default=None) # T3
+    notes_abstract: Optional[str] = Field(help="Old BNTL citation", default=None) # N2
+    start_page: Optional[str] = Field(help="Pages", default=None) # SP
+    year: Optional[str] = Field(help="Publication year", default=None) # PY
+    access_date: Optional[str] = Field(help="Date added", default=None) # Y2
+    number: Optional[str] = Field(help="Issue", default=None) # IS
+    journal_name: Optional[str] = Field(help="Journal name", default=None) # JO
+    issn: Optional[str] = Field(help="ISSN", default=None) # SN
+    volume: Optional[str] = Field(help="Volume", default=None) # VL
+    abstract: Optional[str] = Field(help="Additional Information", default=None) # AB
+    reviewed_item: Optional[str] = Field(help="Review of", default=None) # RI
+    research_notes: Optional[str] = Field(help="Review", default=None) # RN
+    urls: Optional[List[str]] = Field(help="URL", default=None) # UR
+    # SV: Optional[str] = Field(help="Series number", default=None)
+    publisher: Optional[str] = Field(help="Publisher", default=None) # PB
+    place_published: Optional[str] = Field(help="Place", default=None) # CY
+    edition: Optional[str] = Field(help="Edition", default=None) # ET
+    doi: Optional[str] = Field(help="DOI", default=None) # DO
 
 
-class DBEntryModel(EntryModel):
-    doc_id: str = Field(help='Internal MongoDB id')
+class ComputedFields(BaseModel):
+    start_year: Optional[int] = Field(default=None)
+    end_year: Optional[int] = Field(default=None)
+
+
+class DBDocumentModel(BaseModel):
+    document: DocumentModel
+    computed_fields: ComputedFields
     date_added: datetime = Field(help="Date of ingestion")
-    hash: str = Field(help="Enable duplicate detection")
+    is_oa: bool = Field(help="Whether the document is oa, based on whether it has valid url")
 
 
-class SourceModel(BaseModel):
-    doc_id: str = Field(help="Doc id pointing to the EntryModel doc_id")
-    source: Dict[Any, Any] = Field(help="Input source for the document in BSON format")
-
-
-class VectorEntryModel(DBEntryModel):
+class VectorEntryModel(DBDocumentModel):
     score: float = Field(help="Vector similarity")
 
 
@@ -158,6 +231,7 @@ class QueryParams(BaseModel):
     year: Optional[str] = None
     author: Optional[str] = None
     keywords: Optional[str] = None
+    is_oa: Optional[bool] = False
     use_regex_author: Optional[bool] = False
     use_regex_title: Optional[bool] = False
     use_regex_keywords: Optional[bool] = False
@@ -176,6 +250,9 @@ class QueryModel(BaseModel):
     last_accessed: datetime
 
 
+T = TypeVar("T")
+
+
 class _PagedResponseModel(BaseModel, Generic[T]):
     n_hits: int
     from_page: int
@@ -186,12 +263,10 @@ class _PagedResponseModel(BaseModel, Generic[T]):
 
 
 class PageParams(BaseModel):
-    page: int=Field(default=1, ge=1, help="Page number to retrieve")
-    size: int=Field(default=10, le=100, help="Number of documents per page")
-    sort_author: Literal["ascending", "descending", ""]=Field(
-        default="", help="Sort order for author")
-    sort_year: Literal["ascending", "descending", ""]=Field(
-        default="", help="Sort order for year")
+    page: int = Field(default=1, ge=1, help="Page number to retrieve")
+    size: int = Field(default=10, le=100, help="Number of documents per page")
+    sort_author: Literal["ascending", "descending", ""] = Field(default="", help="Sort order for author")
+    sort_year: Literal["ascending", "descending", ""] = Field(default="", help="Sort order for year")
     
 
 class PagedResponseModel(PageParams, _PagedResponseModel, Generic[T]):
@@ -199,8 +274,8 @@ class PagedResponseModel(PageParams, _PagedResponseModel, Generic[T]):
 
 
 class VectorParams(BaseModel):
-    limit: int=Field(default=10, help="Top-k vectors to retrieve")
-    threshold: float=Field(default=0, ge=0, lt=1, help="Similarity threshold")
+    limit: int = Field(default=10, help="Top-k vectors to retrieve")
+    threshold: float = Field(default=0, ge=0, lt=1, help="Similarity threshold")
 
 
 class StatusModel(BaseModel):

@@ -23,8 +23,8 @@ from fastapi_babel import BabelConfigs, BabelMiddleware
 from bntl.vector import VectorClient, MissingVectorException
 from bntl.db import DBClient
 from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
-from bntl.models import DBEntryModel, VectorEntryModel, FileUploadModel
-from bntl.models import DocScreen
+from bntl.models import DBDocumentModel, VectorEntryModel, FileUploadModel
+from bntl.models import get_record_screen_name
 from bntl.pagination import paginate, paginate_within, build_query
 from bntl.upload import Status, FileUploadManager, convert_to_text
 from bntl.settings import settings, setup_logger
@@ -77,7 +77,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
-templates.env.filters["doc_repr"] = DocScreen.render_doc
+templates.env.filters["doc_repr"] = get_record_screen_name
 # babel
 babel_configs = BabelConfigs(
     ROOT_DIR=__file__,
@@ -203,7 +203,7 @@ async def quick_query(request: Request,
     Shortcut query route for the database without registering queries in the db.
     It is only meant to be used in quick-queries like links pointing to authors or keywords.
     """
-    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBEntryModel)
+    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBDocumentModel)
     # add source
     source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
     return templates.TemplateResponse(
@@ -221,7 +221,7 @@ async def paginate_route(query_id: str, request: Request, page_params: PageParam
         return JSONResponse(status_code=404, content={"error": "Query not found"})
 
     query_params = QueryParams.model_validate(query_data['query_params'])
-    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBEntryModel)
+    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBDocumentModel)
     # store total on query database for preview & last accessed
     await app.state.db_client.update_query(
         query_id, session_id, 
@@ -246,7 +246,7 @@ async def paginate_within_route(query_id: str, query_str: str, request: Request,
         return JSONResponse(status_code=404, content={"error": "Query not found"})
 
     query_params = QueryParams.model_validate(query_data['query_params'])
-    results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBEntryModel)
+    results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBDocumentModel)
 
     source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
     return templates.TemplateResponse(
@@ -286,7 +286,7 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     hits_mapping = {item["doc_id"]: item["score"] for item in hits}
 
     def transform(item):
-        item["score"] = hits_mapping[item["doc_id"]]
+        item["score"] = hits_mapping[item["document"]["id"]]
         return item
 
     # overwrite pagination, since we are not using it for now
@@ -294,12 +294,14 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     results = await paginate(
         app.state.db_client.bntl_coll,
         QueryParams(), page_params, VectorEntryModel, 
-        within_ids=[ObjectId(item["doc_id"]) for item in hits],
+        within_ids=[item["doc_id"] for item in hits],
         transform=transform)
 
     # ensure we sort by score unless differently specified
     if not page_params.sort_author and not page_params.sort_year:
-        results.items = sorted(results.items, key=lambda item: hits_mapping[item.doc_id], reverse=True)
+        results.items = sorted(
+            results.items,
+            key=lambda item: hits_mapping[item.document.id], reverse=True)
 
     # add source
     source = "/vectorQuery?doc_id=" + doc_id
@@ -371,7 +373,7 @@ async def revectorize_task():
     async with utils.AsyncLogger(task_id) as a_logger:
         await a_logger.info("Starting revectorize task: {}".format(task_id))
         docs = await app.state.db_client.find()
-        doc_ids = [str(doc["_id"]) for doc in docs]
+        doc_ids = [doc["document"]["id"] for doc in docs]
         texts = [convert_to_text(doc, ignore_keywords=True) for doc in docs],
         await a_logger.info("Revectorizing {} documents...".format(len(docs)))
         vectors = await client.vectorize(
@@ -396,16 +398,23 @@ async def get_completions(field: str, query: str=Query(..., min_length=3)):
     return await app.state.db_client.find_autocomplete_by_prefix(field, query)
 
 
+def create_ris(*docs):
+    def drop_none(doc):
+        return {key: val for key, val in doc.items() if val is not None}
+    return rispy.dumps([drop_none(doc) for doc in docs])
+
+
 @app.get("/exportRecord")
 async def export_record(doc_id: str, format: str):
-    doc = await app.state.db_client.get_doc_source(doc_id)
+    doc = await app.state.db_client.find_one(doc_id)
     if not doc:
         raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
+    ris = create_ris(doc["document"])
     if format == "ris":
-        output = rispy.dumps([doc])
+        output = ris
     elif format == "bib":
-        output = await utils.ris2bib(rispy.dumps([doc]))
+        output = await utils.ris2bib(ris)
     else:
         raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
     
@@ -423,12 +432,12 @@ async def export_query(query_id: str, format: str, request: Request):
     query = build_query(**query_params.model_dump())
 
     docs = await app.state.db_client.find(query, limit=settings.MAX_EXPORT_RESULTS)
-    sources = await app.state.db_client.get_docs_source([doc['doc_id'] for doc in docs])
+    docs = create_ris(*[doc["document"] for doc in docs])
 
     if format == "ris":
-        output = rispy.dumps(sources)
+        output = docs
     elif format == "bib":
-        output = await utils.ris2bib(rispy.dumps(sources))
+        output = await utils.ris2bib(docs)
     else:
         raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
     return StreamingResponse(io.BytesIO(output.encode()))

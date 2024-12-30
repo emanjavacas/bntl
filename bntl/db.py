@@ -2,12 +2,11 @@
 import re
 import json
 from bson.objectid import ObjectId
-import uuid
 import logging
 import hashlib
 from pydantic import ValidationError
 from datetime import datetime, timezone
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Union
 
 import pymongo
 from pymongo import InsertOne
@@ -15,7 +14,8 @@ import motor.motor_asyncio as motor
 
 from bntl.settings import settings
 from bntl import utils
-from bntl.models import QueryModel, QueryParams, StatusModel, EntryModel
+from bntl.models import QueryModel, QueryParams, StatusModel
+from bntl.models import DocumentModel, DBDocumentModel, ComputedFields
 
 from vectorizer.settings import settings as v_settings
 
@@ -31,36 +31,31 @@ class YearFormatException(Exception):
     pass
 
 
-def fix_year(doc):
+def encode_year_range(year):
     """
     Utility function dealing with different input formats for the year field.
-    We try to validate the year to a proper int and add a end_year field to
-    enable year range queries. If unable to do so, the document will be ingested,
-    but wont be retrieved upon year queries. It's the curator's responsability
-    to make sure the documents are in appropriate format.
+    We try to validate the year to a proper int and generate an end_year field to
+    enable year range queries.
     """
     try:
-        doc['year'] = int(doc['year'])
-        doc['end_year'] = doc['year'] + 1 # year is uninclusive
-        return doc
+        year = int(year)
+        end_year = year + 1
+        return year, end_year
     except Exception:
-        # missing year
-        if "year" not in doc:
-            return doc
         # undefined years (eg. 197X), go for average value
-        if 'X' in doc['year']:
-            doc['year'] = doc['year'].replace('X', '5')
-            return fix_year(doc)
+        if 'X' in year:
+            year = year.replace('X', '5')
+            return encode_year_range(year)
         # range years (eg. 1987-2024, 1987-, ...)
-        if '-' in doc['year']:
-            m = re.match(r"([0-9]{4})-([0-9]{4})?", doc['year'])
+        if '-' in year:
+            m = re.match(r"([0-9]{4})-([0-9]{4})?", year)
             if not m:
-                return doc
+                return year, None
             start, end = m.groups()
-            doc['year'] = int(start)
-            doc['end_year'] = end or int(start) + 1 # use starting date if end year is missing
+            # use starting date if end year is missing
+            return int(start), end or int(start) + 1
 
-    return doc
+    return year, None
 
 
 def generate_document_hash(doc):
@@ -75,14 +70,12 @@ def prepare_document(doc):
     """
     Adapt incoming document to internal database format and validate
     """
-    # fix year
-    doc = fix_year(doc)
-    doc = EntryModel.model_validate(doc).model_dump()
-    # hash document
-    doc["hash"] = generate_document_hash(doc)
-    # add date
-    doc["date_added"] = datetime.now(timezone.utc)
-    return doc
+    start_year, end_year = encode_year_range(doc.get("year"))
+    return DBDocumentModel(
+        computed_fields=ComputedFields(start_year=start_year, end_year=end_year),
+        date_added=datetime.now(timezone.utc),
+        is_oa=bool(doc.get("urls")), # false if empty or None
+        document=DocumentModel.model_validate(doc))
 
 
 class DBClient():
@@ -103,7 +96,6 @@ class DBClient():
     # this is a mapping from fields in the indexed documents to the fields in the query params
     AUTOCOMPLETE_TARGETS = {
         "keywords": "keywords", 
-        "authors": "author",
         "first_authors": "author", 
         "secondary_authors": "author", 
         "tertiary_authors": "author",
@@ -114,8 +106,7 @@ class DBClient():
     def __init__ (self) -> None:
         self.mongodb_client = motor.AsyncIOMotorClient(settings.LOCAL_URI)
         self.bntl_coll = self.mongodb_client[settings.LOCAL_DB][settings.BNTL_COLL]
-        self.source_coll = self.mongodb_client[settings.LOCAL_DB][settings.SOURCE_COLL]
-        self.autocomplete_coll = self.mongodb_client[settings.BNTL_DB][settings.AUTOCOMPLETE_COLL]
+        self.autocomplete_coll = self.mongodb_client[settings.LOCAL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client[settings.LOCAL_DB][settings.UPLOAD_COLL]
         # vectorize database to retrieve vectors when done
@@ -124,15 +115,14 @@ class DBClient():
     @classmethod
     async def create(cls):
         self = cls()
-        self.unique_refs = await self.bntl_coll.distinct("type_of_reference")
+        self.unique_refs = await self.bntl_coll.distinct("document.type_of_reference")
         await self.ensure_indices()
         return self
 
     async def ensure_indices(self):
         # ensure unique index
         logger.info("Creating DB indices")
-        await self.bntl_coll.create_index("hash", unique=True)
-        await self.source_coll.create_index("doc_id", unique=True)
+        await self.bntl_coll.create_index("document.id", unique=True)
         # ensure text search index
         await self.bntl_coll.create_index({"$**": "text"})
         await self.autocomplete_coll.create_index(("field", "value"), unique=True)
@@ -148,14 +138,14 @@ class DBClient():
 
     # document collection
     @staticmethod
-    def collete_autocomplete(docs):
+    def collect_autocomplete(docs):
         """
         Collect all autocomplete information
         """
         autocomplete = set()
         for doc in docs:
             for target, field in DBClient.AUTOCOMPLETE_TARGETS.items():
-                values: Union[List[str], str] = doc.get(target, []) or [] # it may exist but have a None value
+                values: Union[List[str], str] = doc["document"].get(target, []) or [] # it may exist but have a None value
                 values: List[str] = [values] if isinstance(values, str) else values # wrap
                 autocomplete.update(set([(field, value) for value in values]))
         return [{"field": field, "value": value} for field, value in autocomplete]
@@ -170,10 +160,7 @@ class DBClient():
                 doc_idx += 1
                 # validate
                 try:
-                    doc = prepare_document(dict(source_doc))
-                    doc_id = ObjectId()
-                    doc["_id"] = doc_id
-                    docs.append({'doc': doc, 'source': utils.default_to_regular(source_doc)})
+                    docs.append(prepare_document(dict(source_doc)).model_dump())
                 except YearFormatException as e:
                     await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
                     await utils.maybe_await(logger.info(str(e)))
@@ -189,7 +176,7 @@ class DBClient():
                 # index documents
                 await utils.maybe_await(logger.info("Batch-{}: Indexing {} documents".format(batch_id, len(docs))))
                 if docs:
-                    await self.bntl_coll.bulk_write([InsertOne(item['doc']) for item in docs], ordered=False)
+                    await self.bntl_coll.bulk_write([InsertOne(doc) for doc in docs], ordered=False)
             except pymongo.errors.BulkWriteError as e:
                 errors = []
                 for err in e.details['writeErrors']:
@@ -199,25 +186,14 @@ class DBClient():
             except pymongo.errors.InvalidOperation as e:
                 await utils.maybe_await(logger.info("No documents to index, exiting..."))
                 return []
-            
+
             finally:
                 errors = set(errors)
-                done.extend([str(item["doc"]["_id"]) for idx, item in enumerate(docs) if idx not in errors])
-                
-                # index source documents
-                source_docs = [InsertOne({"doc_id": str(item["doc"]["_id"]), "source": item["source"]}) 
-                               for idx, item in enumerate(docs) if idx not in errors]
-                try:
-                    if source_docs:
-                        await utils.maybe_await(logger.info("Indexing {} source documents".format(len(source_docs))))
-                        await self.source_coll.bulk_write(source_docs, ordered=False)
-                except pymongo.errors.BulkWriteError as e:
-                    await utils.maybe_await(logger.info("Got {}/{} errors while indexing source data".format(
-                        len(e.details['writeErrors']), len(docs))))
+                done.extend([doc["document"]["id"] for idx, doc in enumerate(docs) if idx not in errors])
                 
                 # index autocomplete data
-                autocomplete = DBClient.collete_autocomplete(
-                    [item["doc"] for idx, item in enumerate(docs) if idx not in errors])
+                autocomplete = DBClient.collect_autocomplete(
+                    [doc for idx, doc in enumerate(docs) if idx not in errors])
                 try:
                     if autocomplete:
                         await utils.maybe_await(logger.info("Indexing {} autocomplete items".format(len(autocomplete))))
@@ -234,34 +210,19 @@ class DBClient():
     async def find(self, query=None, limit=0, skip=0):
         cursor = self.bntl_coll.find(query or {}, limit=limit).skip(skip)
         results = await cursor.to_list(length=None)
-        for item in results:
-            item['doc_id'] = str(item.pop("_id"))
         return results
 
     async def find_one(self, doc_id):
-        item = await self.bntl_coll.find_one({"_id": ObjectId(doc_id)})
-        if item:
-            item["doc_id"] = str(item.pop("_id"))
-        return item
+        return await self.bntl_coll.find_one({"document.id": doc_id})
 
-    async def find_last_added(self, top=3):
-        items = []
-        count = 0
+    async def find_last_added(self, top=5):
+        items, count = [], 0
         async for item in self.bntl_coll.find({}).sort("date_added", pymongo.DESCENDING):
             if count >= top:
                 break
-            item["doc_id"] = str(item.pop("_id"))
             items.append(item)
             count += 1
         return items
-    
-    async def get_doc_source(self, doc_id: str) -> Dict:
-        doc = await self.source_coll.find_one({"doc_id": doc_id})
-        return doc["source"]
-
-    async def get_docs_source(self, doc_ids: List[str]) -> List[Dict]:
-        docs = await self.source_coll.find({"doc_id": {"$in": doc_ids}}).to_list(length=None)
-        return [doc["source"] for doc in docs]
 
     # query collection
     async def get_session_queries(self, session_id) -> List[QueryModel]:
@@ -270,7 +231,7 @@ class DBClient():
         """
         cursor = self.query_coll.find({"session_id": session_id}).sort('data', pymongo.DESCENDING)
         return await cursor.to_list(length=None)
-    
+
     async def get_query(self, query_id: str, session_id: str):
         return await self.query_coll.find_one({"_id": ObjectId(query_id), "session_id": session_id})
 
@@ -335,11 +296,8 @@ class DBClient():
         await self.autocomplete_coll.drop()
         await self.query_coll.drop()
         await self.upload_coll.drop()
-        await self.source_coll.drop()
         # ensure we recreate the indices
         await self.ensure_indices()
-
-
 
 
 # if __name__ == '__main__':

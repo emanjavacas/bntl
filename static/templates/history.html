@@ -75,6 +75,14 @@
                 {% endif %}
               </li>
               {% endif %}
+
+
+              {% if query.query_params.is_oa %}
+              <span data-bs-toggle="tooltip" data-bs-placement="top" title="Open Access 🔓">
+                🔓
+              </span>
+              {% endif %}
+
               </ul>
             </div>
           </div>

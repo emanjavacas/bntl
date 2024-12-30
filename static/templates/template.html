@@ -27,7 +27,7 @@
       'first_authors': 'Auteur(s)',
       'secondary_authors': 'Redacteur(s)',
       'keywords': 'Trefwoord(en)',
-      'urls': 'URL (link naar open acces)',
+      'urls': 'URL 🔓',
       'abstract': 'Extra informatie',
       'start_page': 'Startpagina',
       'end_page': 'Eindpagina',
@@ -70,7 +70,8 @@
             <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow-sm">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
-                        <img src="/static/assets/img/bntl.gif" alt="BNTL logo">
+                        <!-- <img src="/static/assets/img/bntl.gif" alt="BNTL logo"> -->
+                        <img src="/static/assets/img/BNTL.logo_Kleur.CMYK.small.jpeg" alt="BNTL logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -86,9 +87,6 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/help">{{ _('help') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/about">{{ _('over de BNTL') }}</a>
                                 </li>
                             </ul>    
                         </div>
@@ -113,7 +111,7 @@
                         </div>
                     </div>
                     <div class="col-1 d-none-sm"></div>
-                </div>
+                </div>                
             </div>
         </main>
 
@@ -123,15 +121,17 @@
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
-                            <li class="list-inline-item"><a href="#!">About</a></li>
+                            <li class="list-inline-item">
+                                <a href="/about">{{ _('Over de BNTL') }}</a>
+                            </li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Contact</a></li>
-                            <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
-                            <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                            <li class="list-inline-item">
+                                <a href="mailto:example@example.com">
+                                Contact
+                                </a>
+                            </li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; BNTL 2024. All Rights Reserved.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
@@ -154,6 +154,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/static/js/scripts.js"></script>
         <script src="/static/js/utils.js"></script>
+        <!-- twitter widget -->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         {% block script %}{% endblock %}
     </body>
 </html>

@@ -42,9 +42,12 @@ def get_retry_time(n_docs):
     return 10
 
 
-async def vectorize(vectors_coll: AsyncIOMotorCollection, task_id: str, 
-                    texts: List[str], doc_ids: Union[None, List[str]]=None, 
-                    retry_time: Union[None, float]=None, timeout: float=3600 * 2,
+async def vectorize(vectors_coll: AsyncIOMotorCollection, 
+                    task_id: str, 
+                    texts: List[str], 
+                    doc_ids: Union[None, List[str]]=None, 
+                    retry_time: Union[None, float]=None,
+                    timeout: float=3600 * 2,
                     logger=logger) -> Union[List[float] | None]:
     """
     Start vectorize task and monitor the status until done, error or timeout

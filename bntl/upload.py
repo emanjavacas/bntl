@@ -106,6 +106,7 @@ class FileUploadManager:
                 return
             try:
                 doc_ids = await self.insert_documents(documents, file_id)
+                await a_logger.info("Inserted {} documents".format(len(doc_ids)))
             except Exception as e:
                 await self.update_status(file_id, Status.UNKNOWNERROR, detail=str(e))
             if len(doc_ids) == 0:
@@ -116,11 +117,11 @@ class FileUploadManager:
             # vectorization
             vectors = None
             try:
-                data = await self.db_client.find({"_id": {"$in": [ObjectId(id) for id in doc_ids]}})
+                data = await self.db_client.find({"document.id": {"$in": doc_ids}})
                 await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
                 await self.update_status(file_id, Status.VECTORIZING, progress=0)
-                texts = [convert_to_text(doc, ignore_keywords=True) for doc in data]
-                doc_ids = [str(doc["_id"]) for doc in data]
+                texts = [convert_to_text(doc["document"], ignore_keywords=False) for doc in data]
+                doc_ids = [doc["document"]["id"] for doc in data]
                 vectors = await client.vectorize(
                     self.db_client.vectors_coll, file_id, texts, doc_ids, logger=a_logger)
             except Exception as e:
