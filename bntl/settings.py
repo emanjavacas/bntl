@@ -33,7 +33,8 @@ class Settings(BaseSettings):
     QDRANT_COLL: str = Field(default="bntl")
 
     UPLOAD_LOG_DIR: str = Field(default="./logs", help="Directory to store the upload log files")
-    BABEL_TRANSLATIONS_DIR: str = Field(default="static/translations")
+    TRANSLATIONS_DIR: str = Field(default="static/translations")
+    DEFAULT_LOCALE: str = Field(default="en")
 
     RETRY_DELAY: int = Field(default=3600 * 10)
     MAX_RETRIES: int = Field(default=5)

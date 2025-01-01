@@ -7,10 +7,10 @@ import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 import uuid
-from bson.objectid import ObjectId
 import humanize
 import aiofiles
 import rispy
+import gettext
 
 from fastapi import FastAPI, Request, Depends, Response, status
 from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form, Query
@@ -18,7 +18,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi_babel import BabelConfigs, BabelMiddleware
 
 from bntl.vector import VectorClient, MissingVectorException
 from bntl.db import DBClient
@@ -30,18 +29,13 @@ from bntl.upload import Status, FileUploadManager, convert_to_text
 from bntl.settings import settings, setup_logger
 from bntl import utils
 
-from vectorizer import client
+from vectorizer import client as vector_client
 
 
 setup_logger()
 logger = logging.getLogger(__name__)
 
 
-DESCRIPTION = """
-## Introduction
-
-Search engine + front end for a Zotero database
-"""
 VALIDATED_SESSIONS = set()
 
 
@@ -59,7 +53,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="BNTL", 
-    description=DESCRIPTION,
+    description="Search engine + front end for a Zotero database",
     summary="BNTL database server application",
     version="0.0.0",
     lifespan=lifespan)
@@ -71,19 +65,28 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
-
-# mount static folder
-app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 # declare templates
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
 templates.env.filters["doc_repr"] = get_record_screen_name
-# babel
-babel_configs = BabelConfigs(
-    ROOT_DIR=__file__,
-    BABEL_DEFAULT_LOCALE="en",
-    BABEL_TRANSLATION_DIRECTORY=settings.BABEL_TRANSLATIONS_DIR)
-app.add_middleware(BabelMiddleware, babel_configs=babel_configs, jinja2_templates=templates)
+# mount static folder
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+
+def get_translation(locale: str):
+    """Retrieve the gettext translation object for a specific locale."""
+    gettext.bindtextdomain("messages", settings.TRANSLATIONS_DIR)
+    gettext.textdomain("messages")
+    return gettext.translation("messages", localedir=settings.TRANSLATIONS_DIR, languages=[locale], fallback=True)
+
+
+@app.middleware("http")
+async def add_locale_middleware(request: Request, call_next):
+    lang_param = request.query_params.get("lang", settings.DEFAULT_LOCALE)
+    lang = get_translation(lang_param)
+    lang.install()
+    request.state._ = lang.gettext
+    return await call_next(request)
 
 
 @app.middleware("http")
@@ -124,8 +127,9 @@ def require_validated_session(request: Request):
 
 
 @app.get("/login", response_class=HTMLResponse)
-async def login_get(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+async def login_get(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+    return templates.TemplateResponse(
+        "login.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
 
 @app.post("/login")
@@ -142,41 +146,43 @@ async def login_post(login_params: LoginParams, request: Request=None):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
+async def home(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Home route
     """
     return templates.TemplateResponse(
         "index.html", 
-        {"request": request, 
+        {"request": request,
+         "_": get_translation(lang).gettext, "lang": lang,
          "total_documents": await app.state.db_client.count(), 
          "last_added": await app.state.db_client.find_last_added()})
 
 
 @app.get("/about", response_class=HTMLResponse)
-async def about(request: Request):
+async def about(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     About route
     """
-    return templates.TemplateResponse("about.html", {"request": request})
+    return templates.TemplateResponse("about.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
 
 @app.get("/help", response_class=HTMLResponse)
-async def help(request: Request):
+async def help(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Help route showing information about the functioning of the app
     """
-    return templates.TemplateResponse("help.html", {"request": request})
+    return templates.TemplateResponse("help.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
 
 @app.get("/search", response_class=HTMLResponse)
-async def search(request: Request):
+async def search(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Search route that shows the search interface
     """
     return templates.TemplateResponse(
         "search.html", 
         {"request": request, 
+         "_": get_translation(lang).gettext, "lang": lang,
          "type_of_reference": app.state.db_client.unique_refs})
 
 
@@ -196,7 +202,8 @@ async def register_query(query_params: QueryParams, request: Request):
 
 
 @app.get("/quickQuery")
-async def quick_query(request: Request,
+async def quick_query(request: Request, 
+                      lang: str = Query(default=settings.DEFAULT_LOCALE),
                       query_params: QueryParams=Depends(),
                       page_params: PageParams=Depends()):
     """
@@ -207,11 +214,16 @@ async def quick_query(request: Request,
     # add source
     source = "/quickQuery?" + urllib.parse.urlencode(dict(request.query_params))
     return templates.TemplateResponse(
-        "results.html", {"request": request, "source": source, **results.model_dump()})
+        "results.html", {"request": request, 
+                         "_": get_translation(lang).gettext, "lang": lang, 
+                         "source": source, **results.model_dump()})
 
 
 @app.get("/paginate")
-async def paginate_route(query_id: str, request: Request, page_params: PageParams=Depends()):
+async def paginate_route(query_id: str, 
+                         request: Request, 
+                         lang: str = Query(default=settings.DEFAULT_LOCALE), 
+                         page_params: PageParams=Depends()):
     """
     Paginate route when moving forward and backward on a given query
     """
@@ -230,13 +242,18 @@ async def paginate_route(query_id: str, request: Request, page_params: PageParam
     return templates.TemplateResponse(
         "results.html",
         {"request": request, 
+         "_": get_translation(lang).gettext, "lang": lang,
          "query_id": query_id, 
          "source": f"/paginate?query_id={query_id}", 
          **results.model_dump()})
 
 
 @app.get("/paginateWithin")
-async def paginate_within_route(query_id: str, query_str: str, request: Request, page_params: PageParams=Depends()):
+async def paginate_within_route(query_id: str, 
+                                query_str: str, 
+                                request: Request, 
+                                lang: str = Query(default=settings.DEFAULT_LOCALE), 
+                                page_params: PageParams=Depends()):
     """
     Paginate route for recursive queries
     """
@@ -250,29 +267,41 @@ async def paginate_within_route(query_id: str, query_str: str, request: Request,
 
     source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
     return templates.TemplateResponse(
-        "results.html", {"request": request, "is_within": True, "source": source, **results.model_dump()})
+        "results.html", {"request": request, 
+                         "_": get_translation(lang).gettext, "lang": lang, 
+                         "is_within": True, 
+                         "source": source, 
+                         **results.model_dump()})
 
 
 @app.get("/getQueryHistory")
-async def get_query_history(request: Request):
+async def get_query_history(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Query history route
     """
     session_id = request.cookies.get("session_id")
     return templates.TemplateResponse(
         "history.html",
-        {"request": request, "queries": await app.state.db_client.get_session_queries(session_id)})
+        {"request": request, 
+         "_": get_translation(lang).gettext, "lang": lang, 
+         "queries": await app.state.db_client.get_session_queries(session_id)})
 
 
 @app.get("/item")
-async def item(doc_id: str, request: Request):
+async def item(doc_id: str, request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     item = await app.state.db_client.find_one(doc_id)
     return templates.TemplateResponse(
-        "item.html", {"request": request, "item": item})
+        "item.html", {"request": request, 
+                      "_": get_translation(lang).gettext, "lang": lang, 
+                      "item": item})
 
 
 @app.get("/vectorQuery")
-async def vector_query(doc_id: str, request: Request, page_params: PageParams=Depends(), vector_params: VectorParams=Depends()):
+async def vector_query(doc_id: str, 
+                       request: Request, 
+                       lang: str = Query(default=settings.DEFAULT_LOCALE),
+                       page_params: PageParams=Depends(), 
+                       vector_params: VectorParams=Depends()):
     """
     Vector-based query route using the document id
     """
@@ -306,7 +335,9 @@ async def vector_query(doc_id: str, request: Request, page_params: PageParams=De
     # add source
     source = "/vectorQuery?doc_id=" + doc_id
     return templates.TemplateResponse(
-        "results.html", {"request": request, "source": source, **results.model_dump()})
+        "results.html", {"request": request, 
+                         "_": get_translation(lang).gettext, "lang": lang, 
+                         "source": source, **results.model_dump()})
 
 
 @app.get("/count")
@@ -358,13 +389,14 @@ async def get_upload_log(file_id: str):
 
 
 @app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
-async def upload_page(request: Request):
+async def upload_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Upload route
     """
     return templates.TemplateResponse(
         "upload.html", 
         {"request": request,
+         "_": get_translation(lang).gettext, "lang": lang,
          "statuses": Status.__get_classes__()})
 
 
@@ -373,10 +405,13 @@ async def revectorize_task():
     async with utils.AsyncLogger(task_id) as a_logger:
         await a_logger.info("Starting revectorize task: {}".format(task_id))
         docs = await app.state.db_client.find()
-        doc_ids = [doc["document"]["id"] for doc in docs]
-        texts = [convert_to_text(doc, ignore_keywords=True) for doc in docs],
+        texts, doc_ids = [], []
+        for doc in docs:
+            if text := convert_to_text(doc["document"]):
+                texts.append(text)
+                doc_ids.append(doc["document"]["id"])
         await a_logger.info("Revectorizing {} documents...".format(len(docs)))
-        vectors = await client.vectorize(
+        vectors = await vector_client.vectorize(
             app.state.db_client.vectors_coll, task_id, texts, doc_ids, logger=a_logger)
         if vectors:
             await app.state.vector_client._clear_up()
@@ -449,6 +484,7 @@ if __name__ == '__main__':
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
 
+    
     # make sure folders exist
     if not os.path.isdir(settings.UPLOAD_LOG_DIR):
         os.makedirs(settings.UPLOAD_LOG_DIR)

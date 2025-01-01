@@ -31,31 +31,36 @@ class YearFormatException(Exception):
     pass
 
 
+def parse_year(year):
+    if year is None:
+        return None
+    try:
+        return int(year)
+    except Exception:
+        if "x" in year.lower():
+            year = year.lower().replace("x", "5")
+            return parse_year(year)
+        if "-" in year:
+            m = re.match(r"([0-9]{4})-([0-9]{4})?", year)
+            if not m:
+                return year, None
+            start, end = m.groups()
+            return parse_year(start), parse_year(end)
+    return None
+
+
 def encode_year_range(year):
     """
     Utility function dealing with different input formats for the year field.
     We try to validate the year to a proper int and generate an end_year field to
     enable year range queries.
     """
-    try:
-        year = int(year)
-        end_year = year + 1
-        return year, end_year
-    except Exception:
-        # undefined years (eg. 197X), go for average value
-        if 'X' in year:
-            year = year.replace('X', '5')
-            return encode_year_range(year)
-        # range years (eg. 1987-2024, 1987-, ...)
-        if '-' in year:
-            m = re.match(r"([0-9]{4})-([0-9]{4})?", year)
-            if not m:
-                return year, None
-            start, end = m.groups()
-            # use starting date if end year is missing
-            return int(start), end or int(start) + 1
-
-    return year, None
+    if year := parse_year(year):
+        if isinstance(year, tuple):
+            start, end = year
+            return start, end
+        return year, year + 1
+    return None, None
 
 
 def generate_document_hash(doc):

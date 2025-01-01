@@ -18,31 +18,6 @@
       'WEB': "Website"} 
 -%}
 
-{%- set screenNames = {
-      'type_of_reference': 'Publicatietype',
-      'year': 'Publicatiejaar',
-      'title': 'Titel',
-      'secondary_title': 'Boektitel',
-      'authors': 'Auteur(s)',
-      'first_authors': 'Auteur(s)',
-      'secondary_authors': 'Redacteur(s)',
-      'keywords': 'Trefwoord(en)',
-      'urls': 'URL 🔓',
-      'abstract': 'Extra informatie',
-      'start_page': 'Startpagina',
-      'end_page': 'Eindpagina',
-      'journal_name': 'Tijdschrift',
-      'volume': 'Volume',
-      'number': 'Nummer',
-      'research_notes': 'Recensie/Reactie',
-      'issn': 'ISBN-nummer',
-      'place_published': 'Plaats van uitgave',
-      'publisher': 'Uitgeverij',
-      'notes_abstract': 'Oude notatie',
-      'custom3': 'Titelbeschrijving boek',
-      'custom4': 'Gerelateerde artikels'}
--%}
-
 <!DOCTYPE html>
 <html class="h-100" lang="en">
     <head>
@@ -80,13 +55,20 @@
                         <div class="d-flex">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/">home</a>
+                                    <a class="nav-link" href="/?lang={{lang}}">home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/search">{{ _('zoeken') }}</a>
+                                    <a class="nav-link" href="/search?lang={{lang}}">{{ _('zoeken') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/help">{{ _('help') }}</a>
+                                    <a class="nav-link" href="/help?lang={{lang}}">{{ _('help') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    {% if lang == "en" %}
+                                    <a class="nav-link" href="/?lang=nl">🇳🇱</a>
+                                    {% else %}
+                                    <a class="nav-link" href="/?lang=en">🏴󠁧󠁢󠁥󠁮󠁧󠁿</a>
+                                    {% endif %}
                                 </li>
                             </ul>    
                         </div>
@@ -122,7 +104,7 @@
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
                             <li class="list-inline-item">
-                                <a href="/about">{{ _('Over de BNTL') }}</a>
+                                <a href="/about?lang={{lang}}">{{ _('Over de BNTL') }}</a>
                             </li>
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item">
@@ -136,10 +118,7 @@
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item me-4">
-                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                                <a href="https://x.com/_BNTL_"><i class="bi-twitter fs-3"></i></a>
                             </li>
                         </ul>
                     </div>

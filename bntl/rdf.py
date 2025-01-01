@@ -769,12 +769,12 @@ if __name__ == '__main__':
 
 
 
-# import glob
-# import rispy
-# records = []
-# for f in glob.glob("data/parsed/*ris"):
-#     with open(f) as f:
-#         records.extend(rispy.load(f))
+import glob
+import rispy
+records = []
+for f in glob.glob("data/parsed/*ris"):
+    with open(f) as f:
+        records.extend(rispy.load(f))
 
 # records[0]
 # rispy.load()

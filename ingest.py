@@ -38,17 +38,21 @@ async def main(paths):
             # vectorize
             await logger.info("Vectorizing...")
             docs = await db_client.find({"document.id": {"$in": done}})
-            texts = [convert_to_text(doc["document"], ignore_keywords=False) for doc in docs]
-            doc_ids = [doc["document"]["id"] for doc in docs]
+            texts, doc_ids = [], []
+            for doc in docs:
+                if text := convert_to_text(doc["document"]):
+                    texts.append(text)
+                    doc_ids.append(doc["document"]["id"])
             task_id = str(uuid.uuid4())
             vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
 
             # insert to qdrant
             if vectors:
                 await logger.info("Ingesting vectors into vector database")
-                await vector_client.insert(vectors, [doc["document"]["id"] for doc in docs])
+                await vector_client.insert(vectors, doc_ids)
             else:
                 await logger.info("Vectorization task failed, check logs to see what happened.")
+
 
 if __name__ == '__main__':
     import argparse

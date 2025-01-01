@@ -1,5 +1,4 @@
 
-from bson.objectid import ObjectId
 import logging
 import collections
 from datetime import datetime, timezone
@@ -33,23 +32,29 @@ class Status:
 
 
 def get_doc_text(doc) -> Dict[str, str]:
+    # title
     title = doc.get("title", "")
-    if doc.get("secondary_title"):
-        title += "; " + doc["secondary_title"]
-    if doc.get("tertiary_title"):
-        title += "; " + doc["tertiary_title"]
-    keywords = None
-    if doc.get("keywords"):
-        keywords = "; ".join(doc["keywords"])
+    if secondary := doc.get("secondary_title"):
+        title += "; " + secondary
+    if tertiary := doc.get("tertiary_title"):
+        title += "; " + tertiary
+    # keywords
+    keywords = doc.get("keywords")
+    if keywords:
+        keywords = "; ".join(keywords)
+    # abstract
+    abstract = doc.get("abstract", "")
 
-    return {"title": title, "keywords": keywords}
+    return {"title": title, "keywords": keywords, "abstract": abstract}
 
 
-def convert_to_text(doc, ignore_keywords=False) -> str:
+def convert_to_text(doc, ignore_keywords=False, ignore_abstract=False) -> str:
     doc = get_doc_text(doc)
-    output = doc.get("title", "") or ""
+    output = doc.get("title", "")
     if doc["keywords"] and not ignore_keywords:
         output += "; " + doc["keywords"]
+    if doc["abstract"] and not ignore_abstract:
+        output += "; " + doc["abstract"]
     return output
 
 
@@ -120,23 +125,25 @@ class FileUploadManager:
                 data = await self.db_client.find({"document.id": {"$in": doc_ids}})
                 await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
                 await self.update_status(file_id, Status.VECTORIZING, progress=0)
-                texts = [convert_to_text(doc["document"], ignore_keywords=False) for doc in data]
-                doc_ids = [doc["document"]["id"] for doc in data]
+                # collect texts (ignore documents for which no text can be collected)
+                texts, doc_ids = [], []
+                for doc in data:
+                    if text := convert_to_text(doc["document"]):
+                        texts.append(text)
+                        doc_ids.append(doc["document"]["id"])
                 vectors = await client.vectorize(
                     self.db_client.vectors_coll, file_id, texts, doc_ids, logger=a_logger)
             except Exception as e:
                 await a_logger.info("Exception while vectorizing: [{}]".format(str(e)))
+                await self.update_status(file_id, Status.VECTORIZINGERROR)
                 return
             finally:
-                if not vectors:
-                    await self.update_status(file_id, Status.VECTORIZINGERROR)
-                    return
-            try:
-                await a_logger.info("Indexing vectors...")
-                await self.vector_client.insert(vectors, doc_ids)
-                await self.update_status(file_id, Status.DONE)
-            except Exception as e:
-                await self.update_status(file_id, Status.VECTORINDEXINGERROR, detail=str(e))
-                return
-
-            await a_logger.info("Exit job.")
+                if vectors:
+                    try:
+                        await a_logger.info("Indexing vectors...")
+                        await self.vector_client.insert(vectors, doc_ids)
+                        await self.update_status(file_id, Status.DONE)
+                    except Exception as e:
+                        await self.update_status(file_id, Status.VECTORINDEXINGERROR, detail=str(e))
+                        return
+            await a_logger.info("Job done.")

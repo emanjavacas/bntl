@@ -146,23 +146,23 @@
         <span class="navbar-text">
           <ul class="pagination">
             <li class="page-item {% if page == 1 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page=1">&lt;&lt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page=1&lang={{lang}}">&lt;&lt;</a>
             </li>
             <li class="page-item {% if page == 1 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page-1}}">&lt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page-1}}&lang={{lang}}">&lt;</a>
             </li>
             {% for i in range(from_page, to_page + 1) %}
               {% if i == page %}
                 <li class="page-item disabled"><a class="page-link" href="#">{{i}}</a></li>
               {% else %}
-                <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}">{{i}}</a></li>
+                <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}&lang={{lang}}">{{i}}</a></li>
               {% endif %}
             {% endfor %}
             <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}">&gt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}&lang={{lang}}">&gt;</a>
             </li>
             <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}">&gt;&gt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}&lang={{lang}}">&gt;&gt;</a>
             </li>
           </ul>
         </span>

@@ -49,7 +49,8 @@ $(document).ready(function() {
             data: JSON.stringify(formData),
             contentType: 'application/json',
             success: function(response) {
-                window.location.href = '/paginate?query_id=' + response.query_id;
+                const lang = new URLSearchParams(window.location.search).get("lang");
+                window.location.href = '/paginate?query_id=' + response.query_id + "&lang=" + lang;
             },
             error: function(response) {
                 $("#errorModal").modal("show");
@@ -62,13 +63,14 @@ $(document).ready(function() {
         $("#loadingModal").modal("show");
         event.preventDefault();
         const formData = {"full_text": $(this).serializeArray()[0].value}
+        const lang = new URLSearchParams(window.location.search).get("lang");
         $.ajax({
             type: 'POST',
             url: '/registerQuery',
             data: JSON.stringify(formData),
             contentType: 'application/json',
             success: function(response) {
-                window.location.href = '/paginate?query_id=' + response.query_id;
+                window.location.href = '/paginate?query_id=' + response.query_id + "&lang=" + lang;
             },
             error: function(response) {
                 console.log("Error", response);
@@ -82,7 +84,8 @@ $(document).ready(function() {
         event.preventDefault();
         const queryStr = $(this).serializeArray()[0].value;
         const queryId = new URLSearchParams(window.location.search).get("query_id");
-        fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr).then(
+        const lang = new URLSearchParams(window.location.search).get("lang");
+        fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=" + lang).then(
             function(resp){
                 if (resp.ok) {window.location.href = resp.url}
             }

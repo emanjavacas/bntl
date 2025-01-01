@@ -75,6 +75,8 @@ to live locally in your same server, but could potentially be remote and cloud-m
 
 ### Databases
 
+We use two databases. Their parameters need to be set in the settings.toml file.
+
 #### MongoDB
 
 For a local install on ubuntu you can follow this link: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/#std-label-install-mdb-community-ubuntu
@@ -86,4 +88,46 @@ For a local install on ubuntu, it's recommended to use docker: https://qdrant.te
 ### Bib
 
 you need bibutils
-sudo apt install bibutils
+```sudo apt install bibutils```
+
+## Translations
+- pybabel extract -F babel.cfg -o static/translations/messages.pot static/templates/*
+- pybabel init -i static/translations/messages.pot -d static/translations/ -l en
+- Now, do the translation of the .po files
+- pybabel compile -d static/translations
+
+### Internationalisation 
+
+Internationalisation is accomplished using `gettext`. We add a "lang" parameter to each http request to an endpoint that returns a webpage that may require internationalisation. Additionally, we pass the translator function "_" to be used within the jinja2 templates.
+
+For example:
+```python
+@app.get("/about", response_class=HTMLResponse)
+async def about(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+    """
+    About route
+    """
+    return templates.TemplateResponse("about.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
+```
+
+This means that redirections must always take into account the "lang" parameter. For example:
+
+```html
+<p class="text-end"><a href="/getQueryHistory?lang={{lang}}">{{ _('zoekgeschiedenis') }}</a></p>
+```
+
+Also, within the js:
+```js
+const lang = new URLSearchParams(window.location.search).get("lang");
+fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=" + lang).then(
+    function(resp){
+        if (resp.ok) {window.location.href = resp.url}
+    }
+)
+```
+
+## Vectorization
+
+To use the vectorization service (code living in vectorizer/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml, which are used from within the db.py and the app.py file.
+
+The vectors are generated and stored into a MongoDB before being passed over to the main process to be indexed with the QDrant DB.
