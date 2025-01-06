@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 class Status:
     UPLOADING = 'Uploading...'
+    PARSING = 'Parsing RDF data...'
     INDEXING = 'Indexing...'
     VECTORIZING = 'Vectorizing...'
     UNKNOWNERROR = 'Unknown error'
@@ -102,8 +103,11 @@ class FileUploadManager:
             await a_logger.info("Collecting data from upload: {}".format(file_id))
             try:
                 file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
-                await a_logger.info("Parsing RDF into RIS")
+                await a_logger.info("Parsing RDF into RIS...")
+                await self.update_status(file_id, Status.PARSING)
                 ris_data = parse_rdf(file_data.decode())
+                await a_logger.info("Parsed")
+                await a_logger.info("Loading data...")
                 documents = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
                 await a_logger.info("Received {} documents".format(len(documents)))
                 # validate and ingest
@@ -112,6 +116,10 @@ class FileUploadManager:
             except rispy.parser.ParseError as e:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT, detail=str(e))
                 return
+            except Exception as e:
+                await self.update_status(file_id, Status.UNKNOWNFORMAT, detail="Couldn't parse RDF file")
+                import traceback
+                traceback.print_exc()
             try:
                 doc_ids = await self.insert_documents(documents, file_id)
                 await a_logger.info("Inserted {} documents".format(len(doc_ids)))

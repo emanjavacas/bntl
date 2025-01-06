@@ -673,7 +673,7 @@ def _parse_advs(z_node, author_lookup, keyword_lookup):
 
 def parse_rdf(rdf_data):
     """"
-    takes a file with rdf data and returns 
+    takes a file with rdf data and returns parsed ris
     """
     root = etree.fromstring(rdf_data)
 
@@ -683,7 +683,7 @@ def parse_rdf(rdf_data):
     user_items = tuple(root.xpath('//z:UserItem', namespaces=namespaces))
 
     parsed = []
-    for z_node in tqdm(user_items, position=1, leave=False):
+    for z_node in user_items:
         info = {}
 
         user_item_url = z_node.xpath('@rdf:about', namespaces=namespaces)
