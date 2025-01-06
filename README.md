@@ -91,8 +91,9 @@ you need bibutils
 ```sudo apt install bibutils```
 
 ## Translations
+Update (for the first time run, you need to run `pybabel init -i static/translations/messages.pot -d static/translations/ -l en` instead of update)
 - pybabel extract -F babel.cfg -o static/translations/messages.pot static/templates/*
-- pybabel init -i static/translations/messages.pot -d static/translations/ -l en
+- pybabel update -i static/translations/messages.pot -d static/translations/
 - Now, do the translation of the .po files
 - pybabel compile -d static/translations
 

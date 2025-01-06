@@ -1,21 +1,20 @@
 # Translations template for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-31 12:11+0000\n"
+"POT-Creation-Date: 2025-01-03 10:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: static/templates/about.html:8 static/templates/template.html:107
 msgid "Over de BNTL"
@@ -37,14 +36,14 @@ msgid ""
 "        literatuur), waar mogelijk met een link naar de digitale "
 "volledige teksten."
 msgstr ""
-"The BNTL is a basic tool of Dutch studies. Every research, every paper, "
+"The BNTL is a basic tool for Dutch studies. Every research, every paper, "
 "every presentation\n"
 "        starts with a search in the BNTL.\n"
 "        The BNTL contains Dutch, Flemish, and foreign titles of "
 "publications about\n"
-"        Dutch language and literature from the period 1940 to the "
-"present (thus no primary\n"
-"        literature), where possible with a link to the digital full "
+"        Dutch language and literature from the period 1940 to the present "
+"(thus no primary\n"
+"        literature), where possible with a link to the full digital "
 "texts."
 
 #: static/templates/about.html:17
@@ -91,7 +90,7 @@ msgid ""
 "vanzelfsprekend, studenten en\n"
 "        leerlingen."
 msgstr ""
-"For Dutch studies scholars both domestically and abroad, but also for a "
+"For Dutch studies specialists both at home and abroad, but also for a "
 "broad target group of\n"
 "        (art) historians, library staff, publicists, and, of course, "
 "students and\n"
@@ -122,8 +121,8 @@ msgid ""
 msgstr ""
 "In 2008, the BNTL became a website. Since October 2024, this website has "
 "been completely renewed\n"
-"        with extra attention to the sustainable preservation of the "
-"data, better searchability\n"
+"        with extra attention to the sustainable preservation of the data, "
+"better searchability\n"
 "        and more access to open access articles."
 
 #: static/templates/error_modal.html:12
@@ -180,7 +179,7 @@ msgstr ""
 "about\n"
 "          Dutch language and literature from the period 1940 to the "
 "present (thus no primary\n"
-"          literature), where possible with a link to the digital full "
+"          literature), where possible with a link to the full digital "
 "texts."
 
 #: static/templates/index.html:20
@@ -240,14 +239,6 @@ msgstr "Enter your password"
 #: static/templates/login.html:17
 msgid "Indienen"
 msgstr "Submit"
-
-#: static/templates/record.html:20
-msgid ".bib"
-msgstr ".bib"
-
-#: static/templates/record.html:24
-msgid ".ris"
-msgstr ".ris"
 
 #: static/templates/record.html:45 static/templates/search.html:51
 msgid "Titelbeschrijving"

@@ -1,5 +1,5 @@
 
-import bson
+from copy import deepcopy
 import uuid
 import asyncio
 import rispy
@@ -27,7 +27,7 @@ async def main(paths):
             # read data from file
             async with aiofiles.open(path, 'r') as f:
                 await logger.info("Loading data from file: {}".format(path))
-                docs = rispy.loads(await f.read())
+                docs = rispy.loads(await f.read(), mapping=utils.RISPY_MAPPING)
 
             # insert documents
             await logger.info("Inserting {} docs from file: {}".format(len(docs), path))

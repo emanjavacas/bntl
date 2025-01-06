@@ -170,7 +170,7 @@ async def paginate_within(coll,
     ).to_list(length=settings.WITHIN_MAX_RESULTS)
 
     # create within query
-    doc_ids = [item["document.id"] for item in results]
+    doc_ids = [item["document"]["id"] for item in results]
     query_params = QueryParams(full_text=within_query)
 
     return await paginate(coll, query_params, page_params, ResponseModel, 

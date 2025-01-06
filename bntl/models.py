@@ -179,15 +179,15 @@ class DocumentModel(BaseModel):
     Document as it comes in from the ris parser
     """
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
-    
+    # mandatory
     id: str = Field(help="Zotero ID") # ID
     type_of_reference: TypeOfReference = Field(help="Record format") # TY
-
+    # optional
     keywords: Optional[List[str]] = Field(help="Keywords", default=None) # KW
     first_authors: Optional[List[str]] = Field(help="Authors", default=None) # A1
     secondary_authors: Optional[List[str]] = Field(help="Editor", default=None) # A2
     tertiary_authors: Optional[List[str]] = Field(help="Translator", default=None) # A3
-    primary_title: Optional[str] = Field(help="Title", default=None) # T1
+    title: Optional[str] = Field(help="Title", default=None) # T1
     secondary_title: Optional[str] = Field(help="Book Title/Series", default=None) # T2
     tertiary_title: Optional[str] = Field(help="Series/Special issue", default=None) # T3
     notes_abstract: Optional[str] = Field(help="Old BNTL citation", default=None) # N2

@@ -436,7 +436,7 @@ async def get_completions(field: str, query: str=Query(..., min_length=3)):
 def create_ris(*docs):
     def drop_none(doc):
         return {key: val for key, val in doc.items() if val is not None}
-    return rispy.dumps([drop_none(doc) for doc in docs])
+    return rispy.dumps([drop_none(doc) for doc in docs], mapping=utils.RISPY_MAPPING)
 
 
 @app.get("/exportRecord")

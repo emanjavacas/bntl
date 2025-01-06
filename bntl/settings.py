@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 
     UPLOAD_LOG_DIR: str = Field(default="./logs", help="Directory to store the upload log files")
     TRANSLATIONS_DIR: str = Field(default="static/translations")
-    DEFAULT_LOCALE: str = Field(default="en")
+    DEFAULT_LOCALE: str = Field(default="nl")
 
     RETRY_DELAY: int = Field(default=3600 * 10)
     MAX_RETRIES: int = Field(default=5)

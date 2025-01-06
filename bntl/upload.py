@@ -33,13 +33,13 @@ class Status:
 
 def get_doc_text(doc) -> Dict[str, str]:
     # title
-    title = doc.get("title", "")
+    title = doc.get("title", "") or ""
     if secondary := doc.get("secondary_title"):
         title += "; " + secondary
     if tertiary := doc.get("tertiary_title"):
         title += "; " + tertiary
     # keywords
-    keywords = doc.get("keywords")
+    keywords = doc.get("keywords", [])
     if keywords:
         keywords = "; ".join(keywords)
     # abstract
@@ -101,7 +101,7 @@ class FileUploadManager:
             await a_logger.info("Collecting data from upload: {}".format(file_id))
             try:
                 file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
-                documents = rispy.loads(file_data.decode())
+                documents = rispy.loads(file_data.decode(), mapping=utils.RISPY_MAPPING)
                 await a_logger.info("Received {} documents".format(len(documents)))
                 # validate and ingest
                 await a_logger.info("Indexing data...")

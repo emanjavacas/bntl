@@ -16,11 +16,8 @@
           <p class="fs-6 card-text">
           {{ _('De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties over Nederlandse taal- en letterkunde 
           uit de periode 1940 tot heden (dus geen primaire literatuur), waar mogelijk met een link naar de digitale volledige teksten.') }}
-          </br>
-          {{ _('We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de bibliografie. Met het invullen van de <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://goo.gl/forms/F7g9vbzBfzj14EdS2">gebruikersenquête</a>
-          kan u mee nadenken over de BNTL van de toekomst.') | safe }}
           </p>
-          <p class="text-end"><a href="/about">{{ _('Lees verder') }}...</a></p>
+          <p class="text-end"><a href="/about?lang={{lang}}">{{ _('Lees verder') }}...</a></p>
         </div>
       </div>
     </div>
@@ -32,19 +29,12 @@
     <hr>
     <div class="row fw-light px-3">
       <div class="col">
-        {{ _('Bekijk ook de Friese bibliografie') }}: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://www.bftl.nl">BFTL</a></span>
-      </div>
-    </div>
-    <hr>
-    <div class="row fw-light px-3">
-      <div class="col">
         {{ _('Digitale Bibliografie voor die Afrikaanse Taalkunde') }}: <span class="fw-bold"><a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="http://collections.nwu.ac.za/dbtw-wpd/textbases/bibliografie-afrikaans/dbat.html">DBAT</a></span>
       </div>
     </div>
     <div class="row mt-4 mb-3">
       {% include 'twitter.html' %}
     </div>
-
   </div>
 
   <!-- searchbox -->
@@ -53,7 +43,7 @@
       <div class="row">
         <form id="fullText">
           <div class="input-group">
-            <input type="text" class="form-control" name="full_text" placeholder="Volledig tekstzoek" required>
+            <input type="text" class="form-control" name="full_text" placeholder="{{ _('Zoek in de volledige bibliografie') }}" required>
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">{{ _('zoeken') }}</button>
           </div>
         </form>

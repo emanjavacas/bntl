@@ -2,13 +2,18 @@
 import os
 from collections import defaultdict
 from datetime import datetime, timezone
-from typing import List, Union
 import asyncio
+import copy
 
+import rispy
 import aiofiles
 import aioconsole
 
 from bntl.settings import settings
+
+
+RISPY_MAPPING = copy.deepcopy(rispy.TAG_KEY_MAPPING)
+RISPY_MAPPING["SV"] = "series_volume"
 
 
 def identity(item): return item

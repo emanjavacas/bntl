@@ -6,6 +6,8 @@ from glob import glob
 from lxml import etree
 from tqdm.auto import tqdm
 
+from bntl import utils
+
 
 namespaces = {
     'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -273,7 +275,7 @@ def parse_bibo_book(book, author_lookup):
             bibo_info['secondary_title'] = series_title_node.text
         series_number_node = series_node.find('bibo:number', namespaces)
         if series_number_node is not None:
-            bibo_info['note'] = series_number_node.text
+            bibo_info['series_volume'] = series_number_node.text
 
     publisher_node = book.find('{http://purl.org/dc/terms/}publisher/foaf:Organization', namespaces)
     if publisher_node is not None:
@@ -517,7 +519,7 @@ def parse_bibo_webpage(book, author_lookup):
             bibo_info['secondary_title'] = series_title_node.text
         series_number_node = series_node.find('bibo:number', namespaces)
         if series_number_node is not None:
-            bibo_info['note'] = series_number_node.text
+            bibo_info['series_volume'] = series_number_node.text
 
     reviewed_node = book.find('.//bibo:shortTitle', namespaces)
     if reviewed_node is not None:
@@ -634,7 +636,7 @@ def parse_bibo_film(book, author_lookup):
             bibo_info['secondary_title'] = series_title_node.text
         series_number_node = series_node.find('bibo:number', namespaces)
         if series_number_node is not None:
-            bibo_info['note'] = series_number_node.text
+            bibo_info['series_volume'] = series_number_node.text
 
     publisher_node = book.find('{http://purl.org/dc/terms/}publisher/foaf:Organization', namespaces)
     if publisher_node is not None:
@@ -765,16 +767,16 @@ if __name__ == '__main__':
         parsed = parse_rdf(fn)
 
         with open(parsedf, 'w') as bibliography_file:
-            rispy.dump(parsed, bibliography_file)
+            rispy.dump(parsed, bibliography_file, mapping=utils.RISPY_MAPPING)
 
 
 
-import glob
-import rispy
-records = []
-for f in glob.glob("data/parsed/*ris"):
-    with open(f) as f:
-        records.extend(rispy.load(f))
+# import glob
+# import rispy
+# records = []
+# for f in glob.glob("data/parsed/*ris"):
+#     with open(f) as f:
+#         records.extend(rispy.load(f))
 
 # records[0]
 # rispy.load()
