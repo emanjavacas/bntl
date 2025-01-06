@@ -15,10 +15,39 @@ let obj = Object.create(null);
 obj["{{key}}"] = '{{value}}';
 {% endfor %}
 const STATUS = Object.freeze(obj);
+
+function resetDatabase() {
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = "resetDatabase";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 </script>
 
+
 <div class="row">
-    <div class="d-flex justify-content-center align-items-center" id="entryPoint"></div>
+    <div class="col-3"></div>
+    <div class="col-6">
+        <!-- upload -->
+        <div class="row">
+            <div id="entryPoint"></div>
+        </div>
+        <!-- reset -->
+        <div class="row mt-3">
+            <div>
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Reset database</h5>
+                  <p class="card-text">Click here to reset the database to the original defaults. All records will be lost.</p>
+                  <a href="#" class="btn btn-danger" id="reset-btn" onclick="resetDatabase()">Reset</a>
+                </div>
+              </div>
+            </div>
+        </div>        
+    </div>
+    <div class="col-3"></div>
 </div>
 
 {% endblock %}

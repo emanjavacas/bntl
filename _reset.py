@@ -11,7 +11,6 @@ from vectorizer.db import DBClient as VectorizerDBClient
 async def main():
     db_client = await DBClient.create()
     await db_client._clear_up()
-
     vector_client = VectorClient()
     await vector_client._clear_up()
     db_client = await VectorizerDBClient.create()

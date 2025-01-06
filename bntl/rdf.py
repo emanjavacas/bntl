@@ -20,7 +20,7 @@ namespaces = {
     'address': 'http://schemas.talis.com/2005/address/schema#'
 }
 
-def get_author_lookup(root):
+def _get_author_lookup(root):
     author_lookup = {}
     persons = root.findall('.//foaf:Person', namespaces=namespaces)
 
@@ -42,7 +42,7 @@ def get_author_lookup(root):
     
     return author_lookup
 
-def get_keyword_lookup(root):
+def _get_keyword_lookup(root):
     keyword_lookup = {}
     user_tags = root.findall('.//ctag:UserTag', namespaces)
     for user_tag in user_tags:
@@ -55,7 +55,7 @@ def get_keyword_lookup(root):
 
     return keyword_lookup
 
-def parse_keywords(z_node, keyword_lookup):
+def _parse_keywords(z_node, keyword_lookup):
     keywords = []
     tagged_elements = z_node.findall('.//ctag:tagged', namespaces=namespaces)
     for tagged in tagged_elements:
@@ -70,7 +70,7 @@ def parse_keywords(z_node, keyword_lookup):
     return {'keywords': keywords}
 
 ## journal articles
-def parse_academic_article(article, author_lookup):
+def _parse_academic_article(article, author_lookup):
     bibo_info = {}
 
     # Authors
@@ -150,7 +150,7 @@ def parse_academic_article(article, author_lookup):
 
     return bibo_info
 
-def parse_jour(z_node, author_lookup, keyword_lookup):
+def _parse_jour(z_node, author_lookup, keyword_lookup):
     info = {}
     
     # Try to find the academic article node
@@ -182,14 +182,14 @@ def parse_jour(z_node, author_lookup, keyword_lookup):
     
     # Only parse if we found a valid node
     if bibo_node is not None:
-        info.update(parse_academic_article(bibo_node, author_lookup))
+        info.update(_parse_academic_article(bibo_node, author_lookup))
     
     # Add keywords regardless
-    info.update(parse_keywords(z_node, keyword_lookup=keyword_lookup))
+    info.update(_parse_keywords(z_node, keyword_lookup=keyword_lookup))
     return info
 
 ## books:
-def parse_bibo_book(book, author_lookup):
+def _parse_bibo_book(book, author_lookup):
     bibo_info = {}
 
     authors = []
@@ -289,7 +289,7 @@ def parse_bibo_book(book, author_lookup):
    
     return bibo_info
     
-def parse_book(z_node, author_lookup, keyword_lookup):
+def _parse_book(z_node, author_lookup, keyword_lookup):
     info = {}
 
     next_node = z_node.getnext()
@@ -303,13 +303,13 @@ def parse_book(z_node, author_lookup, keyword_lookup):
             bibo_node = z_node.find('{http://purl.org/ontology/bibo/}Book')
     
     if bibo_node is not None:
-        info.update(parse_bibo_book(bibo_node, author_lookup))
+        info.update(_parse_bibo_book(bibo_node, author_lookup))
     
-    info.update(parse_keywords(z_node, keyword_lookup))
+    info.update(_parse_keywords(z_node, keyword_lookup))
     return info
 
 ## chapters:
-def parse_bibo_chapter(chapter, author_lookup):
+def _parse_bibo_chapter(chapter, author_lookup):
     bibo_info = {}
 
     authors = []
@@ -420,7 +420,7 @@ def parse_bibo_chapter(chapter, author_lookup):
     return bibo_info
 
 
-def parse_chapter(z_node, author_lookup, keyword_lookup):
+def _parse_chapter(z_node, author_lookup, keyword_lookup):
     info = {}
 
     next_node = z_node.getnext()
@@ -434,14 +434,14 @@ def parse_chapter(z_node, author_lookup, keyword_lookup):
             bibo_node = z_node.find('bibo:BookSection', namespaces)
     
     if bibo_node is not None:
-        info.update(parse_bibo_chapter(bibo_node, author_lookup))
+        info.update(_parse_bibo_chapter(bibo_node, author_lookup))
     
-    info.update(parse_keywords(z_node, keyword_lookup))
+    info.update(_parse_keywords(z_node, keyword_lookup))
 
     return info
 
 ## web pages:
-def parse_bibo_webpage(book, author_lookup):
+def _parse_bibo_webpage(book, author_lookup):
     bibo_info = {}
 
     authors = []
@@ -537,7 +537,7 @@ def parse_bibo_webpage(book, author_lookup):
    
     return bibo_info
     
-def parse_web(z_node, author_lookup, keyword_lookup):
+def _parse_web(z_node, author_lookup, keyword_lookup):
     info = {}
 
     next_node = z_node.getnext()
@@ -551,14 +551,14 @@ def parse_web(z_node, author_lookup, keyword_lookup):
             bibo_node = z_node.find('{http://purl.org/ontology/bibo/}Webpage')
     
     if bibo_node is not None:
-        info.update(parse_bibo_webpage(bibo_node, author_lookup))
+        info.update(_parse_bibo_webpage(bibo_node, author_lookup))
     
-    info.update(parse_keywords(z_node, keyword_lookup))
+    info.update(_parse_keywords(z_node, keyword_lookup))
 
     return info
 
 ## cdroms etc
-def parse_bibo_film(book, author_lookup):
+def _parse_bibo_film(book, author_lookup):
     bibo_info = {}
 
     authors = []
@@ -650,7 +650,7 @@ def parse_bibo_film(book, author_lookup):
    
     return bibo_info
     
-def parse_advs(z_node, author_lookup, keyword_lookup):
+def _parse_advs(z_node, author_lookup, keyword_lookup):
     info = {}
 
     bibo_node = None
@@ -665,27 +665,25 @@ def parse_advs(z_node, author_lookup, keyword_lookup):
             bibo_node = z_node.find('bibo:Film', namespaces)
     
     if bibo_node is not None:
-        info.update(parse_bibo_film(bibo_node, author_lookup))
+        info.update(_parse_bibo_film(bibo_node, author_lookup))
     
-    info.update(parse_keywords(z_node, keyword_lookup))
+    info.update(_parse_keywords(z_node, keyword_lookup))
     return info
 
 
-def parse_rdf(fn):
-    with open(fn, 'r', encoding='utf-8') as file:
-        xml_content = file.read()
-    root = etree.fromstring(xml_content)
+def parse_rdf(rdf_data):
+    """"
+    takes a file with rdf data and returns 
+    """
+    root = etree.fromstring(rdf_data)
 
-    author_lookup = get_author_lookup(root)
-    keyword_lookup = get_keyword_lookup(root)
+    author_lookup = _get_author_lookup(root)
+    keyword_lookup = _get_keyword_lookup(root)
 
     user_items = tuple(root.xpath('//z:UserItem', namespaces=namespaces))
 
     parsed = []
-    for z_node in tqdm(user_items, 
-                      desc=os.path.basename(fn),
-                      position=1, 
-                      leave=False):
+    for z_node in tqdm(user_items, position=1, leave=False):
         info = {}
 
         user_item_url = z_node.xpath('@rdf:about', namespaces=namespaces)
@@ -711,14 +709,14 @@ def parse_rdf(fn):
                     academic_article = []
 
         if academic_article:
-            info.update(parse_jour(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
+            info.update(_parse_jour(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'JOUR'
         
         next_node = z_node.getnext()
         
         if ((next_node is not None and next_node.tag == '{' + namespaces['bibo'] + '}Book') or 
             z_node.xpath('.//bibo:Book', namespaces=namespaces)):
-            info.update(parse_book(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
+            info.update(_parse_book(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'BOOK'
 
             if 'keywords' in info and "Speciaal tijdschriftnummer" in set(info['keywords']):
@@ -726,17 +724,17 @@ def parse_rdf(fn):
 
         elif ((next_node is not None and next_node.tag == '{' + namespaces['bibo'] + '}BookSection') or 
               z_node.xpath('.//bibo:BookSection', namespaces=namespaces)):
-            info.update(parse_chapter(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
+            info.update(_parse_chapter(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'CHAP'
 
         elif ((next_node is not None and next_node.tag == '{' + namespaces['bibo'] + '}Webpage') or 
               z_node.xpath('.//bibo:Webpage', namespaces=namespaces)):
-            info.update(parse_web(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
+            info.update(_parse_web(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'WEB'
 
         elif ((next_node is not None and next_node.tag == '{' + namespaces['bibo'] + '}Film') or 
               z_node.xpath('.//bibo:Film', namespaces=namespaces)):
-            info.update(parse_advs(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
+            info.update(_parse_advs(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'ADVS'
 
         if info:
@@ -745,8 +743,10 @@ def parse_rdf(fn):
 
             if 'urls' in info and not isinstance(info['urls'], list):
                 info['urls'] = [info['urls']]
-
             parsed.append(info)
+
+    # return ris
+    parsed = rispy.dumps(parsed, mapping=utils.RISPY_MAPPING)
     return parsed
 
 
@@ -759,67 +759,12 @@ if __name__ == '__main__':
 
     for fn in tqdm(glob(f'{args.inputdir}/*.rdf'), 
             desc="Processing files", 
-            position=0, 
+            position=0,
             leave=True):
         
         parsedf = os.path.basename(fn).replace('.rdf', '.ris')
         parsedf = f'{args.outdir}/{parsedf}'
-        parsed = parse_rdf(fn)
-
+        with open(fn, 'r', encoding='utf-8') as file:
+            parsed = parse_rdf(file.read())
         with open(parsedf, 'w') as bibliography_file:
-            rispy.dump(parsed, bibliography_file, mapping=utils.RISPY_MAPPING)
-
-
-
-# import glob
-# import rispy
-# records = []
-# for f in glob.glob("data/parsed/*ris"):
-#     with open(f) as f:
-#         records.extend(rispy.load(f))
-
-# records[0]
-# rispy.load()
-# import pandas as pd
-# len(records)
-# df = pd.json_normalize(records)
-# for t, g in df.groupby("TY"):
-#     print(t)
-#     print(g.dropna(axis="columns", how="any").keys())
-#     print()
-
-# df.keys()
-# import rispy
-
-# rispy.loads("\n".join([f"{key}: {val}" for key, val in records[0].items()]))
-
-
-
-# def json_to_ris(json_data):
-#     json_data = dict(json_data)
-#     ris_lines = []
-#     if "TY" in json_data:
-#         ris_lines.append(f"TY  - {json_data.pop('TY')}")
-#     ER = json_data.pop("ER") if "ER" in json_data else None
-#     for key, value in json_data.items():
-#         if isinstance(value, list):
-#             # For fields with multiple values (e.g., authors)
-#             for item in value:
-#                 ris_lines.append(f"{key}  - {item}")
-#         else:
-#             ris_lines.append(f"{key}  - {value}")
-#     # End each record with ER
-#     if ER:
-#         ris_lines.append(f"ER  - {ER}")
-#     else:
-#         ris_lines.append("ER  -")
-#     return "\n".join(ris_lines)
-
-
-# record = records[0]
-# record["C2"] = record["ID"]
-# record["ID"] = 'http://zotero.org/groups/5376439/items/BYC2DTHC'
-# record.pop("ID")
-
-# print(rispy.dumps(rispy.loads(json_to_ris(record))))
-# record
+            bibliography_file.write(parsed)

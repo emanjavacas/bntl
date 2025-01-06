@@ -8,6 +8,7 @@ import rispy
 
 from bntl import utils
 from bntl.models import StatusModel
+from bntl.rdf import parse_rdf
 from vectorizer import client
 
 
@@ -101,7 +102,9 @@ class FileUploadManager:
             await a_logger.info("Collecting data from upload: {}".format(file_id))
             try:
                 file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
-                documents = rispy.loads(file_data.decode(), mapping=utils.RISPY_MAPPING)
+                await a_logger.info("Parsing RDF into RIS")
+                ris_data = parse_rdf(file_data.decode())
+                documents = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
                 await a_logger.info("Received {} documents".format(len(documents)))
                 # validate and ingest
                 await a_logger.info("Indexing data...")

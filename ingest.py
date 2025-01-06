@@ -6,6 +6,7 @@ import rispy
 import aiofiles
 
 from bntl import utils
+from bntl.rdf import parse_rdf
 from bntl.db import DBClient
 from bntl.vector import VectorClient
 from bntl.upload import convert_to_text
@@ -27,7 +28,8 @@ async def main(paths):
             # read data from file
             async with aiofiles.open(path, 'r') as f:
                 await logger.info("Loading data from file: {}".format(path))
-                docs = rispy.loads(await f.read(), mapping=utils.RISPY_MAPPING)
+                ris_data = parse_rdf(await f.read())
+                docs = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
 
             # insert documents
             await logger.info("Inserting {} docs from file: {}".format(len(docs), path))
@@ -57,6 +59,6 @@ async def main(paths):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ris-files', required=True, nargs="+", help="Path to ris file with data to be indexed.")
+    parser.add_argument('--rdf-files', required=True, nargs="+", help="Path to rdf file with data to be indexed.")
     args = parser.parse_args()
-    asyncio.run(main(args.ris_files))
+    asyncio.run(main(args.rdf_files))

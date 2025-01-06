@@ -348,6 +348,13 @@ async def index():
     return {"message": {"Estimated document count": await app.state.db_client.count()}}
 
 
+@app.get("/resetDatabase", dependencies=[Depends(require_validated_session)])
+async def reset_database():
+    await app.state.db_client._clear_up()
+    await app.state.vector_client._clear_up()
+    return RedirectResponse(url="/")
+
+
 @app.post("/uploadFile", dependencies=[Depends(require_validated_session)])
 async def upload(file: UploadFile = File(...), 
                  chunk: int = Form(...), 

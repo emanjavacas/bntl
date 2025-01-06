@@ -152,7 +152,7 @@ $(document).ready(function(){
             div({ class: "card-header" }, "Indexing service"),
             div({ class: "card-body" },
                 h5({ class: "card-title" }, "File Upload"),
-                p({ class: "card-text" }, "Upload a RIS file from zotero"),
+                p({ class: "card-text" }, "Upload a RDF file from Zotero"),
                 form({ class: "input-group", id:"uploadForm", onsubmit: onSubmit },
                     input({ type: "file", class: "form-control", id: "fileInput", multiple: true }),
                     button({ class: "btn btn-outline-secondary", type: "submit" }, "Upload")),
@@ -207,7 +207,6 @@ function downloadLog(fileId) {
     a.click();
     document.body.removeChild(a);
 }
-
 
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
