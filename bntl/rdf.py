@@ -135,8 +135,8 @@ def _parse_academic_article(article, author_lookup):
         # ISSN
         issn_node = journal_node.find('bibo:issn', namespaces)
         if issn_node is not None and issn_node.text:
-            assert issn_node.text != 'nan'
-            bibo_info['issn'] = issn_node.text
+            if issn_node.text != 'nan':
+                bibo_info['issn'] = issn_node.text
 
         # Look for Series within the Journal node
         series_nodes = journal_node.findall('.//bibo:Series', namespaces)
