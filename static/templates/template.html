@@ -58,8 +58,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="/?lang={{lang}}">home</a>
                                 </li>
+                                <li class="nav-item"></li>
+                                    <a class="nav-link" href="/?about={{lang}}">about</a>
+                                </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/search?lang={{lang}}">{{ _('zoeken') }}</a>
+                                    <a class="nav-link" href="/history?lang={{lang}}">{{ _('zoekgeschiedenis') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/help?lang={{lang}}">{{ _('help') }}</a>
@@ -102,26 +105,25 @@
         <footer class="footer mt-auto py-3 bg-light shadow-lg">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-10 h-100 text-center text-lg-start my-auto">
-                        <ul class="list-inline mb-2">
-                            <li class="list-inline-item">
-                                <a href="/about?lang={{lang}}">{{ _('Over de BNTL') }}</a>
-                            </li>
-                            <li class="list-inline-item">⋅</li>
+                    <div class="col-lg-7 h-100 text-center text-lg-start my-auto">
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; BNTL 2024. </p>
+                        <p class="text-muted small mb-4 mb-lg-0">{{ _('Gerealiseerd met de steun van het Departement Cultuur, Jeugd en Media van de Vlaamse Overheid') }}.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">{{ _('Dit database maakt gebruikt van') }} <a href="https://www.zotero.org"><img width=40 src="/static/assets/img/zotero-logo.svg"></a>.</p>
+                        <ul class="list-inline mb-2"></ul>
                             <li class="list-inline-item">
                                 <a href="mailto:carl.destrycker@kbr.be">
                                 Contact
                                 </a>
                             </li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; BNTL 2024. </p>
-                        <p class="text-muted small mb-4 mb-lg-0">{{ _('Gerealiseerd met de steun van het Departement Cultuur, Jeugd en Media van de Vlaamse Overheid') }}.</p>
-                        <p class="text-muted small mb-4 mb-lg-0">{{ _('Dit database maakt gebruikt van') }} <a href="https://www.zotero.org"><img width=60 src="/static/assets/img/zotero-logo.svg"></a></p>
                     </div>
-                    <div class="col-lg-2 h-100 text-center text-lg-end my-auto">
+                    <div class="col-lg-5 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
-                            <li class="list-inline-item me-4">
-                                <a href="https://x.com/_BNTL_"><i class="bi-twitter fs-3"></i></a>
+                            <li class="list-inline-item me-0">
+                                <img src="/static/assets/img/Vlaanderen verbeelding werkt_vol_geel.jpg" width="120" alt="BNTL logo">
+                            </li>
+                            <li class="list-inline-item me-0">
+                                <img src="/static/assets/img/logo1.jpg" width="80" alt="BNTL logo">
                             </li>
                         </ul>
                     </div>

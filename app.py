@@ -174,18 +174,6 @@ async def help(request: Request, lang: str = Query(default=settings.DEFAULT_LOCA
     return templates.TemplateResponse("help.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
 
-@app.get("/search", response_class=HTMLResponse)
-async def search(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
-    """
-    Search route that shows the search interface
-    """
-    return templates.TemplateResponse(
-        "search.html", 
-        {"request": request, 
-         "_": get_translation(lang).gettext, "lang": lang,
-         "type_of_reference": app.state.db_client.unique_refs})
-
-
 @app.post("/registerQuery")
 async def register_query(query_params: QueryParams, request: Request):
     """
@@ -274,8 +262,8 @@ async def paginate_within_route(query_id: str,
                          **results.model_dump()})
 
 
-@app.get("/getQueryHistory")
-async def get_query_history(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+@app.get("/history")
+async def query_history(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Query history route
     """
