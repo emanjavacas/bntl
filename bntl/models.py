@@ -293,6 +293,13 @@ class FileUploadModel(BaseModel):
     history: List[StatusModel]
 
 
+class VectorizationTaskModel(BaseModel):
+    task_id: str
+    date_started: datetime
+    current_status: StatusModel
+    history: List[StatusModel]
+
+
 class LoginParams(BaseModel):
     password: str
     next_url: str

@@ -114,6 +114,7 @@ class DBClient():
         self.autocomplete_coll = self.mongodb_client[settings.LOCAL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client[settings.LOCAL_DB][settings.UPLOAD_COLL]
+        self.vectorization_coll = self.mongodb_client[settings.LOCAL_DB][settings.VECTORIZATION_COLL]
         # vectorize database to retrieve vectors when done
         self.vectors_coll = self.mongodb_client[v_settings.VECTORIZER_DB][v_settings.VECTORS_COLL]
 
@@ -285,6 +286,29 @@ class DBClient():
     
     async def find_upload_status(self, file_id):
         return await self.upload_coll.find_one({"file_id": file_id})
+    
+    # vectorize database
+    async def register_vectorization(self, task_id: str, status: str):
+        return await self.vectorization_coll.insert_one(
+            {"task_id": task_id, 
+             "date_started": datetime.now(timezone.utc),
+             "current_status": {"status": status, "date_updated": datetime.now(timezone.utc)},    
+             "history": []})
+
+    async def get_vectorization_history(self):
+        cursor = self.vectorization_coll.find().sort("date_started", pymongo.ASCENDING)
+        return await cursor.to_list(length=None)
+
+    async def update_vectorization_status(self, task_id: str, new_status: StatusModel):
+        old_status = (await self.vectorization_coll.find_one({"task_id": task_id}))["current_status"]
+        return await self.vectorization_coll.update_one(
+            {"task_id": task_id},
+            {"$set": {"current_status": new_status.model_dump()},
+                "$push": {"history": old_status}},
+            upsert=True)
+
+    async def find_vectorization_status(self, task_id):
+        return await self.vectorization_coll.find_one({"task_id": task_id})
 
     # keywords
     async def find_autocomplete_by_prefix(self, field: str, prefix: str, limit=10) -> List[str]:
@@ -301,6 +325,7 @@ class DBClient():
         await self.autocomplete_coll.drop()
         await self.query_coll.drop()
         await self.upload_coll.drop()
+        await self.vectorization_coll.drop()
         # ensure we recreate the indices
         await self.ensure_indices()
 

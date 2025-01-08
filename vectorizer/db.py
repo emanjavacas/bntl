@@ -70,6 +70,19 @@ class DBClient():
             [UpdateOne({"task_id": task_id, "doc_id": doc_id, "vector_id": vector_id},
                         {"$set": {"vector": vector}})
                 for vector_id, (doc_id, vector) in enumerate(zip(doc_ids, vectors))])
+        
+    async def find_in_batches(self, texts, batch_size=1000):
+        result = []
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            cursor = self.vectors_coll.find({"text": {"$in": batch}, "vector": {"$exists": True, "$ne": []}})
+            result.extend(await cursor.to_list(None))
+        return result
+        
+    async def retrieve_cache(self, texts):
+        items = await self.find_in_batches(texts)
+        text2vector = {item["text"]: item["vector"] for item in items}
+        return text2vector
     
     async def _clear_up(self):
         await self.vectors_coll.drop()

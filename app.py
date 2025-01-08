@@ -19,18 +19,16 @@ from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, Red
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from bntl.vector import VectorClient, MissingVectorException
+from bntl.vector_db import VectorClient, MissingVectorException
+from bntl.vectorization import Status as VectorizationStatus, vectorize_task
 from bntl.db import DBClient
 from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
-from bntl.models import DBDocumentModel, VectorEntryModel, FileUploadModel
+from bntl.models import DBDocumentModel, VectorEntryModel, FileUploadModel, VectorizationTaskModel
 from bntl.models import get_record_screen_name
 from bntl.pagination import paginate, paginate_within, build_query
-from bntl.upload import Status, FileUploadManager, convert_to_text
+from bntl.upload import Status as UploadStatus, FileUploadManager
 from bntl.settings import settings, setup_logger
 from bntl import utils
-
-from vectorizer import client as vector_client
-
 
 setup_logger()
 logger = logging.getLogger(__name__)
@@ -43,9 +41,7 @@ VALIDATED_SESSIONS = set()
 async def lifespan(app: FastAPI):
     app.state.db_client = await DBClient.create()
     app.state.vector_client = VectorClient()
-    app.state.file_upload = FileUploadManager(
-        app.state.db_client, 
-        app.state.vector_client)
+    app.state.file_upload = FileUploadManager(app.state.db_client)
     yield
     app.state.db_client.close()
     await app.state.vector_client.close()
@@ -343,6 +339,19 @@ async def reset_database():
     return RedirectResponse(url="/")
 
 
+# file upload
+@app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
+async def upload_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+    """
+    Upload route
+    """
+    return templates.TemplateResponse(
+        "upload.html", 
+        {"request": request,
+         "_": get_translation(lang).gettext, "lang": lang,
+         "statuses": UploadStatus.__get_classes__()})
+
+
 @app.post("/uploadFile", dependencies=[Depends(require_validated_session)])
 async def upload(file: UploadFile = File(...), 
                  chunk: int = Form(...), 
@@ -350,7 +359,7 @@ async def upload(file: UploadFile = File(...),
                  file_id: str = Form(...),
                  background_tasks: BackgroundTasks=None):
     if chunk == 0:
-        await app.state.db_client.register_upload(file_id, file.filename, Status.UPLOADING)
+        await app.state.db_client.register_upload(file_id, file.filename, UploadStatus.UPLOADING)
     app.state.file_upload.add_chunk(file_id, chunk, await file.read())
     if chunk == total_chunks - 1:
         background_tasks.add_task(app.state.file_upload.process_file_task, file_id)
@@ -372,7 +381,7 @@ async def get_upload_history():
 
 @app.get("/getUploadLog", dependencies=[Depends(require_validated_session)])
 async def get_upload_log(file_id: str):
-    log_filename = utils.get_log_filename(file_id)
+    log_filename = utils.get_upload_log_filename(file_id)
     filename = await app.state.db_client.get_upload_filename(file_id)
     if os.path.isfile(log_filename):
         async with aiofiles.open(log_filename, "rb") as f:
@@ -383,51 +392,64 @@ async def get_upload_log(file_id: str):
         raise HTTPException(status_code=404, detail="File not found")
 
 
-@app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
-async def upload_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+# vectorization
+@app.get("/vectorize", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
+async def vectorize_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
-    Upload route
+    Vectorize route: vectorize full DB
     """
     return templates.TemplateResponse(
-        "upload.html", 
+        "vectorize.html",
         {"request": request,
          "_": get_translation(lang).gettext, "lang": lang,
-         "statuses": Status.__get_classes__()})
+         "statuses": VectorizationStatus.__get_classes__()})
 
 
-async def revectorize_task():
-    task_id = "revectorize-" + str(uuid.uuid4())
-    async with utils.AsyncLogger(task_id) as a_logger:
-        await a_logger.info("Starting revectorize task: {}".format(task_id))
-        docs = await app.state.db_client.find()
-        texts, doc_ids = [], []
-        for doc in docs:
-            if text := convert_to_text(doc["document"]):
-                texts.append(text)
-                doc_ids.append(doc["document"]["id"])
-        await a_logger.info("Revectorizing {} documents...".format(len(docs)))
-        vectors = await vector_client.vectorize(
-            app.state.db_client.vectors_coll, task_id, texts, doc_ids, logger=a_logger)
-        if vectors:
-            await app.state.vector_client._clear_up()
-            await a_logger.info("Indexing...")
-            await app.state.vector_client.insert(vectors, doc_ids)
-            await a_logger.info("Done indexing")
-        else:
-            await a_logger.info("Couldn't get vectors during reindex operation")
+@app.post("/vectorize", dependencies=[Depends(require_validated_session)])
+async def vectorize(background_tasks: BackgroundTasks):
+    if history := await app.state.db_client.get_vectorization_history():
+        last_task = history[-1]
+        last_status = last_task["current_status"]
+        if not VectorizationStatus.is_done(last_status["status"]):
+            raise HTTPException(status_code=409, detail="Service is busy, another task is running")
+    task_id = str(uuid.uuid4())
+    await app.state.db_client.register_vectorization(task_id, VectorizationStatus.VECTORIZING)
+    background_tasks.add_task(vectorize_task, app.state.db_client, app.state.vector_client, task_id)
+    return {"status": "ok", "taskId": task_id}
 
 
-@app.post("/revectorize", dependencies=[Depends(require_validated_session)])
-async def revectorize(background_tasks: BackgroundTasks):
-    background_tasks.add_task(revectorize_task)
-    return "Ok"
+@app.get("/checkVectorizationStatus/{task_id}", response_model=VectorizationTaskModel, dependencies=[Depends(require_validated_session)])
+async def check_vectorization_status(task_id: str):
+    status = await app.state.db_client.find_vectorization_status(task_id)
+    if not status:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return status
 
 
+@app.get("/getVectorizationHistory", response_model=List[VectorizationTaskModel], dependencies=[Depends(require_validated_session)])
+async def get_vectorization_history():
+    return await app.state.db_client.get_vectorization_history()
+
+
+@app.get("/getVectorizationLog", dependencies=[Depends(require_validated_session)])
+async def get_vectorization_log(task_id: str):
+    log_filename = utils.get_vectorization_log_filename(task_id)
+    if os.path.isfile(log_filename):
+        async with aiofiles.open(log_filename, "rb") as f:
+            return StreamingResponse(io.BytesIO(await f.read()),
+                media_type='application/octet-stream',
+                headers={"Content-Disposition": f"attachment; filename=vectorization_log_{task_id}.log"})
+    else:
+        raise HTTPException(status_code=404, detail="File not found")
+
+
+# autocompletion
 @app.get("/getCompletions")
 async def get_completions(field: str, query: str=Query(..., min_length=3)):
     return await app.state.db_client.find_autocomplete_by_prefix(field, query)
 
 
+# export
 def create_ris(*docs):
     def drop_none(doc):
         return {key: val for key, val in doc.items() if val is not None}
@@ -479,10 +501,11 @@ if __name__ == '__main__':
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
 
-    
     # make sure folders exist
     if not os.path.isdir(settings.UPLOAD_LOG_DIR):
         os.makedirs(settings.UPLOAD_LOG_DIR)
+    if not os.path.isdir(settings.VECTORIZE_LOG_DIR):
+        os.makedirs(settings.VECTORIZE_LOG_DIR)
 
     import uvicorn
     uvicorn.run("app:app",

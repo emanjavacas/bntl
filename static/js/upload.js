@@ -41,7 +41,7 @@ $(document).ready(function(){
                     success: function () {
                         console.log(`Chunk ${currentChunk}/${totalChunks} of ${file.name} - ${fileId} uploaded`);
                         if (currentChunk === totalChunks - 1) {
-                            updateFileStatus(fileId, STATUS.INDEXING, 0);
+                            updateFileStatus(fileId, STATUS.PARSING, 0);
                             checkStatus(fileId);
                         } else {
                             currentChunk++;
@@ -82,8 +82,6 @@ $(document).ready(function(){
             status === STATUS.DONE ||
             status === STATUS.UNKNOWNERROR ||
             status === STATUS.UNKNOWNFORMAT ||
-            status === STATUS.VECTORIZINGERROR ||
-            status === STATUS.VECTORINDEXINGERROR ||
             status === STATUS.EMPTYFILE)
     }
 
@@ -114,11 +112,11 @@ $(document).ready(function(){
             switch (file.status.val) {
                 case STATUS.UPLOADING:
                     statusClass = 'bg-warning text-dark'; break;
-                case STATUS.INDEXING: case STATUS.VECTORIZING:
+                case STATUS.INDEXING: case STATUS.PARSING:
                     statusClass = 'bg-info'; break;
                 case STATUS.DONE:
                     statusClass = 'bg-success'; break;
-                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE: case STATUS.VECTORIZINGERROR: case STATUS.VECTORINDEXINGERROR:
+                case STATUS.UNKNOWNERROR: case STATUS.UNKNOWNFORMAT: case STATUS.EMPTYFILE:
                     statusClass = 'bg-danger'
             }
             const listItem = li({ class: 'list-group-item' },
@@ -142,7 +140,7 @@ $(document).ready(function(){
                                 class: "btn btn-sm btn-primary float-end",
                                 onclick: () => downloadLog(file.fileId) }, "Log") :
                             // download button disabled
-                            button({ id: `btn-${file.file_id}`, class: "btn btn-sm btn-primary float-end disabled" }, "Log")))
+                            button({ id: `btn-${file.fileId}`, class: "btn btn-sm btn-primary float-end disabled" }, "Log")))
                 )
             )
             return listItem
@@ -160,7 +158,7 @@ $(document).ready(function(){
                     () => div(filelist.val.files.map(createListItem))))))
     }
 
-    van.add($("#entryPoint"), Card());
+    van.add($("#uploadEntryPoint"), Card());
     // recall upload history
     $.ajax({
         url: "getUploadHistory",
@@ -171,7 +169,9 @@ $(document).ready(function(){
                 addFileToList(item.filename, item.file_id, item.current_status.status, item.current_status.progress | 0);
             })
         },
-        error: function() { }});
+        error: function() { }
+    });
+
 });
 
 
@@ -207,6 +207,7 @@ function downloadLog(fileId) {
     a.click();
     document.body.removeChild(a);
 }
+
 
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>

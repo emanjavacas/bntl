@@ -4,6 +4,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 import asyncio
 import copy
+from typing import Dict
 
 import rispy
 import aiofiles
@@ -19,14 +20,45 @@ RISPY_MAPPING["SV"] = "series_volume"
 def identity(item): return item
 
 
+def get_doc_text(doc) -> Dict[str, str]:
+    # title
+    title = doc.get("title", "") or ""
+    if secondary := doc.get("secondary_title"):
+        title += "; " + secondary
+    if tertiary := doc.get("tertiary_title"):
+        title += "; " + tertiary
+    # keywords
+    keywords = doc.get("keywords", [])
+    if keywords:
+        keywords = "; ".join(keywords)
+    # abstract
+    abstract = doc.get("abstract", "")
+
+    return {"title": title, "keywords": keywords, "abstract": abstract}
+
+
+def convert_to_text(doc, ignore_keywords=False, ignore_abstract=False) -> str:
+    doc = get_doc_text(doc)
+    output = doc.get("title", "")
+    if doc["keywords"] and not ignore_keywords:
+        output += "; " + doc["keywords"]
+    if doc["abstract"] and not ignore_abstract:
+        output += "; " + doc["abstract"]
+    return output
+
+
 def default_to_regular(d):
     if isinstance(d, (defaultdict, dict)):
         d = {k: default_to_regular(v) for k, v in d.items()}
     return d
 
 
-def get_log_filename(file_id):
+def get_upload_log_filename(file_id):
     return os.path.join(settings.UPLOAD_LOG_DIR, file_id + '.log')
+
+
+def get_vectorization_log_filename(task_id):
+    return os.path.join(settings.VECTORIZE_LOG_DIR, task_id + '.log')
 
 
 async def maybe_await(value):

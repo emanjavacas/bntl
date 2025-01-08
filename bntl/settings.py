@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
     UPLOAD_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="upload")
     UPLOAD_SECRET: str = Field(help="Secret to run the upload logic")
+    VECTORIZATION_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="vectorization")
 
     WITHIN_MAX_RESULTS: int = Field(help="Restrict results of original query to this number when doing recursive query", default=300_000)
     MAX_EXPORT_RESULTS: int = Field(help="Maximum number of documents to be exported", default=100)
@@ -32,7 +33,8 @@ class Settings(BaseSettings):
     QDRANT_PORT: int = Field(help="Port used by QDrant (usually 6333)")
     QDRANT_COLL: str = Field(default="bntl")
 
-    UPLOAD_LOG_DIR: str = Field(default="./logs", help="Directory to store the upload log files")
+    UPLOAD_LOG_DIR: str = Field(default="logs/upload", help="Directory to store the upload log files")
+    VECTORIZE_LOG_DIR: str = Field(default="logs/vectorize")
     TRANSLATIONS_DIR: str = Field(default="static/translations")
     DEFAULT_LOCALE: str = Field(default="nl")
 

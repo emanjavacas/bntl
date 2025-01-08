@@ -22,7 +22,7 @@ async def post_task(task_id: str, texts: List[str], doc_ids: List[str]):
         url = 'http://0.0.0.0:{}/vectorize'.format(settings.PORT)
         data = {"task_id": task_id, "texts": texts, "doc_ids": doc_ids}
         async with session.post(url, json=data) as resp:
-                return await resp.json()
+            return await resp.json()
 
 
 async def get_task_status(task_id: str):
@@ -42,6 +42,12 @@ def get_retry_time(n_docs):
     return 10
 
 
+class VectorizationException(Exception):
+    def __init__(self, message, error_data=None):
+        super().__init__(message)
+        self.error_data = error_data
+
+
 async def vectorize(vectors_coll: AsyncIOMotorCollection, 
                     task_id: str, 
                     texts: List[str], 
@@ -58,14 +64,13 @@ async def vectorize(vectors_coll: AsyncIOMotorCollection,
     # handle 500's, etc...
     if "status_code" in resp:
         await maybe_await(logger.info(str(resp)))
-        return 
+        return VectorizationException(str(resp))
 
     start = time.time()
     while resp["current_status"]["status"] != Status.DONE:
         # exit if timeout
         if (time.time() - start) > timeout:
-            await maybe_await(logger.info("Client timeout when vectorizing..."))
-            return
+            raise VectorizationException("Client timeout when vectorizing...")
         # check if error
         if resp["current_status"]["status"] in (Status.RETRYING, Status.VECTORIZING):
             await maybe_await(logger.info("Task in status: {}".format(resp["current_status"]["status"])))
@@ -73,9 +78,7 @@ async def vectorize(vectors_coll: AsyncIOMotorCollection,
             await asyncio.sleep(retry_time)
             resp = await get_task_status(task_id)
         else:
-            await maybe_await(logger.info("Error while vectorizing..."))
-            await maybe_await(logger.info(str(resp["current_status"]["status"])))
-            return
+            raise VectorizationException("Error while vectorizing", error_data=resp["current_status"]["status"])
     else: # done
         await maybe_await(logger.info("Vectorization done in {} secs".format(round(time.time() - start, 2))))
         vectors = await vectors_coll.find(

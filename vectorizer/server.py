@@ -42,10 +42,17 @@ async def vectorize_task(task_id, texts, doc_ids):
             try:
                 app.state.model_manager.load_model()
                 app.state.model_manager.move_model_to_gpu()
-                vectors = await run_in_threadpool(
-                    app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
-                vectors = vectors.tolist()
+                # cache
+                input_texts = texts
+                if text2vector := (await app.state.db_client.retrieve_cache(texts)):
+                    input_texts = [text for text in texts if text not in text2vector]
+                if input_texts: # we may have retrieved all input texts
+                    vectors = await run_in_threadpool(
+                        app.state.model_manager.get_model().encode, input_texts, settings.BATCH_SIZE)
+                    text2vector.update(zip(input_texts, vectors.tolist()))
                 app.state.model_manager.move_model_to_cpu()
+                # merge vectors
+                vectors = [text2vector[text] for text in texts]
                 # Update the task status to done
                 await app.state.db_client.store_vectors(task_id, vectors, doc_ids)
                 await app.state.db_client.update_task_status(task_id, Status.DONE)
@@ -83,7 +90,7 @@ async def vectorize(params: VectorizeParams, background_tasks: BackgroundTasks):
     except Exception as e:
         logger.info("Error while vectorizing")
         logger.info(str(e))
-        raise HTTPException(status_code=500, detail="Unknown " + str(e))
+        raise HTTPException(status_code=500, detail="Unknown error while vectorizing: " + str(e))
 
 
 @app.get("/check-status/{task_id}", response_model=TaskModel)

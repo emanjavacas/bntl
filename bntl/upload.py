@@ -9,7 +9,6 @@ import rispy
 from bntl import utils
 from bntl.models import StatusModel
 from bntl.rdf import parse_rdf
-from vectorizer import client
 
 
 logger = logging.getLogger(__name__)
@@ -22,9 +21,6 @@ class Status:
     VECTORIZING = 'Vectorizing...'
     UNKNOWNERROR = 'Unknown error'
     UNKNOWNFORMAT = 'Unknown input format'
-    VECTORIZINGERROR = 'Error while vectorizing'
-    VECTORINDEXINGERROR = 'Vector indexing error'
-    VECTORIZINGTIMEOUT = 'Vectorization timed out'
     EMPTYFILE = 'Empty input file' # can happen if all documents fail to validate
     DONE = 'Done'
 
@@ -33,38 +29,10 @@ class Status:
         return {key: getattr(cls, key) for key in vars(cls).keys() if not key.startswith('__')}
 
 
-def get_doc_text(doc) -> Dict[str, str]:
-    # title
-    title = doc.get("title", "") or ""
-    if secondary := doc.get("secondary_title"):
-        title += "; " + secondary
-    if tertiary := doc.get("tertiary_title"):
-        title += "; " + tertiary
-    # keywords
-    keywords = doc.get("keywords", [])
-    if keywords:
-        keywords = "; ".join(keywords)
-    # abstract
-    abstract = doc.get("abstract", "")
-
-    return {"title": title, "keywords": keywords, "abstract": abstract}
-
-
-def convert_to_text(doc, ignore_keywords=False, ignore_abstract=False) -> str:
-    doc = get_doc_text(doc)
-    output = doc.get("title", "")
-    if doc["keywords"] and not ignore_keywords:
-        output += "; " + doc["keywords"]
-    if doc["abstract"] and not ignore_abstract:
-        output += "; " + doc["abstract"]
-    return output
-
-
 class FileUploadManager:
-    def __init__(self, db_client, vector_client) -> None:
+    def __init__(self, db_client) -> None:
         self.file_chunks: Dict[str, Dict[int, bytes]] = collections.defaultdict(dict)
         self.db_client = db_client
-        self.vector_client = vector_client
 
     def add_chunk(self, file_id: str, chunk_number: int, chunk_data: bytes):
         """
@@ -88,17 +56,18 @@ class FileUploadManager:
         """
         async def callback(progress):
             await self.update_status(file_id, Status.INDEXING, progress=progress/len(documents))
-        async with utils.AsyncLogger(utils.get_log_filename(file_id)) as a_logger:
+        async with utils.AsyncLogger(utils.get_upload_log_filename(file_id)) as a_logger:
             return await self.db_client.insert_documents(
                 documents, logger=a_logger, progress_callback=callback)
 
     async def process_file_task(self, file_id: str):
         """
         When upload is finished, this method collects data from memory, validates input documents,
-        ingests them into the database, vectorizes them and indexes the vectors. This is a background
+        and ingests them into the database. This is a background
         task, and thus we need to process all possible exceptions to avoid silent failing.
         """
-        async with utils.AsyncLogger(utils.get_log_filename(file_id)) as a_logger:
+        documents = None
+        async with utils.AsyncLogger(utils.get_upload_log_filename(file_id)) as a_logger:
             # collect data
             await a_logger.info("Collecting data from upload: {}".format(file_id))
             try:
@@ -110,51 +79,24 @@ class FileUploadManager:
                 await a_logger.info("Loading data...")
                 documents = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
                 await a_logger.info("Received {} documents".format(len(documents)))
-                # validate and ingest
-                await a_logger.info("Indexing data...")
-                await self.update_status(file_id, Status.INDEXING, progress=0)
             except rispy.parser.ParseError as e:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT, detail=str(e))
-                return
             except Exception as e:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT, detail="Couldn't parse RDF file")
-                import traceback
-                traceback.print_exc()
-            try:
-                doc_ids = await self.insert_documents(documents, file_id)
-                await a_logger.info("Inserted {} documents".format(len(doc_ids)))
-            except Exception as e:
-                await self.update_status(file_id, Status.UNKNOWNERROR, detail=str(e))
-            if len(doc_ids) == 0:
-                # no valid documents
-                await a_logger.info("Couldn't validate any documents from upload")
-                await self.update_status(file_id, Status.EMPTYFILE)
-                return
-            # vectorization
-            vectors = None
-            try:
-                data = await self.db_client.find({"document.id": {"$in": doc_ids}})
-                await a_logger.info("Vectorizing {} documents...".format(len(doc_ids)))
-                await self.update_status(file_id, Status.VECTORIZING, progress=0)
-                # collect texts (ignore documents for which no text can be collected)
-                texts, doc_ids = [], []
-                for doc in data:
-                    if text := convert_to_text(doc["document"]):
-                        texts.append(text)
-                        doc_ids.append(doc["document"]["id"])
-                vectors = await client.vectorize(
-                    self.db_client.vectors_coll, file_id, texts, doc_ids, logger=a_logger)
-            except Exception as e:
-                await a_logger.info("Exception while vectorizing: [{}]".format(str(e)))
-                await self.update_status(file_id, Status.VECTORIZINGERROR)
-                return
             finally:
-                if vectors:
+                if documents:
                     try:
-                        await a_logger.info("Indexing vectors...")
-                        await self.vector_client.insert(vectors, doc_ids)
+                        # validate and ingest
+                        await a_logger.info("Indexing data...")
+                        await self.update_status(file_id, Status.INDEXING, progress=0)
+                        doc_ids = await self.insert_documents(documents, file_id)
+                        await a_logger.info("Inserted {} documents".format(len(doc_ids)))
+                        await a_logger.info("Job done.")
                         await self.update_status(file_id, Status.DONE)
                     except Exception as e:
-                        await self.update_status(file_id, Status.VECTORINDEXINGERROR, detail=str(e))
-                        return
-            await a_logger.info("Job done.")
+                        await self.update_status(file_id, Status.UNKNOWNERROR, detail=str(e))
+                else:
+                    # no valid documents
+                    await a_logger.info("Empty file or no valid documents in upload")
+                    await self.update_status(file_id, Status.EMPTYFILE)
+
