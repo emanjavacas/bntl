@@ -129,6 +129,36 @@ fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=
 
 ## Vectorization
 
-To use the vectorization service (code living in vectorizer/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml, which are used from within the db.py and the app.py file.
+To use the vectorization service (code living in vectorizer/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml.
+
+The process is started using the vectorizer/server.py, which spawns a separate FastAPI server.
 
 The vectors are generated and stored into a MongoDB before being passed over to the main process to be indexed with the QDrant DB.
+
+# Front End
+
+Documentation for the Front End should go into the help page (WIP). 
+
+## Admin functionality
+
+In order manage the database, two password-protected routes have been implemented. 
+The password is set upon deployment using the settings.toml file.
+
+### Uploading documents
+The first one is /upload, which can be used to upload rdf files as they are downloaded from Zotero.
+This route allows the admin to upload multiple files and monitor the status of the files.
+The app processes uploaded files, parses them and indexes the resulting documents.
+The process takes care of discarding duplicates and extracting information needed to enable querying functionality.
+If documents need to be deleted, the admin can drop all database information (erasing the index), and
+upload it again. This is not a costly process and is also relatively quick.
+
+### Vectorizing the database
+In order to enable vector search, the admin can use the /vectorize route. 
+Clicking on the provided button will start a vectorization process that will generate vectors for all the documents,
+and store them in a vector database for quick search. 
+This process is costly and may take a few hours (depending on the size of the database).
+We use a caching system to avoid recomputing vectors for documents that have already been indexed before 
+(based on the actual document text and not the document id). This means that incremental vectorizations will be quick,
+since only the newly added documents will have to be computed.
+
+The logic for selecting the document text to be indexed is in the function convert_to_text inside bntl/utils.py.

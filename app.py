@@ -15,7 +15,7 @@ import gettext
 from fastapi import FastAPI, Request, Depends, Response, status
 from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, RedirectResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -456,21 +456,12 @@ def create_ris(*docs):
     return rispy.dumps([drop_none(doc) for doc in docs], mapping=utils.RISPY_MAPPING)
 
 
-@app.get("/exportRecord")
-async def export_record(doc_id: str, format: str):
+@app.get("/exportRis", response_class=PlainTextResponse)
+async def export_ris(doc_id):
     doc = await app.state.db_client.find_one(doc_id)
     if not doc:
         raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
-
-    ris = create_ris(doc["document"])
-    if format == "ris":
-        output = ris
-    elif format == "bib":
-        output = await utils.ris2bib(ris)
-    else:
-        raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
-    
-    return StreamingResponse(io.BytesIO(output.encode()))
+    return create_ris(doc["document"])
 
 
 @app.get("/exportQuery")

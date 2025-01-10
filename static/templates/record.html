@@ -13,16 +13,19 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id}}&lang={{lang}}">Permalink
-            </a>
+            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id}}&lang={{lang}}">Permalink</a>
           </li>
           <li>
-            <a class="dropdown-item" target="_blank" href="/exportRecord?doc_id={{item.document.id}}&format=bib">.bib
-            </a>
+            <a href="#" class="dropdown-item citation-item" data-output-format="ris" data-document-id="{{item.document.id}}">.ris</a>
           </li>
           <li>
-            <a class="dropdown-item" target="_blank" href="/exportRecord?doc_id={{item.document.id}}&format=ris">.ris
-            </a>
+            <a href="#" class="dropdown-item citation-item" data-output-format="bibtex" data-document-id="{{item.document.id}}">.bib</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="modern-language-association" data-document-id="{{item.document.id}}">.mla</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="apa" data-document-id="{{item.document.id}}">.apa</a>
           </li>
         </ul>
       </div>
@@ -208,3 +211,7 @@
     </div>
   </div>
 </div>
+
+{% block script %}
+<script type="module" src="/static/js/citation.js"></script>
+{% endblock %}
