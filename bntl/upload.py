@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Dict
 
 import rispy
+from fastapi.concurrency import run_in_threadpool
 
 from bntl import utils
 from bntl.models import StatusModel
@@ -74,7 +75,7 @@ class FileUploadManager:
                 file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
                 await a_logger.info("Parsing RDF into RIS...")
                 await self.update_status(file_id, Status.PARSING)
-                ris_data = parse_rdf(file_data.decode())
+                ris_data = await run_in_threadpool(lambda: parse_rdf(file_data.decode()))
                 await a_logger.info("Parsed")
                 await a_logger.info("Loading data...")
                 documents = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)

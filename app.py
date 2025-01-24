@@ -150,6 +150,7 @@ async def home(request: Request, lang: str = Query(default=settings.DEFAULT_LOCA
         "index.html", 
         {"request": request,
          "_": get_translation(lang).gettext, "lang": lang,
+         "type_of_reference": app.state.db_client.unique_refs,
          "total_documents": await app.state.db_client.count(), 
          "last_added": await app.state.db_client.find_last_added()})
 
@@ -273,11 +274,12 @@ async def query_history(request: Request, lang: str = Query(default=settings.DEF
 
 @app.get("/item")
 async def item(doc_id: str, request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
-    item = await app.state.db_client.find_one(doc_id)
-    return templates.TemplateResponse(
-        "item.html", {"request": request, 
-                      "_": get_translation(lang).gettext, "lang": lang, 
-                      "item": item})
+    if item := await app.state.db_client.find_one(doc_id):
+        return templates.TemplateResponse(
+            "item.html", {"request": request, 
+                        "_": get_translation(lang).gettext, "lang": lang, 
+                        "item": item})
+    raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
 
 @app.get("/vectorQuery")
@@ -458,10 +460,9 @@ def create_ris(*docs):
 
 @app.get("/exportRis", response_class=PlainTextResponse)
 async def export_ris(doc_id):
-    doc = await app.state.db_client.find_one(doc_id)
-    if not doc:
-        raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
-    return create_ris(doc["document"])
+    if doc := await app.state.db_client.find_one(doc_id):
+        return create_ris(doc["document"])
+    raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
 
 @app.get("/exportQuery")
