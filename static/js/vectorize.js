@@ -58,7 +58,7 @@ $(document).ready(function(){
                     clearInterval(interval);
                 }
             });
-        }, 2000);
+        }, 30000);
     }   
 
     // layout

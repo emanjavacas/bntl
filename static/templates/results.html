@@ -25,11 +25,11 @@
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Auteur') }}</a>
           <a class="btn btn-sm {% if sort_author == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
-             href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}">
+             href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}&lang={{lang}}">
               <i class="bi bi-caret-up-fill"></i>
           </a>
           <a class="btn btn-sm {% if sort_author == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
-            href="{{source}}&sort_author={% if sort_author == 'descending' %}{% else %}descending{% endif %}&sort_year={{sort_year}}">
+            href="{{source}}&sort_author={% if sort_author == 'descending' %}{% else %}descending{% endif %}&sort_year={{sort_year}}&lang={{lang}}">
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
@@ -37,11 +37,11 @@
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Jaar') }}</a>
           <a class="btn btn-sm {% if sort_year == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
-             href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}">
+             href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}&lang={{lang}}">
               <i class="bi bi-caret-up-fill"></i>
           </a>
           <a class="btn btn-sm {% if sort_year == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
-            href="{{source}}&sort_year={% if sort_year == 'descending' %}{% else %}descending{% endif %}&sort_author={{sort_author}}">
+            href="{{source}}&sort_year={% if sort_year == 'descending' %}{% else %}descending{% endif %}&sort_author={{sort_author}}&lang={{lang}}">
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
@@ -52,7 +52,7 @@
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetLimit in [10, 20, 50] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if limit == targetLimit %}disabled{% endif %}" role="button"
-                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&limit={{targetLimit}}">
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&limit={{targetLimit}}&lang={{lang}}">
                 {{targetLimit}}
               </a>
             {% endfor %}
@@ -63,7 +63,7 @@
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if size == targetSize %}disabled{% endif %}" role="button"
-                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}">
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}&lang={{lang}}">
                 {{targetSize}}
               </a>
             {% endfor %}

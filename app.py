@@ -122,13 +122,13 @@ def require_validated_session(request: Request):
         raise RequiresLoginException({"next_url": request.url.path})
 
 
-@app.get("/login", response_class=HTMLResponse)
+@app.get("/login", response_class=HTMLResponse, include_in_schema=False)
 async def login_get(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     return templates.TemplateResponse(
         "login.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
 
-@app.post("/login")
+@app.post("/login", include_in_schema=False)
 async def login_post(login_params: LoginParams, request: Request=None):
     if login_params.password == settings.UPLOAD_SECRET:
         session_id = request.cookies.get("session_id")
@@ -334,7 +334,7 @@ async def index():
     return {"message": {"Estimated document count": await app.state.db_client.count()}}
 
 
-@app.get("/resetDatabase", dependencies=[Depends(require_validated_session)])
+@app.get("/resetDatabase", dependencies=[Depends(require_validated_session)], include_in_schema=False)
 async def reset_database():
     await app.state.db_client._clear_up()
     await app.state.vector_client._clear_up()
@@ -342,7 +342,7 @@ async def reset_database():
 
 
 # file upload
-@app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
+@app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)], include_in_schema=False)
 async def upload_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Upload route
@@ -395,7 +395,7 @@ async def get_upload_log(file_id: str):
 
 
 # vectorization
-@app.get("/vectorize", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)])
+@app.get("/vectorize", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)], include_in_schema=False)
 async def vectorize_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
     """
     Vectorize route: vectorize full DB
@@ -407,7 +407,7 @@ async def vectorize_page(request: Request, lang: str = Query(default=settings.DE
          "statuses": VectorizationStatus.__get_classes__()})
 
 
-@app.post("/vectorize", dependencies=[Depends(require_validated_session)])
+@app.post("/vectorize", dependencies=[Depends(require_validated_session)], include_in_schema=False)
 async def vectorize(background_tasks: BackgroundTasks):
     if history := await app.state.db_client.get_vectorization_history():
         last_task = history[-1]
@@ -433,7 +433,7 @@ async def get_vectorization_history():
     return await app.state.db_client.get_vectorization_history()
 
 
-@app.get("/getVectorizationLog", dependencies=[Depends(require_validated_session)])
+@app.get("/getVectorizationLog", dependencies=[Depends(require_validated_session)], include_in_schema=False)
 async def get_vectorization_log(task_id: str):
     log_filename = utils.get_vectorization_log_filename(task_id)
     if os.path.isfile(log_filename):
@@ -446,7 +446,7 @@ async def get_vectorization_log(task_id: str):
 
 
 # autocompletion
-@app.get("/getCompletions")
+@app.get("/getCompletions", include_in_schema=False)
 async def get_completions(field: str, query: str=Query(..., min_length=3)):
     return await app.state.db_client.find_autocomplete_by_prefix(field, query)
 
@@ -458,14 +458,14 @@ def create_ris(*docs):
     return rispy.dumps([drop_none(doc) for doc in docs], mapping=utils.RISPY_MAPPING)
 
 
-@app.get("/exportRis", response_class=PlainTextResponse)
+@app.get("/exportRis", response_class=PlainTextResponse, include_in_schema=False)
 async def export_ris(doc_id):
     if doc := await app.state.db_client.find_one(doc_id):
         return create_ris(doc["document"])
     raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
 
-@app.get("/exportQuery")
+@app.get("/exportQuery", include_in_schema=False)
 async def export_query(query_id: str, format: str, request: Request):
     session_id = request.cookies.get("session_id")
     query_data = await app.state.db_client.get_query(query_id, session_id)
