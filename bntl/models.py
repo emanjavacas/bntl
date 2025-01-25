@@ -2,9 +2,8 @@
 import uuid
 from datetime import datetime
 
-from typing import List, Optional, Dict, Generic, TypeVar, Literal, Union, Any
-from typing_extensions import Self
-from pydantic import BaseModel, Field, ConfigDict, model_validator
+from typing import List, Optional, Generic, TypeVar, Literal, Any
+from pydantic import BaseModel, Field, ConfigDict
 
 
 def _render_authors(authors):
@@ -118,7 +117,7 @@ CHAP_renderer = (
     Node("place_published", post=": ") +
     Node("publisher", post=", ") +
     Node("year", post=", ") +
-    Node("start_page", pre=" p. ") +
+    Node("start_page", pre="p. ") +
     Node("end_page", pre="-", post=". ") +
     Node("tertiary_title", pre="(", post="; ") +
     Node("SV", post="). ")
@@ -153,22 +152,27 @@ ADVS_renderer = (
 
 def get_record_screen_name(record):
     if record["type_of_reference"] == "JOUR":
-        return JOUR_renderer.render(record)
+        output = JOUR_renderer.render(record)
     elif record["type_of_reference"] == "BOOK":
         if record.get("secondary_author"):
-            return BOOK_2EDS_renderer.render(record)
+            output = BOOK_2EDS_renderer.render(record)
         else:
-            return BOOK_renderer.render(record)
+            output = BOOK_renderer.render(record)
     elif record["type_of_reference"] == "CHAP":
-        return CHAP_renderer.render(record)
+        output = CHAP_renderer.render(record)
     elif record["type_of_reference"] == "WEB":
-        return WEB_renderer.render(record)
+        output = WEB_renderer.render(record)
     elif record["type_of_reference"] == "JFULL":
-        return JFULL_renderer.render(record)
+        output = JFULL_renderer.render(record)
     elif record["type_of_reference"] == "ADVS":
-        return ADVS_renderer.render(record)
+        output = ADVS_renderer.render(record)
     else:
         raise ValueError("Unknown reference type: {}".format(record["type_of_reference"]))
+
+    output = output.strip()
+    if not output.endswith("."):
+        output += '.'
+    return output
 
 
 TypeOfReference = Literal["JOUR", "BOOK", "CHAP", "EJOUR", "WEB", "JFULL", "ADVS"]
