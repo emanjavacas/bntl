@@ -1,46 +1,54 @@
 <div class="row">
   <div class="col text-end">
-    <div class="btn-group dropstart">
-      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      </button>
-      <ul class="dropdown-menu text-center">
-        <li>
-          <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.doc_id}}">Permalink <img width="15px" src="/static/assets/img/permalink.svg">
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="/vectorQuery?doc_id={{item.doc_id}}&limit=10">Vector query <img width="18px" src="/static/assets/img/microchip-ai_12400758.svg">
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" target="_blank" href="/exportRecord?doc_id={{item.doc_id}}&format=bib">{{ _('.bib exporteren') }}<img width="15px" src="/static/assets/img/export.png">
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" target="_blank" href="/exportRecord?doc_id={{item.doc_id}}&format=ris">{{ _('.ris exporteren') }}<img width="15px" src="/static/assets/img/export.png">
-          </a>
-        </li>
-      </ul>
+    <div class="btn-group" role="group">
+      <!-- ai -->
+      <button type="button" class="btn btn-light">
+        <a href="/vectorQuery?doc_id={{item.document.id}}&limit=10&lang={{lang}}"><img width="18px" src="/static/assets/img/microchip.svg">
+        </a>
+      </button>      
+      <!-- export -->
+      <div class="btn-group ">
+        <button class="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img width="15px" src="/static/assets/img/export.png">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id}}&lang={{lang}}">Permalink</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="ris" data-document-id="{{item.document.id}}">.ris</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="bibtex" data-document-id="{{item.document.id}}">.bib</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="modern-language-association" data-document-id="{{item.document.id}}">.mla</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="apa" data-document-id="{{item.document.id}}">.apa</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="row small">
     <div class="col-10 px-1">
       <!-- type of reference -->
       <div class="row pb-2">
-        <span><span class="fw-bold pe-2">{{ _('Publicatietype') }}</span><span>{{refMap[item.type_of_reference]}}</span></span>
+        <span><span class="fw-bold pe-2">{{ _('Publicatietype') }}</span><span>{{refMap[item.document.type_of_reference]}}</span></span>
       </div>
       <!-- year -->
       <div class="row pb-2">
         <span><span class="fw-bold pe-2">{{ _('Jaar') }}</span>
-        <span>{{item.year}}{% if item.end_year is number and item.end_year - 1 > item.year %}-{{item.end_year}}{% endif %}</span>
+        <span>{{item.document.year}}</span>
         </span>
       </div>
       <!-- title -->
       <div class="row pb-2">
         <span><span class="fw-bold pe-2">{{ _('Titelbeschrijving') }}</span>
-        <span>{{item.title}}
-          {% if item.secondary_title %}<span class="px-0 text-muted">{{item.secondary_title}}</span>{% endif %}
-          {% if item.tertiary_title %}<span class="px-0 text-muted">{{item.tertiary_title}}</span>{% endif %}</span>
+        <span>{{item.document.title}}
+          {% if item.document.secondary_title %}<span class="px-0 text-muted">{{item.document.secondary_title}}</span>{% endif %}
+          {% if item.document.tertiary_title %}<span class="px-0 text-muted">{{item.document.tertiary_title}}</span>{% endif %}</span>
         </span>
       </div>
       <!-- authors -->
@@ -48,58 +56,53 @@
         <span>
           <span class="fw-bold pe-2">{{ _('Auteur(s)') }}</span>
           <ul class="pb-0">
-            {% if item.authors %}
-            {% for author in item.authors %}
-            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% if item.document.first_authors %}
+            {% for author in item.document.first_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}&lang={{lang}}">{{author}}</a></li>
             {% endfor %}
             {% endif %}
-            {% if item.first_authors %}
-            {% for author in item.first_authors %}
-            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% if item.document.secondary_authors %}
+            {% for author in item.document.secondary_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}&lang={{lang}}">{{author}}</a></li>
             {% endfor %}
             {% endif %}
-            {% if item.secondary_authors %}
-            {% for author in item.secondary_authors %}
-            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
-            {% endfor %}
-            {% endif %}
-            {% if item.tertiary_authors %}
-            {% for author in item.tertiary_authors %}
-            <li><a class="pb-0" href="/quickQuery?author={{author}}">{{author}}</a></li>
+            {% if item.document.tertiary_authors %}
+            {% for author in item.document.tertiary_authors %}
+            <li><a class="pb-0" href="/quickQuery?author={{author}}&lang={{lang}}">{{author}}</a></li>
             {% endfor %}
             {% endif %}
           </ul>
         </span>
       </div>
       <!-- abstract -->
-      {% if item.abstract %}
+      {% if item.document.abstract %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Extra informatie') }}</span>
-          <span>{{item.abstract}}</span>
+          <span>{{item.document.abstract}}</span>
         </span>
       </div>
       {% endif %}
       <!-- keywords -->
-      {% if item.keywords %}
+      {% if item.document.keywords %}
       <div class="row pb-0">
         <span>
           <span class="fw-bold pe-2">{{ _('Trefwoord(en)') }}</span>
           <ul class="pb-0">
-          {% for keyword in item.keywords %}
-            <li><a class="keyword px-0" href="/quickQuery?keywords={{keyword}}">{{keyword}}</a></li>
+          {% for keyword in item.document.keywords %}
+            <li><a class="keyword px-0" href="/quickQuery?keywords={{keyword}}&lang={{lang}}">{{keyword}}</a></li>
           {% endfor %}
           </ul>
         </span>
       </div>
       {% endif %}
       <!-- URL -->
-      {% if item.urls %}
+      {% if item.document.urls %}
       <div class="row pb-2">
         <span>
-          <span class="fw-bold pe-2">{{ _('URL (link naar open acces)') }}</span>
+          <span class="fw-bold pe-2">{{ _('URL 🔓') }}</span>
           <ul class="pb-0">
-          {% for url in item.urls %}
+          {% for url in item.document.urls %}
             <li><a class="px-0" href="{{url}}">{{url}}</a></li>
           {% endfor %}
         </ul>
@@ -107,104 +110,108 @@
       </div>
       {% endif %}
       <!-- pages -->
-      {% if item.start_page %}
+      {% if item.document.start_page %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Pagina(s)') }}</span>
-          <span>{{item.start_page}}{% if item.end_page %}-{{item.end_page}}{% endif %}</span>
+          <span>{{item.document.start_page}}{% if item.document.end_page %}-{{item.document.end_page}}{% endif %}</span>
         </span>
       </div>
       {% endif %}
       <!-- journal_name -->
-      {% if item.journal_name %}
+      {% if item.document.journal_name %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Tijdschrift') }}</span>
-          <span>{{item.journal_name}}</span>
+          <span>{{item.document.journal_name}}</span>
         </span>
       </div>
       {% endif %}
       <!-- volume -->
-      {% if item.volume %}
+      {% if item.document.volume %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Volume') }}</span>
-          <span>{{item.volume}}</span>
+          <span>{{item.document.volume}}</span>
         </span>
       </div>
       {% endif %}
       <!-- number -->
-      {% if item.number %}
+      {% if item.document.number %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Nummer') }}</span>
-          <span>{{item.number}}</span>
+          <span>{{item.document.number}}</span>
         </span>
       </div>
       {% endif %}
       <!-- research_notes -->
-      {% if item.research_notes %}
+      {% if item.document.research_notes %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Recensie/Reactie') }}</span>
-          <span>{{item.research_notes}}</span>
+          <span>{{item.document.research_notes}}</span>
         </span>
       </div>
       {% endif %}
       <!-- issn -->
-      {% if item.issn %}
+      {% if item.document.issn %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('ISBN-nummer') }}</span>
-          <span>{{item.issn}}</span>
+          <span>{{item.document.issn}}</span>
         </span>
       </div>
       {% endif %}
       <!-- place_published -->
-      {% if item.place_published %}
+      {% if item.document.place_published %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Plaats van uitgave') }}</span>
-          <span>{{item.place_published}}</span>
+          <span>{{item.document.place_published}}</span>
         </span>
       </div>
       {% endif %}
       <!-- publisher -->
-      {% if item.publisher %}
+      {% if item.document.publisher %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Uitgeverij') }}</span>
-          <span>{{item.publisher}}</span>
+          <span>{{item.document.publisher}}</span>
         </span>
       </div>
       {% endif %}
       <!-- notes_abstract -->
-      {% if item.notes_abstract %}
+      {% if item.document.notes_abstract %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Oude notatie') }}</span>
-          <span>{{item.notes_abstract}}</span>
+          <span>{{item.document.notes_abstract}}</span>
         </span>
       </div>     
       {% endif %} 
       <!-- custom3 -->
-      {% if item.custom3 %}
+      {% if item.document.custom3 %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Titelbeschrijving boek') }}</span>
-          <span>{{item.custom3}}</span>
+          <span>{{item.document.custom3}}</span>
         </span>
       </div>
       {% endif %}
       <!-- custom4 -->
-      {% if item.custom4 %}
+      {% if item.document.custom4 %}
       <div class="row pb-2">
         <span>
           <span class="fw-bold pe-2">{{ _('Gerelateerde artikels') }}</span>
-          <span>{{item.custom4}}</span>
+          <span>{{item.document.custom4}}</span>
         </span>
       </div>
       {% endif %}
     </div>
   </div>
 </div>
+
+{% block script %}
+<script type="module" src="/static/js/citation.js"></script>
+{% endblock %}

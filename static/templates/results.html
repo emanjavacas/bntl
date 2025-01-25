@@ -25,11 +25,11 @@
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Auteur') }}</a>
           <a class="btn btn-sm {% if sort_author == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
-             href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}">
+             href="{{source}}&sort_author={% if sort_author == 'ascending' %}{% else %}ascending{% endif %}&sort_year={{sort_year}}&lang={{lang}}">
               <i class="bi bi-caret-up-fill"></i>
           </a>
           <a class="btn btn-sm {% if sort_author == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
-            href="{{source}}&sort_author={% if sort_author == 'descending' %}{% else %}descending{% endif %}&sort_year={{sort_year}}">
+            href="{{source}}&sort_author={% if sort_author == 'descending' %}{% else %}descending{% endif %}&sort_year={{sort_year}}&lang={{lang}}">
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
@@ -37,11 +37,11 @@
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
           <a style="pointer-events: none;" class="btn btn-sm btn-outline-secondary">{{ _('Jaar') }}</a>
           <a class="btn btn-sm {% if sort_year == 'ascending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
-             href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}">
+             href="{{source}}&sort_year={% if sort_year == 'ascending' %}{% else %}ascending{% endif %}&sort_author={{sort_author}}&lang={{lang}}">
               <i class="bi bi-caret-up-fill"></i>
           </a>
           <a class="btn btn-sm {% if sort_year == 'descending' %}btn-secondary{% else %}btn-outline-secondary{% endif %}" 
-            href="{{source}}&sort_year={% if sort_year == 'descending' %}{% else %}descending{% endif %}&sort_author={{sort_author}}">
+            href="{{source}}&sort_year={% if sort_year == 'descending' %}{% else %}descending{% endif %}&sort_author={{sort_author}}&lang={{lang}}">
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
@@ -52,7 +52,7 @@
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetLimit in [10, 20, 50] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if limit == targetLimit %}disabled{% endif %}" role="button"
-                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&limit={{targetLimit}}">
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&limit={{targetLimit}}&lang={{lang}}">
                 {{targetLimit}}
               </a>
             {% endfor %}
@@ -63,7 +63,7 @@
           <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
             {% for targetSize in [10, 20, 50, 100] %}
               <a class="btn btn-sm btn-outline-secondary text-muted {% if size == targetSize %}disabled{% endif %}" role="button"
-                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}">
+                href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{targetSize}}&page={{1 + (((page - 1) * size) // targetSize)}}&lang={{lang}}">
                 {{targetSize}}
               </a>
             {% endfor %}
@@ -83,20 +83,22 @@
       <div class="container-fluid justify-content-end">
         <form id="withinForm">
           <div class="input-group">
-            <input name="within" class="form-control" type="search" placeholder="Zoek binnen resultaat" aria-label="Search" required>
+            {% if n_hits > 0 %}
+            <input name="within" class="form-control" type="search" placeholder="{{ _('Zoek binnen resultaat') }}" aria-label="Search" required>
             <button class="btn btn-sm btn-outline-secondary" type="submit">{{ _('Zoek') }}</button>
             {% if query_id %}
             <button class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <span class="visually-hidden">Toggle Dropdown</span>
+              <img width="15px" src="/static/assets/img/export.png">
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" target="_blank" href="/exportQuery?query_id={{query_id}}&format=ris">.ris exporteren<img width="15px" src="/static/assets/img/export.png"></a>
+                <a class="dropdown-item" target="_blank" href="/exportQuery?query_id={{query_id}}&format=ris">.ris</a>
               </li>
               <li>
-                <a class="dropdown-item" target="_blank" href="/exportQuery?query_id={{query_id}}&format=bib">.bib exporteren<img width="15px" src="/static/assets/img/export.png"></a>
+                <a class="dropdown-item" target="_blank" href="/exportQuery?query_id={{query_id}}&format=bib">.bib</a>
               </li>
             </ul>
+            {% endif %}
             {% endif %}
           </div>
         </form>
@@ -111,7 +113,7 @@
   <div class="col">
     <div class="accordion accordion-flush" id="searchItems">
       {% for item in items %}
-      <div class="accordion-item" data-docId="{{item.doc_id}}">
+      <div class="accordion-item" data-docId="{{item.document.id}}">
         <h2 class="accordion-header" id="flush-heading-{{loop.index}}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse-{{loop.index}}">
             <span class="btn btn-secondary position-relative pe-2">{{loop.index + (page - 1) * size}}.
@@ -119,11 +121,11 @@
                 <span style="font-size:10px;" class="text-small position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{ item.score|round(3, 'floor') }}</span>
               {% endif %}
             </span>
-            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{refMap[item.type_of_reference]}}">
-              <img src="/static/assets/img/{{imgMap[item.type_of_reference]}}.png">
+            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{refMap[item.document.type_of_reference]}}">
+              <img width="30px" src="/static/assets/img/icons/{{imgMap[item.document.type_of_reference]}}.svg">
             </span>
             <span class="text-muted small pe-2">
-             {{ item | doc_repr }}
+             {{ item.document | doc_repr }}
             </span>    
           </button>
         </h2>
@@ -146,23 +148,23 @@
         <span class="navbar-text">
           <ul class="pagination">
             <li class="page-item {% if page == 1 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page=1">&lt;&lt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page=1&lang={{lang}}">&lt;&lt;</a>
             </li>
             <li class="page-item {% if page == 1 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page-1}}">&lt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page-1}}&lang={{lang}}">&lt;</a>
             </li>
             {% for i in range(from_page, to_page + 1) %}
               {% if i == page %}
                 <li class="page-item disabled"><a class="page-link" href="#">{{i}}</a></li>
               {% else %}
-                <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}">{{i}}</a></li>
+                <li class="page-item"><a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{i}}&lang={{lang}}">{{i}}</a></li>
               {% endif %}
             {% endfor %}
             <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}">&gt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{page+1}}&lang={{lang}}">&gt;</a>
             </li>
             <li class="page-item {% if page == total_pages or total_pages == 0 %}disabled{% endif %}">
-              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}">&gt;&gt;</a>
+              <a class="page-link" href="{{source}}&sort_year={{sort_year}}&sort_author={{sort_author}}&size={{size}}&page={{total_pages}}&lang={{lang}}">&gt;&gt;</a>
             </li>
           </ul>
         </span>

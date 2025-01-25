@@ -3,7 +3,6 @@ import math
 from typing import Callable, List, Dict
 
 import pymongo
-from bson.objectid import ObjectId
 from pydantic import BaseModel
 
 from bntl.models import PageParams, PagedResponseModel, QueryParams, T
@@ -19,6 +18,7 @@ def build_query(type_of_reference=None,
                 year=None,
                 author=None,
                 keywords=None,
+                is_oa=False,
                 use_regex_title=False,
                 use_case_title=False,
                 use_regex_author=False,
@@ -36,45 +36,47 @@ def build_query(type_of_reference=None,
     query = []
 
     if type_of_reference is not None:
-        query.append({"type_of_reference": type_of_reference})
+        query.append({"document.type_of_reference": type_of_reference})
 
     if title is not None:
         if use_regex_title:
             title = {"$regex": title}
             if not use_case_title:
                 title["$options"] = "i"
-        query.append({"$or": [{"title": title},
-                              {"secondary_title": title},
-                              {"tertiary_title": title}]})
+        query.append({"$or": [{"document.title": title},
+                              {"document.secondary_title": title},
+                              {"document.tertiary_title": title}]})
 
     if year is not None:
         if "-" in year: # year range
             start, end = year.split('-')
             start, end = int(start), int(end)
-            query.append({"$or": [{"$and": [{"year": {"$gte": start}},
-                                            {"year": {"$lt": end}}]},
-                                  {"$and": [{"end_year": {"$gte": start}},
-                                            {"end_year": {"$lt": end}}]}]})
+            query.append({"$or": [{"$and": [{"computed_fields.start_year": {"$gte": start}},
+                                            {"computed_fields.start_year": {"$lt": end}}]},
+                                  {"$and": [{"computed_fields.end_year": {"$gte": start}},
+                                            {"computed_fields.end_year": {"$lt": end}}]}]})
         else:
-            query.append({"$and": [{"year": {"$gte": int(year)}},
-                                   {"end_year": {"$lte": int(year) + 1}}]})
+            query.append({"$and": [{"computed_fields.start_year": {"$gte": int(year)}},
+                                   {"computed_fields.end_year": {"$lte": int(year) + 1}}]})
 
     if author is not None:
         if use_regex_author:
             author = {"$regex": author}
             if not use_case_author:
                 author["$options"] = "i"
-        query.append({"$or": [{"authors": author},
-                              {"first_authors": author},
-                              {"secondary_authors": author},
-                              {"tertiary_authors": author}]})
+        query.append({"$or": [{"document.first_authors": author},
+                              {"document.secondary_authors": author},
+                              {"document.tertiary_authors": author}]})
 
     if keywords is not None:
         if use_regex_keywords:
             keywords = {"$regex": keywords}
             if not use_case_keywords:
                 keywords["$options"] = "i"
-        query.append({"keywords": keywords})
+        query.append({"document.keywords": keywords})
+
+    if is_oa:
+        query.append({"is_oa": True})
 
     if len(query) > 1:
         query = {"$and": query}
@@ -82,6 +84,8 @@ def build_query(type_of_reference=None,
         query = query[0]
     else:
         query = {}
+
+    print(query)
 
     return query
 
@@ -93,9 +97,9 @@ def parse_sort(page_params: PageParams):
     sort_author, sort_year = page_params.sort_author, page_params.sort_year
     sort = []
     if sort_author:
-        sort.append(('author', SORT_ORDER_MAP[sort_author]))
+        sort.append(('document.first_authors', SORT_ORDER_MAP[sort_author]))
     if sort_year:
-        sort.append(('year', SORT_ORDER_MAP[sort_year]))
+        sort.append(('computed_fields.start_year', SORT_ORDER_MAP[sort_year]))
     return sort
 
 
@@ -103,7 +107,7 @@ async def paginate(coll,
                    query_params: QueryParams,
                    page_params: PageParams,
                    ResponseModel: BaseModel,
-                   within_ids: List[ObjectId]=None,
+                   within_ids: List[str]=None,
                    transform: Callable=utils.identity,
                    **kwargs) -> PagedResponseModel[T]:
     """
@@ -112,7 +116,7 @@ async def paginate(coll,
     # prepare query
     query = build_query(**query_params.model_dump())
     if within_ids:
-        query["_id"] = {"$in": within_ids}
+        query["document.id"] = {"$in": within_ids}
     cursor = coll.find(query)
 
     # unwrap params
@@ -124,13 +128,12 @@ async def paginate(coll,
     if sort:
         cursor = cursor.sort(sort)
     else: # sort by descending year by default
-        cursor = cursor.sort([('year', pymongo.DESCENDING)])
+        cursor = cursor.sort([('computed_fields.start_year', pymongo.DESCENDING)])
     results = await cursor.skip((page - 1) * size).limit(size).to_list(length=None)
 
     # transform output
     items = []
     for item in results:
-        item["doc_id"] = str(item.pop("_id"))
         items.append(ResponseModel.model_validate(transform(item)))
 
     # collect information
@@ -167,7 +170,7 @@ async def paginate_within(coll,
     ).to_list(length=settings.WITHIN_MAX_RESULTS)
 
     # create within query
-    doc_ids = [item["_id"] for item in results]
+    doc_ids = [item["document"]["id"] for item in results]
     query_params = QueryParams(full_text=within_query)
 
     return await paginate(coll, query_params, page_params, ResponseModel, 

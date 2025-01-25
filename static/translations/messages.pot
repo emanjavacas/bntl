@@ -1,23 +1,23 @@
 # Translations template for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-16 13:08+0200\n"
+"POT-Creation-Date: 2025-01-03 10:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.10.3\n"
 
-#: static/templates/about.html:8
+#: static/templates/about.html:8 static/templates/template.html:107
 msgid "Over de BNTL"
 msgstr ""
 
@@ -100,11 +100,12 @@ msgstr ""
 msgid "Zoekgeschiedenis"
 msgstr ""
 
-#: static/templates/history.html:24 static/templates/record.html:30
+#: static/templates/history.html:24 static/templates/record.html:35
+#: static/templates/search.html:24
 msgid "Publicatietype"
 msgstr ""
 
-#: static/templates/history.html:31 static/templates/record.html:34
+#: static/templates/history.html:31 static/templates/record.html:39
 #: static/templates/results.html:38
 msgid "Jaar"
 msgstr ""
@@ -114,14 +115,15 @@ msgid "Titel"
 msgstr ""
 
 #: static/templates/history.html:50 static/templates/results.html:26
+#: static/templates/search.html:51
 msgid "Auteur"
 msgstr ""
 
-#: static/templates/history.html:65
+#: static/templates/history.html:65 static/templates/search.html:51
 msgid "Trefwoorden"
 msgstr ""
 
-#: static/templates/history.html:85
+#: static/templates/history.html:92
 msgid "treffers"
 msgstr ""
 
@@ -166,23 +168,23 @@ msgstr ""
 msgid "Digitale Bibliografie voor die Afrikaanse Taalkunde"
 msgstr ""
 
-#: static/templates/index.html:53 static/templates/template.html:85
+#: static/templates/index.html:57 static/templates/template.html:61
 msgid "zoeken"
 msgstr ""
 
-#: static/templates/index.html:58
+#: static/templates/index.html:62
 msgid "geavanceerd zoeken"
 msgstr ""
 
-#: static/templates/index.html:59
+#: static/templates/index.html:63
 msgid "zoekgeschiedenis"
 msgstr ""
 
-#: static/templates/index.html:69
+#: static/templates/index.html:73
 msgid "Laatst toegevoegde documenten"
 msgstr ""
 
-#: static/templates/index.html:70
+#: static/templates/index.html:74
 msgid "Aantal"
 msgstr ""
 
@@ -194,19 +196,11 @@ msgstr ""
 msgid "Indienen"
 msgstr ""
 
-#: static/templates/record.html:16
-msgid ".bib exporteren"
-msgstr ""
-
-#: static/templates/record.html:20
-msgid ".ris exporteren"
-msgstr ""
-
-#: static/templates/record.html:40
+#: static/templates/record.html:45 static/templates/search.html:51
 msgid "Titelbeschrijving"
 msgstr ""
 
-#: static/templates/record.html:49
+#: static/templates/record.html:54
 msgid "Auteur(s)"
 msgstr ""
 
@@ -219,7 +213,7 @@ msgid "Trefwoord(en)"
 msgstr ""
 
 #: static/templates/record.html:100
-msgid "URL (link naar open acces)"
+msgid "URL 🔓"
 msgstr ""
 
 #: static/templates/record.html:113
@@ -302,7 +296,7 @@ msgstr ""
 msgid "Pagina"
 msgstr ""
 
-#: static/templates/results.html:87 static/templates/search.html:66
+#: static/templates/results.html:87 static/templates/search.html:77
 msgid "Zoek"
 msgstr ""
 
@@ -318,10 +312,6 @@ msgstr ""
 msgid "Kies er een"
 msgstr ""
 
-#: static/templates/search.html:24
-msgid "Publicatie type"
-msgstr ""
-
 #: static/templates/search.html:27
 msgid "Kies een publicatietype"
 msgstr ""
@@ -334,11 +324,7 @@ msgstr ""
 msgid "Jaar of periode"
 msgstr ""
 
-#: static/templates/template.html:88
+#: static/templates/template.html:64
 msgid "help"
-msgstr ""
-
-#: static/templates/template.html:91
-msgid "over de BNTL"
 msgstr ""
 

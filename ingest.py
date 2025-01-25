@@ -1,18 +1,19 @@
 
-import bson
+from copy import deepcopy
 import uuid
 import asyncio
 import rispy
 import aiofiles
 
 from bntl import utils
+from bntl.rdf import parse_rdf
 from bntl.db import DBClient
 from bntl.vector import VectorClient
 from bntl.upload import convert_to_text
 from vectorizer import client
 
 
-async def main(path):
+async def main(paths):
     vector_client = VectorClient()
     db_client = await DBClient.create()
 
@@ -23,36 +24,41 @@ async def main(path):
         await logger.info("Cleaning up QDrant collections")
         await vector_client._clear_up()
 
-        # read data from file
-        async with aiofiles.open(path, 'r') as f:
-            await logger.info("Loading data from file")
-            docs = rispy.loads(await f.read())
+        for path in paths:
+            # read data from file
+            async with aiofiles.open(path, 'r') as f:
+                await logger.info("Loading data from file: {}".format(path))
+                ris_data = parse_rdf(await f.read())
+                docs = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
 
-        # insert documents
-        await logger.info("Inserting {} docs from file: {}".format(len(docs), path))
-        async def callback(progress):
-            await logger.info("Inserted {} from {} documents.".format(progress, len(docs)))
-        done = await db_client.insert_documents(docs, logger=logger, progress_callback=callback)
-        
-        # vectorize
-        await logger.info("Vectorizing...")
-        docs = await db_client.find({"_id": {"$in": [bson.objectid.ObjectId(id) for id in done]}})
-        texts = [convert_to_text(doc, ignore_keywords=True) for doc in docs]
-        doc_ids = [str(doc["doc_id"]) for doc in docs]
-        task_id = str(uuid.uuid4())
-        vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
+            # insert documents
+            await logger.info("Inserting {} docs from file: {}".format(len(docs), path))
+            async def callback(progress):
+                await logger.info("Processed {}/{} documents.".format(progress, len(docs)))
+            done = await db_client.insert_documents(docs, logger=logger, progress_callback=callback)
+            
+            # vectorize
+            await logger.info("Vectorizing...")
+            docs = await db_client.find({"document.id": {"$in": done}})
+            texts, doc_ids = [], []
+            for doc in docs:
+                if text := convert_to_text(doc["document"]):
+                    texts.append(text)
+                    doc_ids.append(doc["document"]["id"])
+            task_id = str(uuid.uuid4())
+            vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
 
-        # insert to qdrant
-        if vectors:
-            await logger.info("Ingesting vectors into vector database")
-            await vector_client.insert(vectors, [str(doc["doc_id"]) for doc in docs])
-        else:
-            await logger.info("Vectorization task failed, check logs to see what happened.")
+            # insert to qdrant
+            if vectors:
+                await logger.info("Ingesting vectors into vector database")
+                await vector_client.insert(vectors, doc_ids)
+            else:
+                await logger.info("Vectorization task failed, check logs to see what happened.")
+
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ris-file', required=True, help="Path to ris file with data to be indexed.")
+    parser.add_argument('--rdf-files', required=True, nargs="+", help="Path to rdf file with data to be indexed.")
     args = parser.parse_args()
-
-    asyncio.run(main(args.ris_file))
+    asyncio.run(main(args.rdf_files))

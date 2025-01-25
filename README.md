@@ -73,7 +73,11 @@ pip install poetry
 Besides the package, you'll need to provide a MongoDB and QDrant databases. These don't need
 to live locally in your same server, but could potentially be remote and cloud-managed.
 
-### MongoDB
+### Databases
+
+We use two databases. Their parameters need to be set in the settings.toml file.
+
+#### MongoDB
 
 For a local install on ubuntu you can follow this link: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/#std-label-install-mdb-community-ubuntu
 
@@ -81,4 +85,80 @@ For a local install on ubuntu you can follow this link: https://www.mongodb.com/
 
 For a local install on ubuntu, it's recommended to use docker: https://qdrant.tech/documentation/guides/installation/
 
+### Bib
 
+you need bibutils
+```sudo apt install bibutils```
+
+## Translations
+Update (for the first time run, you need to run `pybabel init -i static/translations/messages.pot -d static/translations/ -l en` instead of update)
+- pybabel extract -F babel.cfg -o static/translations/messages.pot static/templates/*
+- pybabel update -i static/translations/messages.pot -d static/translations/
+- Now, do the translation of the .po files
+- pybabel compile -d static/translations
+
+### Internationalisation 
+
+Internationalisation is accomplished using `gettext`. We add a "lang" parameter to each http request to an endpoint that returns a webpage that may require internationalisation. Additionally, we pass the translator function "_" to be used within the jinja2 templates.
+
+For example:
+```python
+@app.get("/about", response_class=HTMLResponse)
+async def about(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+    """
+    About route
+    """
+    return templates.TemplateResponse("about.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
+```
+
+This means that redirections must always take into account the "lang" parameter. For example:
+
+```html
+<p class="text-end"><a href="/getQueryHistory?lang={{lang}}">{{ _('zoekgeschiedenis') }}</a></p>
+```
+
+Also, within the js:
+```js
+const lang = new URLSearchParams(window.location.search).get("lang");
+fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=" + lang).then(
+    function(resp){
+        if (resp.ok) {window.location.href = resp.url}
+    }
+)
+```
+
+## Vectorization
+
+To use the vectorization service (code living in vectorizer/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml.
+
+The process is started using the vectorizer/server.py, which spawns a separate FastAPI server.
+
+The vectors are generated and stored into a MongoDB before being passed over to the main process to be indexed with the QDrant DB.
+
+# Front End
+
+Documentation for the Front End should go into the help page (WIP). 
+
+## Admin functionality
+
+In order manage the database, two password-protected routes have been implemented. 
+The password is set upon deployment using the settings.toml file.
+
+### Uploading documents
+The first one is /upload, which can be used to upload rdf files as they are downloaded from Zotero.
+This route allows the admin to upload multiple files and monitor the status of the files.
+The app processes uploaded files, parses them and indexes the resulting documents.
+The process takes care of discarding duplicates and extracting information needed to enable querying functionality.
+If documents need to be deleted, the admin can drop all database information (erasing the index), and
+upload it again. This is not a costly process and is also relatively quick.
+
+### Vectorizing the database
+In order to enable vector search, the admin can use the /vectorize route. 
+Clicking on the provided button will start a vectorization process that will generate vectors for all the documents,
+and store them in a vector database for quick search. 
+This process is costly and may take a few hours (depending on the size of the database).
+We use a caching system to avoid recomputing vectors for documents that have already been indexed before 
+(based on the actual document text and not the document id). This means that incremental vectorizations will be quick,
+since only the newly added documents will have to be computed.
+
+The logic for selecting the document text to be indexed is in the function convert_to_text inside bntl/utils.py.

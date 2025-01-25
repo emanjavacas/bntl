@@ -2,16 +2,49 @@
 import os
 from collections import defaultdict
 from datetime import datetime, timezone
-from typing import List, Union
 import asyncio
+import copy
+from typing import Dict
 
+import rispy
 import aiofiles
 import aioconsole
 
 from bntl.settings import settings
 
 
+RISPY_MAPPING = copy.deepcopy(rispy.TAG_KEY_MAPPING)
+RISPY_MAPPING["SV"] = "series_volume"
+
+
 def identity(item): return item
+
+
+def get_doc_text(doc) -> Dict[str, str]:
+    # title
+    title = doc.get("title", "") or ""
+    if secondary := doc.get("secondary_title"):
+        title += "; " + secondary
+    if tertiary := doc.get("tertiary_title"):
+        title += "; " + tertiary
+    # keywords
+    keywords = doc.get("keywords", [])
+    if keywords:
+        keywords = "; ".join(keywords)
+    # abstract
+    abstract = doc.get("abstract", "")
+
+    return {"title": title, "keywords": keywords, "abstract": abstract}
+
+
+def convert_to_text(doc, ignore_keywords=False, ignore_abstract=False) -> str:
+    doc = get_doc_text(doc)
+    output = doc.get("title", "")
+    if doc["keywords"] and not ignore_keywords:
+        output += "; " + doc["keywords"]
+    if doc["abstract"] and not ignore_abstract:
+        output += "; " + doc["abstract"]
+    return output
 
 
 def default_to_regular(d):
@@ -20,8 +53,12 @@ def default_to_regular(d):
     return d
 
 
-def get_log_filename(file_id):
+def get_upload_log_filename(file_id):
     return os.path.join(settings.UPLOAD_LOG_DIR, file_id + '.log')
+
+
+def get_vectorization_log_filename(task_id):
+    return os.path.join(settings.VECTORIZE_LOG_DIR, task_id + '.log')
 
 
 async def maybe_await(value):
@@ -98,36 +135,3 @@ async def ris2bib(ris_data):
     return await xml2bib(xml_data)
 
 
-def maybe_list(inp: Union[List[str], str]):
-    if isinstance(inp, list):
-        if len(inp) == 1:
-            return inp[0]
-        *firsts, last = inp
-        return ', '.join(firsts) + " & " + last
-    return inp
-
-
-RIS2DOC_SCREENNAMES = {
-    "TY": "Publicatietype",
-    "PY": "Publicatiejaar",
-    "TI": "Titel",
-    "T2": "Boektitel",
-    "AB": "Extra informatie",
-    "UR": "URL (link naar open acces)",
-    "AU": "Auteur(s)",
-    "A1": "Auteur(s)",
-    "A2": "Redacteur(s)",
-    "KW": "Trefwoord(en)",
-    "SP": "Startpagina",
-    "EP": "Eindpagina",
-    "JO": "Tijdschrift",
-    "VL": "Volume",
-    "IS": "Nummer",
-    "RN": "Recensie/Reactie",
-    "SN": "ISBN-nummer",
-    "CY": "Plaats van uitgave",
-    "PB": "Uitgeverij",
-    "N2": "Oude notatie",
-    "C3": "Titelbeschrijving boek",
-    "C4": "Gerelateerde artikels"
-}

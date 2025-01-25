@@ -42,12 +42,22 @@ async def vectorize_task(task_id, texts, doc_ids):
             try:
                 app.state.model_manager.load_model()
                 app.state.model_manager.move_model_to_gpu()
-                vectors = await run_in_threadpool(
-                    app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
-                vectors = vectors.tolist()
-                app.state.model_manager.move_model_to_cpu()
-                # Update the task status to done
+                # Cache
+                if text2vector := await app.state.db_client.retrieve_cache(texts):
+                    if input_texts := [text for text in texts if text not in text2vector]:
+                        vectors = await run_in_threadpool(
+                            app.state.model_manager.get_model().encode, input_texts, settings.BATCH_SIZE)
+                        # merge vectors
+                        text2vector.update(zip(input_texts, vectors.tolist()))
+                    vectors = [text2vector[text] for text in texts]
+                else:
+                    vectors = await run_in_threadpool(
+                        app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
+                    vectors = vectors.tolist()
+                app.state.model_manager.move_model_to_cpu()    
+                # store vectors
                 await app.state.db_client.store_vectors(task_id, vectors, doc_ids)
+                # Update the task status to done
                 await app.state.db_client.update_task_status(task_id, Status.DONE)
                 break
             except Exception as e:
@@ -83,7 +93,7 @@ async def vectorize(params: VectorizeParams, background_tasks: BackgroundTasks):
     except Exception as e:
         logger.info("Error while vectorizing")
         logger.info(str(e))
-        raise HTTPException(status_code=500, detail="Unknown " + str(e))
+        raise HTTPException(status_code=500, detail="Unknown error while vectorizing: " + str(e))
 
 
 @app.get("/check-status/{task_id}", response_model=TaskModel)

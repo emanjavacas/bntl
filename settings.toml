@@ -1,4 +1,4 @@
 
-PORT = 8000
+PORT = 8001
 QDRANT_PORT = 6333
 LOCAL_URI = "localhost:27017"

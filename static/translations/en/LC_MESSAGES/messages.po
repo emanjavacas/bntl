@@ -1,24 +1,22 @@
-# English translations for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-16 13:08+0200\n"
-"PO-Revision-Date: 2024-09-16 12:38+0200\n"
+"POT-Creation-Date: 2025-01-03 10:56+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: en\n"
-"Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.10.3\n"
 
-#: static/templates/about.html:8
+#: static/templates/about.html:8 static/templates/template.html:107
 msgid "Over de BNTL"
 msgstr "About the BNTL"
 
@@ -39,14 +37,18 @@ msgid ""
 "volledige teksten."
 msgstr ""
 "The BNTL is a basic tool for Dutch studies. Every research, every paper, "
-"every presentation starts with a search in the BNTL.The BNTL contains "
-"Dutch, Flemish and foreign titles of publications on Dutch language and "
-"literature from the period 1940 to the present (no primary literature), "
-"where possible with a link to the digital full texts."
+"every presentation\n"
+"        starts with a search in the BNTL.\n"
+"        The BNTL contains Dutch, Flemish, and foreign titles of "
+"publications about\n"
+"        Dutch language and literature from the period 1940 to the present "
+"(thus no primary\n"
+"        literature), where possible with a link to the full digital "
+"texts."
 
 #: static/templates/about.html:17
 msgid "Missie en doelstelling"
-msgstr "Mission and objectives"
+msgstr "Mission and Objectives"
 
 #: static/templates/about.html:19
 msgid ""
@@ -63,14 +65,18 @@ msgid ""
 " of de plaats van taal en tekst\n"
 "        in de geschiedenis van onderwijs, kerk, politiek enzovoort."
 msgstr ""
-"The Flemish Bureau for the Bibliography of Dutch Studies was founded in "
-"1969 with the aim of inventorying and opening up publications in the "
-"field of Dutch studies, in the broadest sense: language and literature "
-"from the Middle Ages to the present, including publications on literary "
-"life, the production and distribution of texts (codicology, book and "
-"printing history, art history, publishers and public media, prizes, "
-"etc.), or the place of language and text in the history of education, "
-"church, politics, etc."
+"The Flemish Bureau for the Bibliography of Dutch Studies was established "
+"in 1969 with\n"
+"        the aim of inventorying and unlocking the publications that "
+"appear in the field of\n"
+"        Dutch studies in the broadest sense:\n"
+"        language and literature from the Middle Ages to the present, "
+"including publications on literary\n"
+"        life, the production and distribution of texts (codicology, book "
+"and printing history,\n"
+"        art history, publishers and public media, prizes, ...), or the "
+"place of language and text\n"
+"        in the history of education, church, politics, and so forth."
 
 #: static/templates/about.html:27
 msgid "Voor wie"
@@ -84,9 +90,11 @@ msgid ""
 "vanzelfsprekend, studenten en\n"
 "        leerlingen."
 msgstr ""
-"For Dutch scholars in the low countries and abroad, but also for a broad "
-"target group of (art) historians, library staff, publicists and, of "
-"course, students and pupils."
+"For Dutch studies specialists both at home and abroad, but also for a "
+"broad target group of\n"
+"        (art) historians, library staff, publicists, and, of course, "
+"students and\n"
+"        pupils."
 
 #: static/templates/about.html:33 static/templates/history.html:3
 msgid "Geschiedenis"
@@ -99,9 +107,9 @@ msgid ""
 "        bibliografie van de Nederlandse taal- en letterkunde. De BNTL "
 "startte in 1970 op papier."
 msgstr ""
-"In 1969, a start was made on excerpting publications with with the "
-"intention of compiling a bibliography of Dutch language and literature. "
-"The BNTL started in 1970 on paper."
+"In 1969, work began on excerpting publications with a view to a "
+"bibliography of Dutch language and literature. The BNTL started in 1970 "
+"on paper."
 
 #: static/templates/about.html:40
 msgid ""
@@ -111,10 +119,11 @@ msgid ""
 "betere doorzoekbaarheid\n"
 "        en meer toegang tot open access-artikelen."
 msgstr ""
-"In 2008, the BNTL became a website. Since October 2024, that website has "
-"been completely renewed with extra attention for the sustainable "
-"preservation of the data, better searchability and more access to open "
-"access articles."
+"In 2008, the BNTL became a website. Since October 2024, this website has "
+"been completely renewed\n"
+"        with extra attention to the sustainable preservation of the data, "
+"better searchability\n"
+"        and more access to open access articles."
 
 #: static/templates/error_modal.html:12
 msgid "Sluiten"
@@ -122,13 +131,14 @@ msgstr "Close"
 
 #: static/templates/history.html:9
 msgid "Zoekgeschiedenis"
-msgstr "Search history"
+msgstr "Search History"
 
-#: static/templates/history.html:24 static/templates/record.html:30
+#: static/templates/history.html:24 static/templates/record.html:35
+#: static/templates/search.html:24
 msgid "Publicatietype"
-msgstr "Publication type"
+msgstr "Publication Type"
 
-#: static/templates/history.html:31 static/templates/record.html:34
+#: static/templates/history.html:31 static/templates/record.html:39
 #: static/templates/results.html:38
 msgid "Jaar"
 msgstr "Year"
@@ -138,14 +148,15 @@ msgid "Titel"
 msgstr "Title"
 
 #: static/templates/history.html:50 static/templates/results.html:26
+#: static/templates/search.html:51
 msgid "Auteur"
 msgstr "Author"
 
-#: static/templates/history.html:65
+#: static/templates/history.html:65 static/templates/search.html:51
 msgid "Trefwoorden"
 msgstr "Keywords"
 
-#: static/templates/history.html:85
+#: static/templates/history.html:92
 msgid "treffers"
 msgstr "hits"
 
@@ -155,18 +166,21 @@ msgstr "BIBLIOGRAPHY"
 
 #: static/templates/index.html:13
 msgid "VAN DE NEDERLANDSE TAAL- EN LITERATUURWETENSCHAP"
-msgstr "OF THE DUTCH LANGUAGE AND LITERATURE"
+msgstr "OF DUTCH LANGUAGE AND LITERATURE STUDIES"
 
 #: static/templates/index.html:17
-#, fuzzy
 msgid ""
 "De BNTL bevat Nederlandse, Vlaamse en buitenlandse titels van publicaties"
 " over Nederlandse taal- en letterkunde \n"
 "          uit de periode 1940 tot heden (dus geen primaire literatuur), "
 "waar mogelijk met een link naar de digitale volledige teksten."
-msgstr "The BNTL contains Dutch, Flemish and foreign titles of publications "
-"on Dutch language and literature from the period 1940 to the present (so no "
-"primary literature), where possible with a link to the digital full texts."
+msgstr ""
+"The BNTL contains Dutch, Flemish, and foreign titles of publications "
+"about\n"
+"          Dutch language and literature from the period 1940 to the "
+"present (thus no primary\n"
+"          literature), where possible with a link to the full digital "
+"texts."
 
 #: static/templates/index.html:20
 msgid ""
@@ -175,11 +189,12 @@ msgid ""
 "link-underline-opacity-25 link-underline-opacity-100-hover\" "
 "href=\"https://goo.gl/forms/F7g9vbzBfzj14EdS2\">gebruikersenquête</a>\n"
 "          kan u mee nadenken over de BNTL van de toekomst."
-msgstr "We are curious about your experiences and wishes when using the "
-"bibliography. By filling in the <a class=\"link-dark link-offset-2 "
+msgstr ""
+"We are curious about your experiences and wishes when using the "
+"bibliography. By filling out the <a class=\"link-dark link-offset-2 "
 "link-underline-opacity-25 link-underline-opacity-100-hover\" "
 "href=\"https://goo.gl/forms/F7g9vbzBfzj14EdS2\">user survey</a>\n"
-" you can help us think about the BNTL of the future."
+"          you can help shape the future of the BNTL."
 
 #: static/templates/index.html:23
 msgid "Lees verder"
@@ -191,33 +206,31 @@ msgstr "This database uses"
 
 #: static/templates/index.html:35
 msgid "Bekijk ook de Friese bibliografie"
-msgstr "Check the Frisian bibliography"
+msgstr "Also view the Frisian bibliography"
 
 #: static/templates/index.html:41
 msgid "Digitale Bibliografie voor die Afrikaanse Taalkunde"
-msgstr "Digital Bibliography of Afrikaans linguistics"
+msgstr "Digital Bibliography for Afrikaans Linguistics"
 
-#: static/templates/index.html:53 static/templates/template.html:85
+#: static/templates/index.html:57 static/templates/template.html:61
 msgid "zoeken"
 msgstr "search"
 
-#: static/templates/index.html:58
-#, fuzzy
+#: static/templates/index.html:62
 msgid "geavanceerd zoeken"
-msgstr "Advanced search"
+msgstr "advanced search"
 
-#: static/templates/index.html:59
-#, fuzzy
+#: static/templates/index.html:63
 msgid "zoekgeschiedenis"
-msgstr "Search history"
+msgstr "search history"
 
-#: static/templates/index.html:69
+#: static/templates/index.html:73
 msgid "Laatst toegevoegde documenten"
-msgstr ""
+msgstr "Recently added documents"
 
-#: static/templates/index.html:70
+#: static/templates/index.html:74
 msgid "Aantal"
-msgstr ""
+msgstr "Number"
 
 #: static/templates/login.html:15
 msgid "Voer uw wachtwoord in"
@@ -227,33 +240,25 @@ msgstr "Enter your password"
 msgid "Indienen"
 msgstr "Submit"
 
-#: static/templates/record.html:16
-msgid ".bib exporteren"
-msgstr "export .bib"
-
-#: static/templates/record.html:20
-msgid ".ris exporteren"
-msgstr "export .ris"
-
-#: static/templates/record.html:40
+#: static/templates/record.html:45 static/templates/search.html:51
 msgid "Titelbeschrijving"
-msgstr "Title description"
+msgstr "Title Description"
 
-#: static/templates/record.html:49
+#: static/templates/record.html:54
 msgid "Auteur(s)"
 msgstr "Author(s)"
 
 #: static/templates/record.html:78
 msgid "Extra informatie"
-msgstr "Extra information"
+msgstr "Additional Information"
 
 #: static/templates/record.html:87
 msgid "Trefwoord(en)"
 msgstr "Keyword(s)"
 
 #: static/templates/record.html:100
-msgid "URL (link naar open acces)"
-msgstr "URL (link to open access)"
+msgid "URL 🔓"
+msgstr "URL 🔓"
 
 #: static/templates/record.html:113
 msgid "Pagina(s)"
@@ -277,11 +282,11 @@ msgstr "Review/Reaction"
 
 #: static/templates/record.html:158
 msgid "ISBN-nummer"
-msgstr "ISBN-number"
+msgstr "ISBN Number"
 
 #: static/templates/record.html:167
 msgid "Plaats van uitgave"
-msgstr "Place of publication"
+msgstr "Place of Publication"
 
 #: static/templates/record.html:176
 msgid "Uitgeverij"
@@ -289,15 +294,15 @@ msgstr "Publisher"
 
 #: static/templates/record.html:185
 msgid "Oude notatie"
-msgstr "Old notation"
+msgstr "Old Notation"
 
 #: static/templates/record.html:194
 msgid "Titelbeschrijving boek"
-msgstr "Title description book"
+msgstr "Book Title Description"
 
 #: static/templates/record.html:203
 msgid "Gerelateerde artikels"
-msgstr "Related articles"
+msgstr "Related Articles"
 
 #: static/templates/results.html:3
 msgid "Resultaten"
@@ -309,33 +314,33 @@ msgstr "SEARCH RESULTS"
 
 #: static/templates/results.html:9
 msgid "op laatst zoekje"
-msgstr "for the last query"
+msgstr "on last search"
 
 #: static/templates/results.html:13
 msgid "Zoekresultaten"
-msgstr "Search results"
+msgstr "Search Results"
 
 #: static/templates/results.html:13
 msgid "van"
-msgstr "for"
+msgstr "of"
 
 #: static/templates/results.html:13
 msgid "in laatst zoekje"
-msgstr "in the last query"
+msgstr "in last search"
 
 #: static/templates/results.html:23
 msgid "Sorteer op"
-msgstr "Sort on"
+msgstr "Sort by"
 
 #: static/templates/results.html:51
 msgid "Topresultaten"
-msgstr "Top results"
+msgstr "Top Results"
 
 #: static/templates/results.html:62
 msgid "Pagina"
 msgstr "Page"
 
-#: static/templates/results.html:87 static/templates/search.html:66
+#: static/templates/results.html:87 static/templates/search.html:77
 msgid "Zoek"
 msgstr "Search"
 
@@ -345,15 +350,11 @@ msgstr "Search"
 
 #: static/templates/search.html:10
 msgid "Geavanceerd zoeken"
-msgstr "Advanced search"
+msgstr "Advanced Search"
 
 #: static/templates/search.html:22
 msgid "Kies er een"
 msgstr "Choose one"
-
-#: static/templates/search.html:24
-msgid "Publicatie type"
-msgstr "Type of publication"
 
 #: static/templates/search.html:27
 msgid "Kies een publicatietype"
@@ -365,25 +366,8 @@ msgstr "Invalid"
 
 #: static/templates/search.html:44
 msgid "Jaar of periode"
-msgstr "Year or year range"
+msgstr "Year or period"
 
-#: static/templates/template.html:88
+#: static/templates/template.html:64
 msgid "help"
 msgstr "help"
-
-#: static/templates/template.html:91
-msgid "over de BNTL"
-msgstr "about the BNTL"
-
-#~ msgid "geavanceerd zoeken"
-#~ msgstr "advanced search"
-
-#~ msgid "zoekgeschiedenis"
-#~ msgstr "search history"
-
-#~ msgid "Laatst toegevoegde documenten"
-#~ msgstr "Last added documents"
-
-#~ msgid "Aantal"
-#~ msgstr "Total"
-
