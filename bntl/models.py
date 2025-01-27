@@ -93,7 +93,7 @@ BOOK_renderer = (
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
     Node("secondary_title", pre="(", post="; ") +
-    Node("SV", post="). ")
+    Node("series_volume", post="). ")
 )
 
 # [A2] (red.). [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
@@ -105,7 +105,7 @@ BOOK_2EDS_renderer = (
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
     Node("secondary_title", pre="(", post="; ") +
-    Node("SV", post="). ")
+    Node("series_volume", post="). ")
 )
 
 # [AU]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]. ([T3]; [SV]).
@@ -118,9 +118,9 @@ CHAP_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=", ") +
     Node("start_page", pre="p. ") +
-    Node("end_page", pre="-", post=". ") +
-    Node("tertiary_title", pre="(", post="; ") +
-    Node("SV", post="). ")
+    Node("end_page", pre="-", post=".") +
+    Node("tertiary_title", pre=" (", post="; ") +
+    Node("series_volume", post="). ")
 )
 
 # [AU]. [TI]. [PY].
@@ -136,7 +136,7 @@ JFULL_renderer = (
     Node("journal_name", pre="Speciaal nummer van: ", post=": ") +
     Node("volume", post=" ") +
     Node("year", pre="(", post=") ") +
-    Node("SV", post=", ") +
+    Node("series_volume", post=", ") +
     Node("start_page", post=" p.")
 )
 
@@ -202,6 +202,7 @@ class DocumentModel(BaseModel):
     journal_name: Optional[str] = Field(help="Journal name", default=None) # JO
     issn: Optional[str] = Field(help="ISSN", default=None) # SN
     volume: Optional[str] = Field(help="Volume", default=None) # VL
+    series_volume: Optional[str] = Field(help="Series Volume", default=None) # SV
     abstract: Optional[str] = Field(help="Additional Information", default=None) # AB
     reviewed_item: Optional[str] = Field(help="Review of", default=None) # RI
     research_notes: Optional[str] = Field(help="Review", default=None) # RN
