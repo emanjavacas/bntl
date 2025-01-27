@@ -387,7 +387,7 @@ def _parse_bibo_chapter(chapter, author_lookup):
             bibo_info['tertiary_title'] = series_title_node.text
         series_number_node = series_node.find('bibo:number', namespaces)
         if series_number_node is not None:
-            bibo_info['number'] = series_number_node.text
+            bibo_info['series_volume'] = series_number_node.text
 
     reviewed_node = chapter.find('.//bibo:shortTitle', namespaces)
     if reviewed_node is not None:
