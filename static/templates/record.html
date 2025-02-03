@@ -3,7 +3,7 @@
     <div class="btn-group" role="group">
       <!-- ai -->
       <button type="button" class="btn btn-light">
-        <a href="/vectorQuery?doc_id={{item.document.id}}&limit=10&lang={{lang}}"><img width="18px" src="/static/assets/img/microchip.svg">
+        <a href="/vectorQuery?doc_id={{item.document.id | parse_doc_id}}&limit=10&lang={{lang}}"><img width="18px" src="/static/assets/img/microchip.svg">
         </a>
       </button>      
       <!-- export -->
@@ -13,7 +13,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id}}&lang={{lang}}">Permalink</a>
+            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id | parse_doc_id}}&lang={{lang}}">Permalink</a>
           </li>
           <li>
             <a href="#" class="dropdown-item citation-item" data-output-format="ris" data-document-id="{{item.document.id}}">.ris</a>

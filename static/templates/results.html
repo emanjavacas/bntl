@@ -121,9 +121,11 @@
                 <span style="font-size:10px;" class="text-small position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{ item.score|round(3, 'floor') }}</span>
               {% endif %}
             </span>
+            <!-- icon -->
             <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{refMap[item.document.type_of_reference]}}">
               <img width="30px" src="/static/assets/img/icons/{{imgMap[item.document.type_of_reference]}}.svg">
             </span>
+            <!--  -->
             <span class="text-muted small pe-2">
              {{ item.document | doc_repr }}
             </span>    
@@ -131,7 +133,19 @@
         </h2>
         <div id="flush-collapse-{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{loop.index}}" data-bs-parent="#searchItems">
           <div class="accordion-body">
-            {% include "record.html" %}
+            {% if item.document.type_of_reference == "ADVS" %}
+              {% include "reftypes/advs.html" %}
+            {% elif item.document.type_of_reference == "BOOK" %}
+              {% include "reftypes/book.html" %}
+            {% elif item.document.type_of_reference == "CHAP" %}
+              {% include "reftypes/chap.html" %}
+            {% elif item.document.type_of_reference == "JFULL" %}
+              {% include "reftypes/jfull.html" %}
+            {% elif item.document.type_of_reference == "JOUR" or item.document.type_of_reference == "EJOUR" %}
+              {% include "reftypes/jour.html" %}
+            {% elif item.document.type_of_reference == "WEB" %}
+              {% include "reftypes/web.html" %}
+            {% endif %}
           </div>
         </div>
       </div>

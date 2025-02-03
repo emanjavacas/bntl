@@ -4,6 +4,18 @@
 
 {% block content %}
 
-{% include "record.html" %}
+{% if item.document.type_of_reference == "ADVS" %}
+{% include "reftypes/advs.html" %}
+{% elif item.document.type_of_reference == "BOOK" %}
+{% include "reftypes/book.html" %}
+{% elif item.document.type_of_reference == "CHAP" %}
+{% include "reftypes/chap.html" %}
+{% elif item.document.type_of_reference == "JFULL" %}
+{% include "reftypes/jfull.html" %}
+{% elif item.document.type_of_reference == "JOUR" or item.document.type_of_reference == "EJOUR" %}
+{% include "reftypes/jour.html" %}
+{% elif item.document.type_of_reference == "WEB" %}
+{% include "reftypes/web.html" %}
+{% endif %}
 
 {% endblock %}

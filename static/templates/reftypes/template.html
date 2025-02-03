@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col text-end">
+    <div class="btn-group" role="group">
+      <!-- ai -->
+      <button type="button" class="btn btn-light">
+        <a href="/vectorQuery?doc_id={{item.document.id | parse_doc_id}}&limit=10&lang={{lang}}"><img width="18px" src="/static/assets/img/microchip.svg">
+        </a>
+      </button>      
+      <!-- export -->
+      <div class="btn-group ">
+        <button class="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img width="15px" src="/static/assets/img/export.png">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item" target="_blank" href="/item?doc_id={{item.document.id | parse_doc_id}}&lang={{lang}}">Permalink</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="ris" data-document-id="{{item.document.id}}">.ris</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="bibtex" data-document-id="{{item.document.id}}">.bib</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="modern-language-association" data-document-id="{{item.document.id}}">.mla</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item citation-item" data-output-format="apa" data-document-id="{{item.document.id}}">.apa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <div class="row small">
+      <div class="col-10 px-1">
+      {% block data %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  
+  {% block script %}
+  <script type="module" src="/static/js/citation.js"></script>
+  {% endblock %}

@@ -65,6 +65,7 @@ app.add_middleware(
 templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
 templates.env.filters["doc_repr"] = get_record_screen_name
+templates.env.filters["parse_doc_id"] = utils.parse_doc_id
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
@@ -274,11 +275,12 @@ async def query_history(request: Request, lang: str = Query(default=settings.DEF
 
 @app.get("/item")
 async def item(doc_id: str, request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+    doc_id = utils.unparse_doc_id(doc_id)
     if item := await app.state.db_client.find_one(doc_id):
         return templates.TemplateResponse(
             "item.html", {"request": request, 
-                        "_": get_translation(lang).gettext, "lang": lang, 
-                        "item": item})
+                          "_": get_translation(lang).gettext, "lang": lang, 
+                          "item": item})
     raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
 
@@ -291,6 +293,7 @@ async def vector_query(doc_id: str,
     """
     Vector-based query route using the document id
     """
+    doc_id = utils.unparse_doc_id(doc_id)
     try:
         hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
     except MissingVectorException as e:

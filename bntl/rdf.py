@@ -20,6 +20,19 @@ namespaces = {
     'address': 'http://schemas.talis.com/2005/address/schema#'
 }
 
+def _parse_pages(pages_node):
+    if pages_node is not None and pages_node.text:
+        pages = pages_node.text.split('-')
+        end_page = None
+        if len(pages) == 2:
+            start_page, end_page = pages
+        else:
+            start_page = pages[0]
+        output = {"start_page": start_page}
+        if end_page is not None:
+            output["end_page"] = end_page
+        return output
+
 def _get_author_lookup(root):
     author_lookup = {}
     persons = root.findall('.//foaf:Person', namespaces=namespaces)
@@ -90,7 +103,7 @@ def _parse_academic_article(article, author_lookup):
         ('bibo:uri', 'urls'),
         ('dcterms:abstract', 'abstract'),
         ('bibo:doi', 'doi'),
-        ('bibo:shortTitle', 'short_title'),
+        ('bibo:shortTitle', 'reviewed_item'),
         ('dcterms:source', 'notes_abstract')
     ]:
         node = article.find(node_name, namespaces)
@@ -99,13 +112,9 @@ def _parse_academic_article(article, author_lookup):
 
     # Pages
     pages_node = article.find('bibo:pages', namespaces)
-    if pages_node is not None and pages_node.text:
-        pages = pages_node.text.split('-')
-        if len(pages) == 2:
-            start_page, end_page = pages
-        else:
-            start_page = end_page = pages[0]
-        bibo_info['start_page'] = '-'.join((start_page, end_page))
+    if parsed_pages := _parse_pages(pages_node):
+        for key, val in parsed_pages.items():
+            bibo_info[key] = val
 
     # Reviews
     reviews_node = article.find('.//bibo:lccn', namespaces)
@@ -245,8 +254,9 @@ def _parse_bibo_book(book, author_lookup):
         bibo_info['abstract'] = abstract_node.text
     
     pages_node = book.find('bibo:numPages', namespaces)
-    if pages_node is not None:
-        bibo_info['start_page'] = pages_node.text
+    if parsed_pages := _parse_pages(pages_node):
+        for key, val in parsed_pages.items():
+            bibo_info[key] = val
     
     isbn_nodes = book.findall('bibo:isbn13', namespaces)
     if isbn_nodes is not None:
@@ -365,8 +375,9 @@ def _parse_bibo_chapter(chapter, author_lookup):
         bibo_info['research_notes'] = reviews_node.text
     
     pages_node = chapter.find('bibo:pages', namespaces)
-    if pages_node is not None:
-        bibo_info['start_page'] = pages_node.text
+    if parsed_pages := _parse_pages(pages_node):
+        for key, val in parsed_pages.items():
+            bibo_info[key] = val
     
     isbn_nodes = chapter.findall('bibo:isbn13', namespaces)
     if isbn_nodes:
@@ -391,7 +402,7 @@ def _parse_bibo_chapter(chapter, author_lookup):
 
     reviewed_node = chapter.find('.//bibo:shortTitle', namespaces)
     if reviewed_node is not None:
-        bibo_info['short_title'] = reviewed_node.text
+        bibo_info['reviewed_item'] = reviewed_node.text
 
     edited_book_node = chapter.find('.//bibo:EditedBook', namespaces)
     if edited_book_node is not None:
@@ -493,8 +504,9 @@ def _parse_bibo_webpage(book, author_lookup):
         bibo_info['abstract'] = abstract_node.text
     
     pages_node = book.find('bibo:numPages', namespaces)
-    if pages_node is not None:
-        bibo_info['start_page'] = pages_node.text
+    if parsed_pages := _parse_pages(pages_node):
+        for key, val in parsed_pages.items():
+            bibo_info[key] = val
     
     isbn_nodes = book.findall('bibo:isbn13', namespaces)
     if isbn_nodes is not None:
@@ -523,7 +535,7 @@ def _parse_bibo_webpage(book, author_lookup):
 
     reviewed_node = book.find('.//bibo:shortTitle', namespaces)
     if reviewed_node is not None:
-        bibo_info['short_title'] = reviewed_node.text
+        bibo_info['reviewed_item'] = reviewed_node.text
 
     publisher_node = book.find('{http://purl.org/dc/terms/}publisher/foaf:Organization', namespaces)
     if publisher_node is not None:
@@ -610,9 +622,10 @@ def _parse_bibo_film(book, author_lookup):
         bibo_info['abstract'] = abstract_node.text
     
     pages_node = book.find('bibo:numPages', namespaces)
-    if pages_node is not None:
-        bibo_info['start_page'] = pages_node.text
-    
+    if parsed_pages := _parse_pages(pages_node):
+        for key, val in parsed_pages.items():
+            bibo_info[key] = val
+
     isbn_nodes = book.findall('bibo:isbn13', namespaces)
     if isbn_nodes is not None:
         bibo_info['issn'] = ' '.join([inode.text for inode in isbn_nodes])
@@ -719,7 +732,7 @@ def parse_rdf(rdf_data):
             info.update(_parse_book(z_node, author_lookup=author_lookup, keyword_lookup=keyword_lookup))
             info['type_of_reference'] = 'BOOK'
 
-            if 'keywords' in info and "Speciaal tijdschriftnummer" in set(info['keywords']):
+            if 'keywords' in info and "speciaal nummer" in set(info['keywords']):
                 info['type_of_reference'] = 'JFULL'
 
         elif ((next_node is not None and next_node.tag == '{' + namespaces['bibo'] + '}BookSection') or 

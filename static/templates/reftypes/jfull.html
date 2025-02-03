@@ -1,0 +1,192 @@
+{% extends "reftypes/template.html" %}
+
+{% block data %}
+<!-- type of reference -->
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Type') }}</span>
+    <span>{{refMap[item.document.type_of_reference]}}</span>
+    {% if "recensie" in item.document.keywords %}
+      <!-- <span class="fw-bold">[{{ _('Recensie') }}]</span> -->
+      <!-- icon -->
+      <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ _('Recensie') }}">
+        <img width="30px" src="/static/assets/img/icons/recensie.svg">
+      </span>      
+    {% endif %}
+  </span>
+</div>
+<!-- title -->
+<div class="row pb-2">
+  <span><span class="fw-bold pe-2">{{ _('Titel') }}</span>
+  <span>{{item.document.title}}</span>
+</div>
+<!-- redacteur -->
+{% if item.document.secondary_authors %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Redacteur(s)') }}</span>
+      <ul class="pb-0">
+      {% for author in item.document.secondary_authors %}
+        <li><a class="pb-0" href="/quickQuery?author={{author}}&lang={{lang}}">{{author}}</a></li>
+      {% endfor %}
+      </ul>
+  </span>
+</div>
+{% endif %}
+<!-- vertaler -->
+{% if item.document.tertiary_authors %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Vertaler(s)') }}</span>
+      <ul class="pb-0">
+      {% for author in item.document.tertiary_authors %}
+        <li><a class="pb-0" href="/quickQuery?author={{author}}&lang={{lang}}">{{author}}</a></li>
+      {% endfor %}
+      </ul>
+  </span>
+</div>
+<!-- year -->
+{% if item.document.year %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Publicatiedatum') }}</span>
+    <span>{{item.document.year}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- T2 -->
+{% if item.document.secondary_title %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Tijdschrift') }}</span>
+    <span>{{item.document.secondary_title}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- volume -->
+{% if item.document.volume %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Jaargang') }}</span>
+    <span>{{item.document.volume}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- number -->
+{% if item.document.series_volume %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Nummer') }}</span>
+    <span>{{item.document.series_volume}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- place published -->
+{% if item.document.place_published %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Plaats') }}</span>
+    <span>{{item.document.place_published}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- publisher -->
+{% if item.document.publisher %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Uitgever') }}</span>
+    <span>{{item.document.publisher}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- pages -->
+{% if item.document.start_page %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Aantal pagina(s)') }}</span>
+    <span>{{item.document.start_page}}{% if item.document.end_page %}-{{item.document.end_page}}{% endif %}</span>
+  </span>
+</div>
+{% endif %}
+<!-- issn -->
+{% if item.document.issn %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('ISSN') }}</span>
+    <span>{{item.document.issn}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- URL -->
+{% if item.document.urls %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('URL 🔓') }}</span>
+    <ul class="pb-0">
+    {% for url in item.document.urls %}
+      <li><a class="px-0" href="{{url}}">{{url}}</a></li>
+    {% endfor %}
+  </ul>
+  </span>
+</div>
+{% endif %}
+<!-- DOI -->
+{% if item.document.doi %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('DOI') }}</span>
+    <span>{{item.document.doi}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- overige informatie -->
+{% if item.document.abstract %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Overige informatie') }}</span>
+    <span>{{item.document.abstract}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- recensie -->
+{% if item.document.reviewed_item %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Recensie van') }}</span>
+    <span>{{item.document.reviewed_item}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- reviews -->
+{% if item.document.research_notes %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Recensie(s)') }}</span>
+    <span>{{item.document.research_notes}}</span>
+  </span>
+</div>
+{% endif %}
+<!-- keywords -->
+{% if item.document.keywords %}
+<div class="row pb-0">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Trefwoord(en)') }}</span>
+    <ul class="pb-0">
+    {% for keyword in item.document.keywords %}
+      <li><a class="keyword px-0" href="/quickQuery?keywords={{keyword}}&lang={{lang}}">{{keyword}}</a></li>
+    {% endfor %}
+    </ul>
+  </span>
+</div>
+{% endif %}
+<!-- Notatie oude BNTL -->
+{% if item.document.accession_number %}
+<div class="row pb-2">
+  <span>
+    <span class="fw-bold pe-2">{{ _('Notatie oude BNTL') }}</span>
+    <span>{{item.document.accession_number}}</span>
+  </span>
+</div>     
+{% endif %} 
+
+{% endblock %}

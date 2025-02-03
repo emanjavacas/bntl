@@ -17,21 +17,8 @@ def _render_authors(authors):
     return output
 
 
-class Node:
-    def __init__(self, field, pre="", post="", separator=", ", list_renderer=None):
-        """
-        Initialize a Node.
-
-        :param field: The field key to extract from the record.
-        :param pre: Prefix to add before the field value if it exists.
-        :param post: Suffix to add after the field value if it exists.
-        :param separator: Separator to use if multiple values exist for the field.
-        """
-        self.field = field
-        self.pre = pre
-        self.post = post
-        self.separator = separator
-        self.list_renderer = list_renderer
+class AdditiveNode:
+    def __init__(self):
         self.next_node = None
 
     def __add__(self, other):
@@ -41,7 +28,7 @@ class Node:
         :param other: Another Node to chain.
         :return: The current Node with the next_node linked.
         """
-        if not isinstance(other, Node):
+        if not isinstance(other, AdditiveNode):
             raise TypeError("Can only add another Node instance.")
         current = self
         while current.next_node:
@@ -49,30 +36,72 @@ class Node:
         current.next_node = other
         return self
 
-    def render(self, record):
+    def render_this(self, record) -> str:
+        raise NotImplementedError
+    
+    def render(self, record) -> str:
+        rendered = self.render_this(record)
+        if self.next_node:
+            return rendered + self.next_node.render(record)
+        return rendered
+
+
+class Node(AdditiveNode):
+    def __init__(self, field, pre="", post="", separator=", ", list_renderer=None):
+        """
+        Initialize a Node.
+
+        :param field: The field key to extract from the record.
+        :param pre: Prefix to add before the field value if it exists.
+        :param post: Suffix to add after the field value if it exists.
+        :param separator: Separator to use if multiple values exist for the field.
+        """
+        super().__init__()
+        self.field = field
+        self.pre = pre
+        self.post = post
+        self.separator = separator
+        self.list_renderer = list_renderer
+
+    def render_this(self, record) -> str:
         """
         Render the field value for this node and any chained nodes.
 
         :param record: A dictionary representing the RIS record.
         :return: The rendered string for this node and its chain.
         """
-        value = record.get(self.field)
-        if isinstance(value, list):
-            if self.list_renderer is not None:
-                value = self.list_renderer(value)
-            else:
-                value = self.separator.join(value)
-        elif value is None:
-            value = ""
+        if value := record.get(self.field):
+            if isinstance(value, list):
+                if self.list_renderer is not None:
+                    value = self.list_renderer(value)
+                else:
+                    value = self.separator.join(value)
+            if value.endswith(self.post.strip()):
+                value = value.rstrip(self.post)
+            return f"{self.pre}{value}{self.post}"
+        return ""
 
-        rendered = f"{self.pre}{value}{self.post}" if value else ""
 
-        if self.next_node:
-            return rendered + self.next_node.render(record)
+class ConditionalNode(AdditiveNode):
+    def __init__(self, field1, field2, sep="; ", wrap="()"):
+        super().__init__()
+        self.field1 = field1
+        self.field2 = field2
+        self.sep = sep
+        self.wrap_left, self.wrap_right = list(wrap)
+
+    def render(self, record):
+        rendered = ""
+        if (value1 := record.get(self.field1)) and (value2 := record.get(self.field2)):
+            rendered = f"{self.wrap_left}{value1}{self.sep}{value2}{self.wrap_right}"
+        elif value1 := record.get(self.field1):
+            rendered = f"{self.wrap_left}{value1}{self.wrap_right}"
+        elif value2 := record.get(self.field2):
+            rendered = f"{self.wrap_left}{value2}{self.wrap_right}"
         return rendered
 
 
-# [AU]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]. 
+# [A1]. [TI]. In: [JO]: [VL] ([PY]) [IS], [SP]-[EP]. 
 JOUR_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
@@ -84,7 +113,7 @@ JOUR_renderer = (
     Node("end_page", pre="-", post=". ")
 )
 
-# [AU]. [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
+# [A1]. [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
 BOOK_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
@@ -92,59 +121,67 @@ BOOK_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
-    Node("secondary_title", pre="(", post="; ") +
-    Node("series_volume", post="). ")
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
 )
 
 # [A2] (red.). [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
 BOOK_2EDS_renderer = (
-    Node("secondary_authors", post="(red.). ") +
+    Node("secondary_authors", post=" (red.). ", list_renderer=_render_authors) +
     Node("title", post=". ") +
     Node("place_published", post=": ") +
     Node("publisher", post=", ") +
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
-    Node("secondary_title", pre="(", post="; ") +
-    Node("series_volume", post="). ")
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
 )
 
-# [AU]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]. ([T3]; [SV]).
+# [A1]. [TI]; [A2] (red.). [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
+BOOK_A1_2EDS_renderer = (
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
+    Node("title", post="; ") +
+    Node("secondary_authors", post=" (red.). ") +
+    Node("place_published", post=": ") +
+    Node("publisher", post=", ") +
+    Node("year", post=". ") +
+    Node("start_page", post=" p. ") +
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
+)
+
+# [A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]. ([T3]; [SV]).
 CHAP_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
-    Node("title", post=". ") +
-    Node("secondary_author", pre="In: ", post="(red.). ") +
+    Node("title", post=". In: ") +
+    Node("secondary_authors", post=" (red.). ", list_renderer=_render_authors) +
     Node("secondary_title", post=". ") +
     Node("place_published", post=": ") +
     Node("publisher", post=", ") +
     Node("year", post=", ") +
     Node("start_page", pre="p. ") +
     Node("end_page", pre="-", post=".") +
-    Node("tertiary_title", pre=" (", post="; ") +
-    Node("series_volume", post="). ")
+    ConditionalNode("tertiary_title", "series_volume", wrap=["(", ")."])
 )
 
-# [AU]. [TI]. [PY].
+# [A1]. [TI]. [PY].
 WEB_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
     Node("year", post=".")
 )
 
-# [TI]. Speciaal nummer van: [JO]: [VL] ([PY]) [SV], [SP] p.
+# [TI]. Speciaal nummer van: [T2]: [VL] ([PY]) [SV], [SP] p.
 JFULL_renderer = (
     Node("title", post=". ") +
-    Node("journal_name", pre="Speciaal nummer van: ", post=": ") +
+    Node("secondary_title", pre="Speciaal nummer van: ", post=": ") +
     Node("volume", post=" ") +
     Node("year", pre="(", post=") ") +
     Node("series_volume", post=", ") +
     Node("start_page", post=" p.")
 )
 
-# [AU]. [TI]. [CY]: [PB], [PY].
+# [AU]. [TI]. [PB], [PY].
 ADVS_renderer = (
-    Node("first_author", post=". ", list_renderer=_render_authors) +
+    Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
-    Node("place_published", post=": ") +
     Node("publisher", post=", ") +
     Node("year", post=".")
 )
@@ -154,8 +191,11 @@ def get_record_screen_name(record):
     if record["type_of_reference"] == "JOUR":
         output = JOUR_renderer.render(record)
     elif record["type_of_reference"] == "BOOK":
-        if record.get("secondary_author"):
-            output = BOOK_2EDS_renderer.render(record)
+        if record.get("secondary_authors"):
+            if record.get("first_authors"):
+                output = BOOK_A1_2EDS_renderer.render(record)
+            else:
+                output = BOOK_2EDS_renderer.render(record)
         else:
             output = BOOK_renderer.render(record)
     elif record["type_of_reference"] == "CHAP":
@@ -195,7 +235,8 @@ class DocumentModel(BaseModel):
     secondary_title: Optional[str] = Field(help="Book Title/Series", default=None) # T2
     tertiary_title: Optional[str] = Field(help="Series/Special issue", default=None) # T3
     notes_abstract: Optional[str] = Field(help="Old BNTL citation", default=None) # N2
-    start_page: Optional[str] = Field(help="Pages", default=None) # SP
+    start_page: Optional[str] = Field(help="Start page", default=None) # SP
+    end_page: Optional[str] = Field(help="End page", default=None) # EP
     year: Optional[str] = Field(help="Publication year", default=None) # PY
     access_date: Optional[str] = Field(help="Date added", default=None) # Y2
     number: Optional[str] = Field(help="Issue", default=None) # IS

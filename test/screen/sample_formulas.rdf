@@ -1,0 +1,1525 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/SZPY3IPK">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Twee fragmenten uit een berijmd Middelnederlandsch morgengebed</dcterms:title>
+                <dcterms:abstract>Bevat transcriptie en facsimiles van hs. Koninklijke Bibliotheek, Brussel, IV 750 (olim Brussel, Algemeen Rijksarchief, hs. 4489).</dcterms:abstract>
+                <bibo:pages>161-167</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Gorissen, P. Twee fragmenten uit een berijmd Middelnederlandsch morgengebed. In: Tijdschrift voor Nederlandse taal- en letterkunde (Leiden): 65 ([1947]-1948) 3 (1948) 161-167.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n6"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n6"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>65</bibo:volume>
+                        <bibo:issue>3</bibo:issue>
+                        <dcterms:date>1948</dcterms:date>
+                        <bibo:lccn>Michels, L. C. Mnl. &quot;hersten&quot;. In: Tijdschrift voor Nederlandse taal- en letterkunde (Leiden): 66 (1949) 3, 224-225.</bibo:lccn>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Tijdschrift voor Nederlandse taal- en letterkunde</dcterms:title>
+                                <bibo:shortTitle>Tijdschrift voor Nederlandse taal- en letterkunde</bibo:shortTitle>
+                                <bibo:issn>0040-7550</bibo:issn>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Middelnederlandse letterkunde</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n6">
+        <foaf:givenName>Pieter</foaf:givenName>
+        <foaf:surname>Gorissen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/HBS49C5L">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Zuidafrikaanse hulde aan Ernest Claes</dcterms:title>
+                <dcterms:abstract>Ook in Die Burger (Kaapstad) van 6 september 1968.</dcterms:abstract>
+                <bibo:pages>44-45</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Zuidafrikaanse hulde aan Ernest Claes / [door] Jan Bouws. In: Ambassadeur Bruss.: vol. 5 (1968), afl. 5-6 (dec), pag. 44-45.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n12"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n12"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>5</bibo:volume>
+                        <bibo:issue>5-6</bibo:issue>
+                        <dcterms:date>1968</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Ambassadeur</dcterms:title>
+                                <bibo:shortTitle>Ambassadeur</bibo:shortTitle>
+                                <bibo:issn>nan</bibo:issn>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Claes, Ernest (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+                <ctag:label>algemeen biografisch: herdenkingen, lofredes en prijstoekenningen</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+                <ctag:label>literatuurwetenschap: per auteur - vanaf 1830 - descriptieve studies</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n12">
+       <foaf:givenName>Jan</foaf:givenName><foaf:surname>Bouws</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/LHWP4VCZ">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Honderd jaar Jozef Simons (1888-1988)</dcterms:title>
+                <dcterms:abstract>Over: Draulans, Ivo [pseud. van Jozef Simons]. Eer Vlaanderen vergaat. Brussel: Gudrun, 1927.</dcterms:abstract>
+                <bibo:pages>39-49</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Luiksgestel, Do. Honderd jaar Jozef Simons (1888-1988). In: Creare (Geel): 18 (1989) 1 (mrt) 39-49.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n23"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n23"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>18</bibo:volume>
+                        <bibo:issue>1</bibo:issue>
+                        <dcterms:date>1989</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Creare</dcterms:title>
+                                <bibo:shortTitle>Creare</bibo:shortTitle>
+                                <bibo:issn>nan</bibo:issn>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Simons, Jozef (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>foutmelding (keywords)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n23">
+       <foaf:givenName>Do</foaf:givenName><foaf:surname>Luiksgestel</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/94BMXI3Q">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>[Over: Oosterhoff, Tonnus. Leegte lacht: gedichten. Amsterdam: De Bezige Bij, 2011]</dcterms:title>
+                <bibo:pages>451-456</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Gerits, Joris. [Over: Oosterhoff, Tonnus. Leegte lacht: gedichten. Amsterdam: De Bezige Bij, 2011]. In: Streven (Antwerpen): 79 (2012) 5 (mei) 451-456.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n6"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n6"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>79</bibo:volume>
+                        <bibo:issue>5</bibo:issue>
+                        <dcterms:date>2012</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Streven</dcterms:title>
+                                <bibo:shortTitle>Streven</bibo:shortTitle>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <z:accessDate>2012-05-29 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Oosterhoff, Tonnus (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>foutmelding (keywords)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n6">
+       <foaf:givenName>Joris</foaf:givenName><foaf:surname>Gerits</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/57EI6M8I">
+        <res:resource rdf:resource="https://doi-org.kbr.idm.oclc.org/10.5117/NEDTAA2020.2-3.010.HAEG"/>
+        <z:accessDate>2023-11-06 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Bijdrage speciaal tijdschriftnummer</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>dan (voegw.)</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>persoonsvorm (plaats van de)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://doi-org.kbr.idm.oclc.org/10.5117/NEDTAA2020.2-3.010.HAEG">
+        <dcterms:title>Non-temporal dan and the grammar of V2</dcterms:title>
+        <dcterms:abstract>P. 255 Abstract; p. 265-267 References.</dcterms:abstract>
+        <bibo:pages>255-267</bibo:pages>
+        <bibo:uri>https://doi-org.kbr.idm.oclc.org/10.5117/NEDTAA2020.2-3.010.HAEG</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Haegeman, Liliane en Andreas Trotzke. Non-temporal dan and the grammar of V2. In: 25 jaar Nederlandse taalkunde / Dutch linguistics. Speciaal nummer van: Nederlandse taalkunde (Amsterdam): 25 (2020) 2-3, 255-267.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n5"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n5"/><rdf:li rdf:nodeID="n7"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n7"/>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>25</bibo:volume>
+                <bibo:issue>2-3</bibo:issue>
+                <dcterms:date>2020</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Nederlandse taalkunde</dcterms:title>
+                        <bibo:shortTitle>Nederlandse taalkunde</bibo:shortTitle>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n5">
+        <foaf:givenName>Liliane</foaf:givenName>
+        <foaf:surname>Haegeman</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n7">
+        <foaf:givenName>Andreas</foaf:givenName>
+        <foaf:surname>Trotzke</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/56UA4KRX">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>250 jaar geschiedenis van het Maastrichts stadsdialect</dcterms:title>
+                <dcterms:abstract>P. 88 Literatuur.</dcterms:abstract>
+                <bibo:pages>81-88</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Spronck, Lou. 250 jaar geschiedenis van het Maastrichts stadsdialect. In: Jaarboek van de Vereniging voor Limburgse Dialect- en Naamkunde (Hasselt): 22 (2020) 81-88.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n6"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n6"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>22</bibo:volume>
+                        <dcterms:date>2020</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Jaarboek van de Vereniging voor Limburgse Dialect- en Naamkunde</dcterms:title>
+                                <bibo:shortTitle>Jaarboek van de Vereniging voor Limburgse Dialect- en Naamkunde</bibo:shortTitle>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <z:accessDate>2023-12-21 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Maastricht (dialect)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>dialectverandering</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>spellingvariatie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n6">
+       <foaf:givenName>Lou</foaf:givenName><foaf:surname>Spronck</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/MMYPVSW3">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/baad001acce01_01/"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>accentverschuiving</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>dialectologie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>tweeklank (dalende)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>tweeklank (stijgende)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/baad001acce01_01/">
+        <dcterms:title>Accentwisseling in de diphthongen</dcterms:title>
+        <dcterms:abstract>P. 27-32 Gedachtenwisseling.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Noord-Hollandsche Uitgevers Maatschappij</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>1944</dcterms:date>
+        <bibo:numPages>32</bibo:numPages>
+        <bibo:uri>https://www.dbnl.org/tekst/baad001acce01_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Baader, Th., G. Gosses en Jac. van Ginneken. Accentwisseling in de diphthongen: lezingen gehouden voor de Dialecten-commissie der Nederlandsche Akademie van Wetenschappen op 10 november 1943. Amsterdam: Noord-Hollandsche Uitgevers Maatschappij, 1944. 32 p. (Bijdragen en mededelingen der Dialecten-commissie van de Nederlandsche Akademie van Wetenschappen te Amsterdam; 5).</dcterms:source>
+        <dcterms:creator rdf:nodeID="n2"/>
+        <bibo:authorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n2"/>
+                <rdf:li rdf:nodeID="n4"/>
+                <rdf:li rdf:nodeID="n5"/>
+            </rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n4"/>
+        <dcterms:creator rdf:nodeID="n5"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Bijdragen en mededelingen der Dialecten-commissie van de Nederlandsche Akademie van Wetenschappen te Amsterdam</dcterms:title>
+                <bibo:number>5</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+       <foaf:givenName>Theodor</foaf:givenName><foaf:surname>Baader</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+       <foaf:givenName>Godard</foaf:givenName><foaf:surname>Gosses</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n5">
+        <foaf:givenName>J. J. A. van</foaf:givenName>
+        <foaf:surname>Ginneken</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/IBQSF7ED">
+        <res:resource rdf:resource="urn:isbn:90-5183-956-1"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Alphen, Hiëronymus van (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Bellamy, Jacobus (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Brunius, Bernardus (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Donker Curtius, B.</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Effen, Justus van (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Feith, Rhijnvis (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Goens, Rijklof Michael van (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Munnikhuizen, Anthony Ernst</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Ockerse, Willem Anthonie (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Perponcher, Willem Emmery de</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Stinstra, Johannes (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>drukgeschiedenis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>invloed van de Duitse literatuur</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>receptie van Laurence Sterne</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>tijdschriften</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>vertalingen uit het Engels</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:90-5183-956-1">
+        <dcterms:title>A bookseller's hobby-horse, and the rhetoric of translation: Anthony Ernst Munnikhuisen and Bernardus Brunius, and the first Dutch edition of &quot;Tristram Shandy&quot; (1776-1779)</dcterms:title>
+        <dcterms:abstract>ISBN 90-5183-956-1. Ook verschenen als proefschrift Universiteit van Amsterdam. P. VII-VIII Preface; p. 1-4 Introduction; p. 153-155 Appendix 1: Reviews of Sterne's work in 'Bibliothèque des Sciences et des Beaux Arts'; p. 156 Appendix 2: Three versions of the story of the collision of Obadiah and dr. Slop: Riedel, Van Alphen, Brunius; p. 157-159 Appendix 3: Three versions of the apostrophe to &quot;Dear sensibility&quot;: Bode, Brunius, Feith; p. 160-162 Appendix 4: A list of Munnikhuisen publications; p. 163-169 Appendix 5: Advertisements referred to in chapters 1-2; p. 170-173 Appendix 6: The Munnikhuisen circle; p. 174-178 Appendix 7: Three versions of &quot;Tristram Shandy&quot; I.1 (divided into rhetorical moves): Zückert, Bode, Frénais, with a brief comparison of Brunius' text and the German versions; p. 217-232 Bibliography; p. 233-237 Index. P. 105-124 (The rhetoric of &quot;Tristram Shandy&quot;'s first chapter) enigszins gewijzigde tekst van: Shandean: 4 (1992) 66-84 [mededeling in publicatie].</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Rodopi</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>1996</dcterms:date>
+        <bibo:numPages>XII, 237</bibo:numPages>
+        <bibo:isbn13>90-5183-956-1</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Zwaneveld, Agnes M. A bookseller's hobby-horse, and the rhetoric of translation: Anthony Ernst Munnikhuisen and Bernardus Brunius, and the first Dutch edition of &quot;Tristram Shandy&quot; (1776-1779). Amsterdam [etc.]: Rodopi, 1996. XII, 237 p. (Approaches to translation studies, ISSN 0169-0523; vol. 13).</dcterms:source>
+        <bibo:lccn>Ulot, J. In: Van taal tot taal (Hilversum): 40 (1996) 2 (juni) 98. | Voogd, Peter de. In: Filter (Bussum): 3 (1996) 2 (dec) 80-81. | Delabastita, Dirk. In: Linguistica Antverpiensia (Antwerpen): 31 (1997) 203-205. | Nicolo, Francesco de. In: Target (Amsterdam): 9 (1997) 2, 391-394.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n2"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n2"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Approaches to translation studies</dcterms:title>
+                <bibo:number>13</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>Agnes M.</foaf:givenName>
+        <foaf:surname>Zwaneveld</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/WRWEV8D7">
+        <res:resource rdf:resource="urn:isbn:978-90-5655-358-6"/>
+        <z:accessDate>2020-07-07 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Demets, Paul</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-5655-358-6">
+        <dcterms:title>De aangelanden: gedichten</dcterms:title>
+        <dcterms:abstract>P. 5-8 Voetnoten van het platteland.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Gent</address:localityName>
+                <foaf:name>PoëzieCentrum</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2020</dcterms:date>
+        <bibo:numPages>95</bibo:numPages>
+        <bibo:isbn13>978-90-5655-358-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Demets, Paul. De aangelanden: gedichten. Gent: PoëzieCentrum, 2020. 95 p.</dcterms:source>
+        <bibo:lccn>Ponte, Matthijs. Het gehavende gelaat van Gaia. In: Awater: 19 (2020) 2, 16-17.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n593"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n593"/></rdf:Seq>
+        </bibo:authorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n593">
+       <foaf:givenName>Paul</foaf:givenName><foaf:surname>Demets</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/A9SQRKRH">
+        <res:resource rdf:resource="urn:isbn:978-94-64666-26-7"/>
+        <z:accessDate>2024-01-09 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>niet in autopsie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-94-64666-26-7">
+        <dcterms:title>De Pelgrim: kunst en zingeving in een onttoverde wereld (1924-1931)</dcterms:title>
+        <dcterms:abstract>Niet in autopsie.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Antwerpen</address:localityName>
+                <foaf:name>Hannibal Books</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2023</dcterms:date>
+        <bibo:numPages>167</bibo:numPages>
+        <bibo:isbn13>978-94-64666-26-7</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>De Pelgrim: kunst en zingeving in een onttoverde wereld (1924-1931); Matthijs de Ridder, Rajesh Heynickx, Ewald Peters &amp; Dennis van Mol (red.). Antwerpen: Hannibal Books, 2023. 167 p.</dcterms:source>
+        <bibo:lccn>Campenhout, Nico van. Een Vlaamse katholiekekunsenaarsvereniging. In: Wetenschappelijke tijdingen: 82 (2023) 4, 370-371.</bibo:lccn>
+        <bibo:editor rdf:nodeID="n22"/>
+        <bibo:editorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n22"/>
+                <rdf:li rdf:nodeID="n24"/>
+                <rdf:li rdf:nodeID="n25"/>
+                <rdf:li rdf:nodeID="n26"/>
+            </rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n24"/>
+        <bibo:editor rdf:nodeID="n25"/>
+        <bibo:editor rdf:nodeID="n26"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n22">
+        <foaf:givenName>Matthijs de</foaf:givenName>
+        <foaf:surname>Ridder</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n24">
+        <foaf:givenName>Rajesh</foaf:givenName>
+        <foaf:surname>Heynickx</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n25">
+       <foaf:givenName>Ewald</foaf:givenName><foaf:surname>Peters</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n26">
+       <foaf:givenName>Dennis van</foaf:givenName><foaf:surname>Mol</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/VT243ABA">
+        <res:resource rdf:resource="urn:isbn:978-90-441-3767-5"/>
+        <z:accessDate>2022-02-09 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>psychoanalyse</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-441-3767-5">
+        <dcterms:title>De tijd hangt uit zijn naad: Hamlet en de psychoanalyse</dcterms:title>
+        <dcterms:abstract>P. 7-17 Introductie, door Peter Verstaten (p. 17 Bibliografie).</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Antwerpen/Apeldoorn</address:localityName>
+                <foaf:name>Garant</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2020</dcterms:date>
+        <bibo:numPages>205</bibo:numPages>
+        <bibo:isbn13>978-90-441-3767-5</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>De tijd hangt uit zijn naad: Hamlet en de psychoanalyse; Peter Verstraten &amp; Sjef Houppermans (red.). Antwerpen/Apeldoorn: Garant, 2020. 205 p. (Psychoanalyse en Cultuur, nr. 13). HOOFDSTUKKEN: Verstraten, Peter. Hamlet als verlate punker: conversatie met Tom Lanoye. In: De tijd hangt uit zijn naad: Hamlet en de psychoanalyse; Peter Verstraten &amp; Sjef Houppermans (red.). Antwerpen/Apeldoorn: Garant, 2020, p. 179-205. (Psychoanalyse en Cultuur, nr. 13).</dcterms:source>
+        <bibo:editor rdf:nodeID="n2"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n2"/><rdf:li rdf:nodeID="n4"/></rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n4"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Psychoanalyse en Cultuur</dcterms:title>
+                <bibo:number>13</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>Peter</foaf:givenName>
+        <foaf:surname>Verstraten</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+        <foaf:givenName>Sjef</foaf:givenName>
+        <foaf:surname>Houppermans</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/TKX6T2NK">
+        <res:resource rdf:resource="urn:isbn:90-6187-682-6"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>kalender</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>literatuurwetenschap: letterkunde - varia</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>prijzen en beurzen</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:90-6187-682-6">
+        <dcterms:title>Aarts' letterkundige almanak voor het Willem Elsschotjaar 1982</dcterms:title>
+        <dcterms:abstract>ISBN 90-6187-682-6. Ondertitel op omslag: Nu met nagenoeg alle letterkundige prijzen van Nederland en Vlaanderen; ingel. door Alstein en Piet Grijs. Nieuws!: Vic van de Reijt over Willem Elsschot. P. 5 Voorwoord: driemaal is scheepsrecht; p. 192-193 Bronnen.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Aarts</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>1981</dcterms:date>
+        <bibo:numPages>224</bibo:numPages>
+        <bibo:isbn13>90-6187-682-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Aarts' letterkundige almanak voor het Willem Elsschotjaar 1982; onder red. van Dick Welsink en Willy Tibergien. Amsterdam: Aarts, 1981. 224 p.</dcterms:source>
+        <bibo:editor rdf:nodeID="n2"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n2"/><rdf:li rdf:nodeID="n4"/></rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n4"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+       <foaf:givenName>Dick</foaf:givenName><foaf:surname>Welsink</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+        <foaf:givenName>Willy</foaf:givenName>
+        <foaf:surname>Tibergien</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/PETIGFBI">
+        <res:resource rdf:resource="urn:isbn:978-90-234-6637-6"/>
+        <z:accessDate>2012-01-03 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Hofland, H. J. A.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>bloemlezing</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>essay</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-234-6637-6">
+        <dcterms:title>Bemande essays: bloemlezing uit het werk van H. J. A. Hofland</dcterms:title>
+        <dcterms:abstract>P. 357-376 Nawoord: 'Rijdend heb ik me altijd het best gevoeld': de wording van H.J.A. Hofland; p. 377-380 Bronverantwoording; p. 381-396 Register.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>De Bezige Bij</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2011</dcterms:date>
+        <bibo:numPages>396</bibo:numPages>
+        <bibo:isbn13>978-90-234-6637-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Hofland, H.J.A. Bemande essays: bloemlezing uit het werk van H.J.A. Hofland; samengesteld door Hans Renders en Jeroen Vullings; nawoord door Jeroen Vullings. Amsterdam: De Bezige Bij, 2011. 396 p.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n2"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n2"/></rdf:Seq>
+        </bibo:authorList>
+        <bibo:editor rdf:nodeID="n4"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n4"/><rdf:li rdf:nodeID="n6"/></rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n6"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>H. J .A.</foaf:givenName>
+        <foaf:surname>Hofland</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+       <foaf:givenName>Hans</foaf:givenName><foaf:surname>Renders</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n6">
+        <foaf:givenName>Jeroen</foaf:givenName>
+        <foaf:surname>Vullings</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/XNTQZYBB">
+        <res:resource rdf:resource="urn:isbn:978-90-253-6778-7"/>
+        <z:accessDate>2010-10-20 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Ostaijen, Paul van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-253-6778-7">
+        <dcterms:title>Bezette stad: nagelaten gedichten</dcterms:title>
+        <dcterms:abstract>Oorspronkelijke uitgave van Bezette stad: Antwerpen: Sienjaal, 1921. 
+
+P. 243-250 Nawoord: het eerste smaken van een narkose, door Alfred Schaffer; p. 251 Verantwoording van de uitgever.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Athenaeum-Polak &amp; Van Gennep</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2010</dcterms:date>
+        <bibo:numPages>256</bibo:numPages>
+        <bibo:isbn13>978-90-253-6778-7</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Ostaijen, Paul van. Bezette stad; Nagelaten gedichten; tekstbezorging Gerrit Borgers; met een nawoord van Alfred Schaffer. Amsterdam: Athenaeum-Polak &amp; Van Gennep, 2010. 256 p. (Perpetua reeks).</dcterms:source>
+        <dcterms:creator rdf:nodeID="n2"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n2"/></rdf:Seq>
+        </bibo:authorList>
+        <bibo:editor rdf:nodeID="n4"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n4"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+               <dcterms:title>Perpetua reeks</dcterms:title>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>Paul van</foaf:givenName>
+        <foaf:surname>Ostaijen</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+       <foaf:givenName>Gerrit</foaf:givenName><foaf:surname>Borgers</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/YL9LC3SW">
+        <res:resource rdf:resource="urn:isbn:978-94-031-4131-2"/>
+        <z:accessDate>2021-09-21 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Brood, Herman</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-94-031-4131-2">
+        <dcterms:title>Brood: de biografie</dcterms:title>
+        <dcterms:abstract>Ingekorte editie van de vierdelige biografie van musicus en kunstenaar Herman Brood. Hoogtpunten uit die boeken werden in 2011 door Rob van Essen samengebracht onder de titel &quot;Up on the Hilton roof: over leven en werk van Herman Brood&quot;.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>De Bezige Bij</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2021</dcterms:date>
+        <bibo:numPages>724</bibo:numPages>
+        <bibo:isbn13>978-94-031-4131-2</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Chabot, Bart. Brood: de biografie; [samensteller Rob van Essen]. Amsterdam: De Bezige Bij, 2021. 724 p.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n8"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n8"/></rdf:Seq>
+        </bibo:authorList>
+        <bibo:editor rdf:nodeID="n10"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n10"/></rdf:Seq>
+        </bibo:editorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n8">
+       <foaf:givenName>Bart</foaf:givenName><foaf:surname>Chabot</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n10">
+       <foaf:givenName>Rob van</foaf:givenName><foaf:surname>Essen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/YL9LC3SW">
+        <res:resource rdf:resource="urn:isbn:978-94-031-4131-2"/>
+        <z:accessDate>2021-09-21 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Brood, Herman</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-94-031-4131-2">
+        <dcterms:title>Brood: de biografie</dcterms:title>
+        <dcterms:abstract>Ingekorte editie van de vierdelige biografie van musicus en kunstenaar Herman Brood. Hoogtpunten uit die boeken werden in 2011 door Rob van Essen samengebracht onder de titel &quot;Up on the Hilton roof: over leven en werk van Herman Brood&quot;.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>De Bezige Bij</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2021</dcterms:date>
+        <bibo:numPages>724</bibo:numPages>
+        <bibo:isbn13>978-94-031-4131-2</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Chabot, Bart. Brood: de biografie; [samensteller Rob van Essen]. Amsterdam: De Bezige Bij, 2021. 724 p.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n40"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n40"/></rdf:Seq>
+        </bibo:authorList>
+        <bibo:editor rdf:nodeID="n42"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n42"/></rdf:Seq>
+        </bibo:editorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n40">
+       <foaf:givenName>Bart</foaf:givenName><foaf:surname>Chabot</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n42">
+       <foaf:givenName>Rob van</foaf:givenName><foaf:surname>Essen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/ITWG7XN4">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>&quot;...doch moder en kint behouwden&quot;: de taal van het &quot;Memory Boeck Van de Vrouwens&quot; (1693-1745) van de Dokkumer vroedvrouw Catharina Schrader</dcterms:title>
+                <dcterms:abstract>P. 664-666 Bibliografie. N.a.v.: C. G. Schrader's memoryboeck van de vrouwens: het notitieboek van een Friese vroedvrouw 1693-1745; bewerkt en ingeleid door M. J. van Lieburg; met een verloskundig commentaar van G. J. Kloosterman. Amsterdam: Rodopi, 1984 (Nieuwe Nederlandse bijdragen tot de geschiedenis der geneeskunde en der natuurwetenschappen; no. 11).</dcterms:abstract>
+                <bibo:pages>653-668</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Niebaum, Hermann. &quot;...doch moder en kint behouwden&quot;: de taal van het &quot;Memory Boeck Van de Vrouwens&quot; (1693-1745) van de Dokkumer vroedvrouw Catharina Schrader. In: Taeldeman, man van de taal, schatbewaarder van de taal; Johan De Caluwe, Georges De Schutter, Magda Devos, Jacques Van Keymeulen (red.). Gent: Academia Press; Gent: Vakgroep Nederlandse Taalkunde Universiteit Gent, 2004, p. 653-668.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n5"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n5"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Taeldeman, man van de taal, schatbewaarder van de taal</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>Gent</address:localityName>
+                                <foaf:name>Academia Press; Vakgroep Nederlandse Taalkunde Universiteit Gent</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>2004</dcterms:date>
+                        <bibo:editor rdf:nodeID="n7"/>
+                        <bibo:editorList>
+                            <rdf:Seq>
+                                <rdf:li rdf:nodeID="n7"/>
+                                <rdf:li rdf:nodeID="n9"/>
+                                <rdf:li rdf:nodeID="n10"/>
+                                <rdf:li rdf:nodeID="n11"/>
+                            </rdf:Seq>
+                        </bibo:editorList>
+                        <bibo:editor rdf:nodeID="n9"/>
+                        <bibo:editor rdf:nodeID="n10"/>
+                        <bibo:editor rdf:nodeID="n11"/>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Nederduits</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Oost-Nederland (dialecten)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>oostgrens van het Nederlands</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n5">
+        <foaf:givenName>Hermann</foaf:givenName>
+        <foaf:surname>Niebaum</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n7">
+        <foaf:givenName>Johan De</foaf:givenName>
+        <foaf:surname>Caluwe</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n9">
+        <foaf:givenName>Georges De</foaf:givenName>
+        <foaf:surname>Schutter</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n10">
+       <foaf:givenName>Magda</foaf:givenName><foaf:surname>Devos</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n11">
+        <foaf:givenName>Jacques Van</foaf:givenName>
+        <foaf:surname>Keymeulen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/RLE8VANG">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Aart van der Leeuw als woordblinde beelddenker</dcterms:title>
+                <bibo:pages>151-168</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Aart van der Leeuw als woordblinde beelddenker / Maria J. Krabbe. - Rotterdam : W.L. &amp; J. Brusse. In: Beelddenken en woordblindheid / door Maria J. Krabbe. Rotterdam : W.L. &amp; J. Brusse, 1951, p. 151-168.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n27"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n27"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Beelddenken en woordblindheid</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>Rotterdam</address:localityName>
+                                <foaf:name>W.L. &amp; J. Brusse</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>1951</dcterms:date>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Leeuw, Aart van der (auteur)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+                <ctag:label>algemeen biografisch: levensomstandigheden en levensfasen, persoonlijke betrekkingen tot bepaalde personen, plaatsen en landen</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>beelddenken</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>dyslexie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+                <ctag:label>literatuurwetenschap: per auteur - vanaf 1830 - descriptieve studies</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n27">
+        <foaf:givenName>Maria J.</foaf:givenName>
+        <foaf:surname>Krabbe</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/KN592NSX">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Arthurian literature on the Rhineland</dcterms:title>
+                <dcterms:abstract>P. 202-203 Notes. Dit artikel werd vertaald door Roos Brands en Robert Whitley.</dcterms:abstract>
+                <bibo:pages>194-203</bibo:pages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Wolf, Jürgen. Arthurian literature on the Rhineland. In: The Arthur of the Low Countries: the Arthurian legend in Dutch and Flemish literature; Bart Besamusca &amp; Frank Brandsma (ed.). Cardiff: University of Wales Press, 2021, p. 194-203. (Arthurian literature in the Middle Ages; X). BOEK: The Arthur of the Low Countries: the Arthurian legend in Dutch and Flemish literature; Bart Besamusca &amp; Frank Brandsma (red.). Cardiff: University of Wales Press, 2021. 249 p. (Arthurian literature in the Middle Ages; X).</dcterms:source>
+                <dcterms:creator rdf:nodeID="n5"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n5"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>The Arthur of the Low Countries: the Arthurian legend in Dutch and Flemish literature</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>Cardiff</address:localityName>
+                                <foaf:name>University of Wales Press</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>2021</dcterms:date>
+                        <bibo:editor rdf:nodeID="n7"/>
+                        <bibo:editorList>
+                            <rdf:Seq>
+                               <rdf:li rdf:nodeID="n7"/><rdf:li rdf:nodeID="n9"/>
+                            </rdf:Seq>
+                        </bibo:editorList>
+                        <bibo:editor rdf:nodeID="n9"/>
+                        <dcterms:isPartOf>
+                            <bibo:Series>
+                                <dcterms:title>Arthurian literature in the Middle Ages</dcterms:title>
+                                <bibo:number>X</bibo:number>
+                            </bibo:Series>
+                        </dcterms:isPartOf>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <z:accessDate>2023-10-30 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Arturroman</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Merlijn (prozaroman)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Perchevael</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Rijnland</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n5">
+       <foaf:givenName>Jürgen</foaf:givenName><foaf:surname>Wolf</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n7">
+       <foaf:givenName>Bart</foaf:givenName><foaf:surname>Besamusca</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n9">
+       <foaf:givenName>Frank</foaf:givenName><foaf:surname>Brandsma</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/WJVESK9B">
+        <res:resource rdf:resource="https://thingsthattalk.net/en/zone/bilderdijk"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Bilderdijk, Willem</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>interactief computerprogramma</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="https://thingsthattalk.net/en/zone/bilderdijk">
+        <dcterms:title>Things that talk: Bilderdijk-zone</dcterms:title>
+        <bibo:uri>https://thingsthattalk.net/en/zone/bilderdijk</bibo:uri>
+        <dcterms:language>Dekker, Rudolf. De virtuele Bilderdijkkamer. In: Jaarboek Bilderdijk 2021: rampen in de tijd van Bilderdijk; redactie: Rick Honings, Lotte Jensen &amp; Gert-Jan Johannes. Hilversum: Verloren, 2021, p. 164-165.</dcterms:language>
+        <z:extra>Archive Location: Honings, Rick, Gert-Jan Johannes &amp; Peter van Zonneveld. Things That Talk: Bilderdijk-zone. Leiden: Universiteit Leiden, 2021.</z:extra>
+        <dcterms:creator rdf:nodeID="n3"/>
+        <bibo:authorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n3"/>
+                <rdf:li rdf:nodeID="n5"/>
+                <rdf:li rdf:nodeID="n6"/>
+            </rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n5"/>
+        <dcterms:creator rdf:nodeID="n6"/>
+        <dcterms:isPartOf>
+           <bibo:Website><dcterms:date>2021</dcterms:date></bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n3">
+       <foaf:givenName>Rick</foaf:givenName><foaf:surname>Honings</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n5">
+       <foaf:givenName>G. J.</foaf:givenName><foaf:surname>Johannes</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n6">
+        <foaf:givenName>Peter van</foaf:givenName>
+        <foaf:surname>Zonneveld</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/BZTHLUXK">
+        <res:resource rdf:resource="http://igitur-archive.library.uu.nl/dissertations/2012-1024-200958/pafort-overduin.pdf"/>
+        <z:accessDate>2013-07-03 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Bouber, Herman</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>nationale identiteit</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>theater en film</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>thema Jordaan (Amsterdam)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="http://igitur-archive.library.uu.nl/dissertations/2012-1024-200958/pafort-overduin.pdf">
+        <dcterms:title>Dutch films with a Dutch heart: national identity and Jordaanfilms 1934-1936</dcterms:title>
+        <dcterms:abstract>Proefschrift Universiteit van Utrecht. In digitale vorm verschenen. Met inleiding, conclusie, verantwoording, literatuuropgave, summary en bijlagen.</dcterms:abstract>
+        <bibo:uri>http://igitur-archive.library.uu.nl/dissertations/2012-1024-200958/pafort-overduin.pdf</bibo:uri>
+        <z:extra>Archive Location: Pafort-Overduin, Clara. Dutch films with a Dutch heart: national identity and Jordaanfilms 1934-1936. Utrecht: Universiteit van Utrecht, 2012. 439 p.
+Archive: Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)
+Pages: 439</z:extra>
+        <dcterms:creator rdf:nodeID="n12"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n12"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+           <bibo:Website><dcterms:date>2012</dcterms:date></bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n12">
+        <foaf:givenName>Clara</foaf:givenName>
+        <foaf:surname>Pafort-Overduin</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/5SHNWLF9">
+        <res:resource rdf:resource="urn:isbn:0042-7683"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>poëzie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>speciaal nummer</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:0042-7683">
+        <dcterms:title>Actuele Vlaamse dichters 1</dcterms:title>
+        <dcterms:abstract>P. 299 Ten geleide; door de redactie. Met bio-bibliografische notities bij elke auteur.</dcterms:abstract>
+        <bibo:volume>30</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Oostende</address:localityName>
+                <foaf:name>Christelijk Vlaams Kunstenaarsverbond</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>1981</dcterms:date>
+        <bibo:numPages>76</bibo:numPages>
+        <bibo:isbn13>0042-7683</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Actuele Vlaamse dichters 1; [onder red. van Werner Vens... et al.]. [Oostende]: Christelijk Vlaams Kunstenaarsverbond, 1981. p. 299-374. (Speciaal nr. van: Vlaanderen (Roeselare), jrg. 30, nr. 185 (nov-dec)).</dcterms:source>
+        <bibo:editor rdf:nodeID="n60"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n60"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Vlaanderen</dcterms:title>
+                <bibo:number>185</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n60">
+       <foaf:givenName>Werner</foaf:givenName><foaf:surname>Vens</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/7UQ4AXKX">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/_med009200601_01/"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Hanou, A. J.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>speciaal nummer</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>waardering van de 18de-eeuwse literatuur</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/_med009200601_01/">
+        <dcterms:title>De andere achttiende eeuw: opstellen voor André Hanou</dcterms:title>
+        <dcterms:abstract>ISBN 90-77503-67-6 ISBN 978-90-77503-67-6 Uitgave t.g.v. het afscheid van André Hanou als hoogleraar oudere Nederlandse letterkunde aan de Radboud Universiteit te Nijmegen P. 7-11 Voorwoord; p. 300-304 Index.</dcterms:abstract>
+        <bibo:volume>29</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Nijmegen</address:localityName>
+                <foaf:name>Vantilt</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2006</dcterms:date>
+        <bibo:numPages>304</bibo:numPages>
+        <bibo:isbn13>0167-4609</bibo:isbn13>
+        <bibo:uri>https://www.dbnl.org/tekst/_med009200601_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>De andere achttiende eeuw: opstellen voor André Hanou; redactie Cis van Heertum, Ton Jongenelen, Frank van Lamoen. Nijmegen: Vantilt, 2006. 304 p. (Mededelingen van de Stichting Jacob Campo Weyerman; jrg. 29, nr. 2 (najaar 2006)</dcterms:source>
+        <bibo:lccn>Dietz, Feike. Rumoer. In: Vooys (Utrecht): 25 (2007) 3 (sep) 61-63. | Stouten, Hanna. In: Neerlandica extra muros: 45 (2007) 3 (okt) 73-74. | Jensen, Lotte. In: Tijdschrift voor Nederlandse taal- &amp; letterkunde, TNTL (Leiden): 123 (2007) 3, 260-261.</bibo:lccn>
+        <bibo:editor rdf:nodeID="n2"/>
+        <bibo:editorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n2"/>
+                <rdf:li rdf:nodeID="n4"/>
+                <rdf:li rdf:nodeID="n5"/>
+            </rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n4"/>
+        <bibo:editor rdf:nodeID="n5"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Mededelingen van de Stichting Jacob Campo Weyerman</dcterms:title>
+                <bibo:number>2</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>Cis van</foaf:givenName>
+        <foaf:surname>Heertum</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+       <foaf:givenName>Ton</foaf:givenName><foaf:surname>Jongenelen</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n5">
+        <foaf:givenName>Frank van</foaf:givenName>
+        <foaf:surname>Lamoen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/A7Y42923">
+        <res:resource rdf:resource="urn:isbn:2773-0425"/>
+        <z:accessDate>2023-11-14 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Ostaijen, Paul van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>intermedialiteit</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>muziek</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>psalm</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>speciaal nummer</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:2773-0425">
+        <dcterms:title>Muziek en Letteren</dcterms:title>
+        <bibo:volume>39</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+               <address:localityName>Leiden</address:localityName>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2021</dcterms:date>
+        <bibo:numPages>65</bibo:numPages>
+        <bibo:isbn13>2773-0425</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Muziek en Letteren. Leiden: Maatschappij der Nederlandse Letterkunde. 65 p. Speciaal gedeelte van: Accolade (Leiden): 39 (2021) p. 19-84. ARTIKELS: Vliet, Rietje van. &quot;O koene pofhans van parnas!&quot;: het psalmendebat tussen Walcheren en Leiden (1756-1760). In: Muziek en Letteren. Speciaal gedeelte van: Accolade (Leiden): 39 (2021) 35-47. | Schreuders, Liesje. &quot;Violen zaniken eeuwige chaloupée&quot;: &quot;Bezette stad&quot; en muziek. In: Muziek en Letteren. Speciaal gedeelte van: Accolade (Leiden): 39 (2021) 49-65. | Etty, Elsbeth. De heilige drie-eenheid volgens Maarten 't Hart: Bach = God, Mozart = Jezus, Schubert = de Heilige Geest. In: Muziek en Letteren. Speciaal gedeelte van: Accolade (Leiden): 39 (2021) 67-77. | Ommen, Kasper van. Een eindeloze verzameling liedjes. In: Muziek en Letteren. Speciaal gedeelte van: Accolade (Leiden): 39 (2021) 79-83.</dcterms:source>
+        <bibo:editor rdf:nodeID="n89"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n89"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+           <bibo:Series><dcterms:title>Accolade</dcterms:title></bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n89">
+       <foaf:surname>Redactie Accolade</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/JQ2RRT8C">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Adieu: poëzieconcerten als vaarwelmoment in tijden van corona</dcterms:title>
+                <dcterms:abstract>Niet in autopsie. Naar aanleiding van de tien poëzieconcerten die tussen 19 juli en 20 september 2020 werden georganiseerd op tien Gentse begraafplaatsen.
+
+Lies Colman en Gaea Schoeters verzorgden de samenstelling.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>PoëzieCentrum</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2020</dcterms:date>
+                <dcterms:source>Adieu: poëzieconcerten als vaarwelmoment in tijden van corona; Lies Colman en Gaea Schoeters (samenstelling). Gent: PoëzieCentrum, 2020.</dcterms:source>
+                <bibo:lccn>Vermoortel, Philip. Geen achtergrondmuziek. In: Poëziekrant: 45 (2021) 2, 82-83.</bibo:lccn>
+                <bibo:director rdf:nodeID="n22"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n22"/><rdf:li rdf:nodeID="n24"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n24"/>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>afscheidspoëzie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>niet in autopsie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n22">
+       <foaf:givenName>Lies</foaf:givenName><foaf:surname>Colman</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n24">
+       <foaf:givenName>Gaea</foaf:givenName><foaf:surname>Schoeters</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/MGJA8XMN">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Concordantie op de verzamelde gedichten van Gerrit Achterberg</dcterms:title>
+                <dcterms:abstract>ISBN 978-90-818653-0-2. 1 cd-rom.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>AVE uitgever</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2012</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Concordantie op de verzamelde gedichten van Gerrit Achterberg;  bezorgd door Bert Veldstra en Ingrid Denys. Wilnis: AVE uitgever, 2012.</dcterms:source>
+                <z:extra>ISBN: 978-90-818653-0-2
+Place: Wilnis</z:extra>
+                <bibo:director rdf:nodeID="n3"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n3"/><rdf:li rdf:nodeID="n5"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n5"/>
+            </bibo:Film>
+        </res:resource>
+        <z:accessDate>2012-05-07 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Achterberg, Gerrit</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n3">
+       <foaf:givenName>Bert</foaf:givenName><foaf:surname>Veldstra</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n5">
+       <foaf:givenName>Ingrid</foaf:givenName><foaf:surname>Denys</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
+
+
+
+

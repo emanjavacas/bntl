@@ -135,3 +135,9 @@ async def ris2bib(ris_data):
     return await xml2bib(xml_data)
 
 
+def parse_doc_id(doc_id: str):
+    return doc_id.replace("http://zotero.org/", "")
+
+
+def unparse_doc_id(s: str):
+    return "http://zotero.org/" + s

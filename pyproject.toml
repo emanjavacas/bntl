@@ -27,6 +27,9 @@ lxml = "^5.3.0"
 pybtex = "^0.24.0"
 
 
+[tool.poetry.group.dev.dependencies]
+termcolor = "^2.5.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
