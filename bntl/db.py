@@ -121,7 +121,6 @@ class DBClient():
     @classmethod
     async def create(cls):
         self = cls()
-        self.unique_refs = await self.bntl_coll.distinct("document.type_of_reference")
         await self.ensure_indices()
         return self
 

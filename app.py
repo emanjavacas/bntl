@@ -2,7 +2,7 @@
 import io
 import os
 import logging
-from typing import List
+from typing import List, get_args
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
@@ -24,7 +24,7 @@ from bntl.vectorization import Status as VectorizationStatus, vectorize_task
 from bntl.db import DBClient
 from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
 from bntl.models import DBDocumentModel, VectorEntryModel, FileUploadModel, VectorizationTaskModel
-from bntl.models import get_record_screen_name
+from bntl.models import get_record_screen_name, TypeOfReference
 from bntl.pagination import paginate, paginate_within, build_query
 from bntl.upload import Status as UploadStatus, FileUploadManager
 from bntl.settings import settings, setup_logger
@@ -151,7 +151,7 @@ async def home(request: Request, lang: str = Query(default=settings.DEFAULT_LOCA
         "index.html", 
         {"request": request,
          "_": get_translation(lang).gettext, "lang": lang,
-         "type_of_reference": app.state.db_client.unique_refs,
+         "type_of_reference": get_args(TypeOfReference),
          "total_documents": await app.state.db_client.count(), 
          "last_added": await app.state.db_client.find_last_added()})
 
