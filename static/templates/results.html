@@ -122,8 +122,8 @@
               {% endif %}
             </span>
             <!-- icon -->
-            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{refMap[lang][item.document.type_of_reference]}}">
-              <img width="30px" src="/static/assets/img/icons/{{imgMap[item.document.type_of_reference]}}.svg">
+            <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{item.document.type_of_reference | get_ref_type(lang)}}">
+              <img width="30px" src="/static/assets/img/icons/{{item.document.type_of_reference}}.svg">
             </span>
             <!--  -->
             <span class="text-muted small pe-2">
@@ -141,7 +141,7 @@
               {% include "reftypes/chap.html" %}
             {% elif item.document.type_of_reference == "JFULL" %}
               {% include "reftypes/jfull.html" %}
-            {% elif item.document.type_of_reference == "JOUR" or item.document.type_of_reference == "EJOUR" %}
+            {% elif item.document.type_of_reference == "JOUR" %}
               {% include "reftypes/jour.html" %}
             {% elif item.document.type_of_reference == "WEB" %}
               {% include "reftypes/web.html" %}

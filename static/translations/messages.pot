@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-03 10:56+0000\n"
+"POT-Creation-Date: 2025-01-15 09:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: static/templates/about.html:8 static/templates/template.html:107
+#: static/templates/about.html:8
 msgid "Over de BNTL"
 msgstr ""
 
@@ -100,12 +100,12 @@ msgstr ""
 msgid "Zoekgeschiedenis"
 msgstr ""
 
-#: static/templates/history.html:24 static/templates/record.html:35
-#: static/templates/search.html:24
+#: static/templates/history.html:24 static/templates/index.html:70
+#: static/templates/record.html:38
 msgid "Publicatietype"
 msgstr ""
 
-#: static/templates/history.html:31 static/templates/record.html:39
+#: static/templates/history.html:31 static/templates/record.html:42
 #: static/templates/results.html:38
 msgid "Jaar"
 msgstr ""
@@ -114,12 +114,12 @@ msgstr ""
 msgid "Titel"
 msgstr ""
 
-#: static/templates/history.html:50 static/templates/results.html:26
-#: static/templates/search.html:51
+#: static/templates/history.html:50 static/templates/index.html:97
+#: static/templates/results.html:26
 msgid "Auteur"
 msgstr ""
 
-#: static/templates/history.html:65 static/templates/search.html:51
+#: static/templates/history.html:65 static/templates/index.html:97
 msgid "Trefwoorden"
 msgstr ""
 
@@ -144,48 +144,51 @@ msgid ""
 msgstr ""
 
 #: static/templates/index.html:20
-msgid ""
-"We zijn benieuwd naar uw ervaringen en wensen bij het gebruik van de "
-"bibliografie. Met het invullen van de <a class=\"link-dark link-offset-2 "
-"link-underline-opacity-25 link-underline-opacity-100-hover\" "
-"href=\"https://goo.gl/forms/F7g9vbzBfzj14EdS2\">gebruikersenquête</a>\n"
-"          kan u mee nadenken over de BNTL van de toekomst."
-msgstr ""
-
-#: static/templates/index.html:23
 msgid "Lees verder"
 msgstr ""
 
-#: static/templates/index.html:29
-msgid "Dit database maakt gebruikt van"
+#: static/templates/index.html:37
+msgid "Zoeken"
 msgstr ""
 
-#: static/templates/index.html:35
-msgid "Bekijk ook de Friese bibliografie"
+#: static/templates/index.html:42
+msgid "Zoek in de volledige bibliografie"
 msgstr ""
 
-#: static/templates/index.html:41
-msgid "Digitale Bibliografie voor die Afrikaanse Taalkunde"
-msgstr ""
-
-#: static/templates/index.html:57 static/templates/template.html:61
+#: static/templates/index.html:43
 msgid "zoeken"
 msgstr ""
 
-#: static/templates/index.html:62
-msgid "geavanceerd zoeken"
+#: static/templates/index.html:55
+msgid "Geavanceerd zoeken"
 msgstr ""
 
-#: static/templates/index.html:63
-msgid "zoekgeschiedenis"
+#: static/templates/index.html:56
+msgid "Aantal"
+msgstr ""
+
+#: static/templates/index.html:68
+msgid "Kies er een"
 msgstr ""
 
 #: static/templates/index.html:73
-msgid "Laatst toegevoegde documenten"
+msgid "Kies een publicatietype"
 msgstr ""
 
-#: static/templates/index.html:74
-msgid "Aantal"
+#: static/templates/index.html:85
+msgid "Ongeldig"
+msgstr ""
+
+#: static/templates/index.html:90
+msgid "Jaar of periode"
+msgstr ""
+
+#: static/templates/index.html:97 static/templates/record.html:48
+msgid "Titelbeschrijving"
+msgstr ""
+
+#: static/templates/index.html:123 static/templates/results.html:88
+msgid "Zoek"
 msgstr ""
 
 #: static/templates/login.html:15
@@ -196,67 +199,63 @@ msgstr ""
 msgid "Indienen"
 msgstr ""
 
-#: static/templates/record.html:45 static/templates/search.html:51
-msgid "Titelbeschrijving"
-msgstr ""
-
-#: static/templates/record.html:54
+#: static/templates/record.html:57
 msgid "Auteur(s)"
 msgstr ""
 
-#: static/templates/record.html:78
+#: static/templates/record.html:81
 msgid "Extra informatie"
 msgstr ""
 
-#: static/templates/record.html:87
+#: static/templates/record.html:90
 msgid "Trefwoord(en)"
 msgstr ""
 
-#: static/templates/record.html:100
+#: static/templates/record.html:103
 msgid "URL 🔓"
 msgstr ""
 
-#: static/templates/record.html:113
+#: static/templates/record.html:116
 msgid "Pagina(s)"
 msgstr ""
 
-#: static/templates/record.html:122
+#: static/templates/record.html:125
 msgid "Tijdschrift"
 msgstr ""
 
-#: static/templates/record.html:131
+#: static/templates/record.html:134
 msgid "Volume"
 msgstr ""
 
-#: static/templates/record.html:140
+#: static/templates/record.html:143
 msgid "Nummer"
 msgstr ""
 
-#: static/templates/record.html:149
+#: static/templates/record.html:152
 msgid "Recensie/Reactie"
 msgstr ""
 
-#: static/templates/record.html:158
+#: static/templates/record.html:161
 msgid "ISBN-nummer"
 msgstr ""
 
-#: static/templates/record.html:167
+#: static/templates/record.html:170
 msgid "Plaats van uitgave"
 msgstr ""
 
-#: static/templates/record.html:176
+#: static/templates/record.html:179
 msgid "Uitgeverij"
 msgstr ""
 
-#: static/templates/record.html:185
+#: static/templates/record.html:188
 msgid "Oude notatie"
 msgstr ""
 
-#: static/templates/record.html:194
+#: static/templates/record.html:197
 msgid "Titelbeschrijving boek"
 msgstr ""
 
-#: static/templates/record.html:203
+#: static/templates/record.html:206
 msgid "Gerelateerde artikels"
 msgstr ""
 
@@ -296,35 +295,25 @@ msgstr ""
 msgid "Pagina"
 msgstr ""
 
-#: static/templates/results.html:87 static/templates/search.html:77
-msgid "Zoek"
+#: static/templates/results.html:87
+msgid "Zoek binnen resultaat"
 msgstr ""
 
-#: static/templates/search.html:3
-msgid "Zoeken"
+#: static/templates/template.html:66
+msgid "zoekgeschiedenis"
 msgstr ""
 
-#: static/templates/search.html:10
-msgid "Geavanceerd zoeken"
-msgstr ""
-
-#: static/templates/search.html:22
-msgid "Kies er een"
-msgstr ""
-
-#: static/templates/search.html:27
-msgid "Kies een publicatietype"
-msgstr ""
-
-#: static/templates/search.html:39
-msgid "Ongeldig"
-msgstr ""
-
-#: static/templates/search.html:44
-msgid "Jaar of periode"
-msgstr ""
-
-#: static/templates/template.html:64
+#: static/templates/template.html:69
 msgid "help"
+msgstr ""
+
+#: static/templates/template.html:110
+msgid ""
+"Gerealiseerd met de steun van het Departement Cultuur, Jeugd en Media van"
+" de Vlaamse Overheid"
+msgstr ""
+
+#: static/templates/template.html:111
+msgid "Dit database maakt gebruikt van"
 msgstr ""
 

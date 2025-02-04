@@ -66,6 +66,7 @@ templates = Jinja2Templates(directory="static/templates")
 templates.env.filters["naturaltime"] = humanize.naturaltime
 templates.env.filters["doc_repr"] = get_record_screen_name
 templates.env.filters["parse_doc_id"] = utils.parse_doc_id
+templates.env.filters["get_ref_type"] = utils.get_ref_type
 # mount static folder
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 

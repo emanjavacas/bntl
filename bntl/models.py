@@ -139,7 +139,7 @@ BOOK_2EDS_renderer = (
 BOOK_A1_2EDS_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post="; ") +
-    Node("secondary_authors", post=" (red.). ") +
+    Node("secondary_authors", post=" (red.). ", list_renderer=_render_authors) +
     Node("place_published", post=": ") +
     Node("publisher", post=", ") +
     Node("year", post=". ") +
@@ -173,9 +173,9 @@ JFULL_renderer = (
     Node("title", post=". ") +
     Node("secondary_title", pre="Speciaal nummer van: ", post=": ") +
     Node("volume", post=" ") +
-    Node("year", pre="(", post=") ") +
-    Node("series_volume", post=", ") +
-    Node("start_page", post=" p.")
+    Node("year", pre="(", post=")") +
+    Node("series_volume", pre=" ") +
+    Node("start_page", pre=", ", post=" p.")
 )
 
 # [AU]. [TI]. [PB], [PY].
@@ -215,7 +215,7 @@ def get_record_screen_name(record):
     return output
 
 
-TypeOfReference = Literal["JOUR", "BOOK", "CHAP", "EJOUR", "WEB", "JFULL", "ADVS"]
+TypeOfReference = Literal["JOUR", "BOOK", "CHAP", "WEB", "JFULL", "ADVS"]
 
 
 class DocumentModel(BaseModel):

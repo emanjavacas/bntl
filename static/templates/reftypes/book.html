@@ -5,13 +5,13 @@
 <div class="row pb-2">
   <span>
     <span class="fw-bold pe-2">{{ _('Type') }}</span>
-    <span>{{refMap[lang][item.document.type_of_reference]}}</span>
+    <span>{{item.document.type_of_reference | get_ref_type(lang)}}</span>
     {% if "recensie" in item.document.keywords %}
       <!-- <span class="fw-bold">[{{ _('Recensie') }}]</span> -->
       <!-- icon -->
       <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ _('Recensie') }}">
         <img width="30px" src="/static/assets/img/icons/recensie.svg">
-      </span>      
+      </span>
     {% endif %}
   </span>
 </div>

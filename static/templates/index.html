@@ -63,7 +63,7 @@
                     <div class="form-floating flex-grow-1 py-2">
                       <select id="type_of_reference_select" class="form-select" name="type_of_reference" aria-label="Floating label select example">
                         {% for rType in type_of_reference %}
-                          <option value="{{rType}}">{{refMap[lang][rType]}}</option>
+                          <option value="{{rType}}">{{rType | get_ref_type(lang)}}</option>
                         {% endfor %}
                         <option value="" selected>{{ _('Kies er een') }}</option>
                       </select>

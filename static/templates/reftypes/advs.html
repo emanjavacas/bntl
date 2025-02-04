@@ -5,7 +5,7 @@
 <div class="row pb-2">
   <span>
     <span class="fw-bold pe-2">{{ _('Type') }}</span>
-    <span>{{refMap[lang][item.document.type_of_reference]}}</span>
+    <span>{{refMap.get(lang, "nl")["ADVS"]}}</span>
     {% if "recensie" in item.document.keywords %}
       <!-- <span class="fw-bold">[{{ _('Recensie') }}]</span> -->
       <!-- icon -->

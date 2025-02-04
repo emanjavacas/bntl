@@ -12,9 +12,6 @@ from bntl.models import get_record_screen_name
 import difflib
 from termcolor import colored
 
-import difflib
-from termcolor import colored
-
 
 def generate_diff(str1, str2, output_file="diff_output.txt"):
     """Generate a visually aligned character-level diff with a reference on top,

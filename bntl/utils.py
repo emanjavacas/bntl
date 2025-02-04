@@ -141,3 +141,24 @@ def parse_doc_id(doc_id: str):
 
 def unparse_doc_id(s: str):
     return "http://zotero.org/" + s
+
+
+def get_ref_type(ref_type, lang):
+    if lang.lower() == "en":
+        return {
+            'ADVS': "Audiovisual material",
+            'BOOK': "Book",
+            'CHAP': "Chapter",
+            'JFULL': "Special issue",
+            'JOUR': "Journal article",
+            'WEB': "Web page"
+        }[ref_type]
+    else:
+        return {
+            'ADVS': "Audiovisueel materiaal",
+            'BOOK': "Boek",
+            'CHAP': "Hoofdstuk",
+            'JFULL': "Speciaal tijdschriftnummer",
+            'JOUR': "Tijdschriftartikel",
+            'WEB': "Webpagina"
+        }[ref_type]
