@@ -2,6 +2,7 @@
 import io
 import os
 import logging
+import functools
 from typing import List, get_args
 import urllib.parse
 from datetime import datetime, timezone
@@ -102,6 +103,19 @@ async def add_session_id_cookie(request: Request, call_next):
     return response
 
 
+def log_request(func):
+    """
+    A decorator to log the request parameters, headers, and additional arguments for specific routes.
+    """
+    @functools.wraps(func)
+    async def wrapper(request: Request, *args, **kwargs):
+        logger.info(
+            f"Request: method={request.method}, url={request.url}, "
+            f"headers={dict(request.headers)}, args={args}, kwargs={kwargs}")
+        return await func(request, *args, **kwargs)
+    return wrapper
+
+
 # login logic
 class RequiresLoginException(Exception):
     pass
@@ -125,7 +139,7 @@ def require_validated_session(request: Request):
 
 
 @app.get("/login", response_class=HTMLResponse, include_in_schema=False)
-async def login_get(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def login_get(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     return templates.TemplateResponse(
         "login.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
 
@@ -166,7 +180,7 @@ async def about(request: Request, lang: str = Query(default=settings.DEFAULT_LOC
 
 
 @app.get("/help", response_class=HTMLResponse)
-async def help(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def help(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     Help route showing information about the functioning of the app
     """
@@ -174,7 +188,8 @@ async def help(request: Request, lang: str = Query(default=settings.DEFAULT_LOCA
 
 
 @app.post("/registerQuery")
-async def register_query(query_params: QueryParams, request: Request):
+@log_request
+async def register_query(request: Request, query_params: QueryParams):
     """
     Log a query and store the parameters so that we can later show it in the query history
     """
@@ -189,8 +204,9 @@ async def register_query(query_params: QueryParams, request: Request):
 
 
 @app.get("/quickQuery")
+@log_request
 async def quick_query(request: Request, 
-                      lang: str = Query(default=settings.DEFAULT_LOCALE),
+                      lang: str=Query(default=settings.DEFAULT_LOCALE),
                       query_params: QueryParams=Depends(),
                       page_params: PageParams=Depends()):
     """
@@ -207,9 +223,10 @@ async def quick_query(request: Request,
 
 
 @app.get("/paginate")
-async def paginate_route(query_id: str, 
-                         request: Request, 
-                         lang: str = Query(default=settings.DEFAULT_LOCALE), 
+@log_request
+async def paginate_route(request: Request, 
+                         query_id: str, 
+                         lang: str=Query(default=settings.DEFAULT_LOCALE), 
                          page_params: PageParams=Depends()):
     """
     Paginate route when moving forward and backward on a given query
@@ -236,10 +253,11 @@ async def paginate_route(query_id: str,
 
 
 @app.get("/paginateWithin")
-async def paginate_within_route(query_id: str, 
+@log_request
+async def paginate_within_route(request: Request,
+                                query_id: str, 
                                 query_str: str, 
-                                request: Request, 
-                                lang: str = Query(default=settings.DEFAULT_LOCALE), 
+                                lang: str=Query(default=settings.DEFAULT_LOCALE), 
                                 page_params: PageParams=Depends()):
     """
     Paginate route for recursive queries
@@ -262,7 +280,7 @@ async def paginate_within_route(query_id: str,
 
 
 @app.get("/history")
-async def query_history(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def query_history(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     Query history route
     """
@@ -275,7 +293,7 @@ async def query_history(request: Request, lang: str = Query(default=settings.DEF
 
 
 @app.get("/item")
-async def item(doc_id: str, request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def item(doc_id: str, request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     doc_id = utils.unparse_doc_id(doc_id)
     if item := await app.state.db_client.find_one(doc_id):
         return templates.TemplateResponse(
@@ -286,9 +304,10 @@ async def item(doc_id: str, request: Request, lang: str = Query(default=settings
 
 
 @app.get("/vectorQuery")
-async def vector_query(doc_id: str, 
-                       request: Request, 
-                       lang: str = Query(default=settings.DEFAULT_LOCALE),
+@log_request
+async def vector_query(request: Request, 
+                       doc_id: str, 
+                       lang: str=Query(default=settings.DEFAULT_LOCALE),
                        page_params: PageParams=Depends(), 
                        vector_params: VectorParams=Depends()):
     """
@@ -347,7 +366,7 @@ async def reset_database():
 
 # file upload
 @app.get("/upload", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)], include_in_schema=False)
-async def upload_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def upload_page(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     Upload route
     """
@@ -400,7 +419,7 @@ async def get_upload_log(file_id: str):
 
 # vectorization
 @app.get("/vectorize", response_class=HTMLResponse, dependencies=[Depends(require_validated_session)], include_in_schema=False)
-async def vectorize_page(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def vectorize_page(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     Vectorize route: vectorize full DB
     """
@@ -463,14 +482,16 @@ def create_ris(*docs):
 
 
 @app.get("/exportRis", response_class=PlainTextResponse, include_in_schema=False)
-async def export_ris(doc_id):
+@log_request
+async def export_ris(request: Request, doc_id: str):
     if doc := await app.state.db_client.find_one(doc_id):
         return create_ris(doc["document"])
     raise HTTPException(status_code=404, detail=f"Unknown document: {doc_id}")
 
 
 @app.get("/exportQuery", include_in_schema=False)
-async def export_query(query_id: str, format: str, request: Request):
+@log_request
+async def export_query(request: Request, query_id: str, format: str):
     session_id = request.cookies.get("session_id")
     query_data = await app.state.db_client.get_query(query_id, session_id)
     if not query_data:

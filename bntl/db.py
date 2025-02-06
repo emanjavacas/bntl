@@ -163,17 +163,21 @@ class DBClient():
             # collect documents
             for source_doc in documents[start: end]:
                 doc_idx += 1
+                doc_id = source_doc["id"]
                 # validate
                 try:
                     docs.append(prepare_document(dict(source_doc)).model_dump())
                 except YearFormatException as e:
-                    await utils.maybe_await(logger.info("Dropping document #{} due to wrong year format".format(doc_idx)))
+                    await utils.maybe_await(logger.info(
+                        "Dropping document #{}:{} due to wrong year format".format(doc_idx, doc_id)))
                     await utils.maybe_await(logger.info(str(e)))
                 except MissingFieldException as e:
-                    await utils.maybe_await(logger.info("Dropping document #{} due to missing field".format(doc_idx)))
+                    await utils.maybe_await(logger.info(
+                        "Dropping document #{}:{} due to missing field".format(doc_idx, doc_id)))
                     await utils.maybe_await(logger.info(str(e)))
                 except ValidationError as e:
-                    await utils.maybe_await(logger.info("Dropping document #{} due to wrong data format".format(doc_idx)))
+                    await utils.maybe_await(logger.info(
+                        "Dropping document #{}:{} due to wrong data format".format(doc_idx, doc_id)))
                     await utils.maybe_await(logger.info(str(e)))
 
             errors = []

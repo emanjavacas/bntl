@@ -110,8 +110,7 @@ JOUR_renderer = (
     Node("year", pre="(", post=") ") +
     Node("number", post=", ") +
     Node("start_page") +
-    Node("end_page", pre="-", post=". ")
-)
+    Node("end_page", pre="-", post="."))
 
 # [A1]. [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
 BOOK_renderer = (
@@ -121,8 +120,7 @@ BOOK_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
-    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
-)
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."]))
 
 # [A2] (red.). [TI]. [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
 BOOK_2EDS_renderer = (
@@ -132,8 +130,7 @@ BOOK_2EDS_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
-    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
-)
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."]))
 
 # [A1]. [TI]; [A2] (red.). [CY]: [PB], [PY]. [SP] p. ([T2]; [SV]).
 BOOK_A1_2EDS_renderer = (
@@ -144,8 +141,7 @@ BOOK_A1_2EDS_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=". ") +
     Node("start_page", post=" p. ") +
-    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."])
-)
+    ConditionalNode("secondary_title", "series_volume", wrap=["(", ")."]))
 
 # [A1]. [TI]. In: [A2] (red.). [T2]. [CY]: [PB], [PY], p. [SP]-[EP]. ([T3]; [SV]).
 CHAP_renderer = (
@@ -157,16 +153,14 @@ CHAP_renderer = (
     Node("publisher", post=", ") +
     Node("year", post=", ") +
     Node("start_page", pre="p. ") +
-    Node("end_page", pre="-", post=".") +
-    ConditionalNode("tertiary_title", "series_volume", wrap=["(", ")."])
-)
+    Node("end_page", pre="-", post=". ") +
+    ConditionalNode("tertiary_title", "series_volume", wrap=["(", ")."]))
 
 # [A1]. [TI]. [PY].
 WEB_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
-    Node("year", post=".")
-)
+    Node("year", post="."))
 
 # [TI]. Speciaal nummer van: [T2]: [VL] ([PY]) [SV], [SP] p.
 JFULL_renderer = (
@@ -175,16 +169,14 @@ JFULL_renderer = (
     Node("volume", post=" ") +
     Node("year", pre="(", post=")") +
     Node("series_volume", pre=" ") +
-    Node("start_page", pre=", ", post=" p.")
-)
+    Node("start_page", pre=", ", post=" p."))
 
 # [AU]. [TI]. [PB], [PY].
 ADVS_renderer = (
     Node("first_authors", post=". ", list_renderer=_render_authors) +
     Node("title", post=". ") +
     Node("publisher", post=", ") +
-    Node("year", post=".")
-)
+    Node("year", post="."))
 
 
 def get_record_screen_name(record):

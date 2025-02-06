@@ -85,8 +85,6 @@ def build_query(type_of_reference=None,
     else:
         query = {}
 
-    print(query)
-
     return query
 
 
