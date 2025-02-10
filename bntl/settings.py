@@ -1,4 +1,5 @@
 
+import os
 from typing import Type, Tuple
 import logging.config
 
@@ -16,15 +17,14 @@ def setup_logger(path='settings_logger.toml'):
 
 
 class Settings(BaseSettings):
-    PORT: int = Field(help="Server port")
-
-    LOCAL_URI: str = Field(help='MongoDB URI for the local data. For example: "mongodb://localhost:27017"')
+    MONGODB_PORT: int = Field(help="MongoDB port")
+    MONGODB_URI: str = Field(help='MongoDB URI for the local data. For example: "mongodb://localhost:27017"')
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
     BNTL_COLL: str = Field(help="MongoDB BNTL collection name", default="bntl")
     AUTOCOMPLETE_COLL: str = Field(help="MongoDB autocomplete collection name", default="autocomplete")
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
     UPLOAD_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="upload")
-    UPLOAD_SECRET: str = Field(help="Secret to run the upload logic")
+    UPLOAD_SECRET: str = Field(help="Secret to run the upload logic", default="pass")
     VECTORIZATION_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="vectorization")
 
     WITHIN_MAX_RESULTS: int = Field(help="Restrict results of original query to this number when doing recursive query", default=300_000)
@@ -44,7 +44,7 @@ class Settings(BaseSettings):
 
     WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
-    model_config = SettingsConfigDict(toml_file=["settings.toml", "settings_secret.toml"])
+    model_config = SettingsConfigDict(toml_file=[".env"])
 
     @classmethod
     def settings_customise_sources(
@@ -59,3 +59,8 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+if not os.path.isdir(settings.UPLOAD_LOG_DIR):
+    os.makedirs(settings.UPLOAD_LOG_DIR)
+if not os.path.isdir(settings.VECTORIZE_LOG_DIR):
+    os.makedirs(settings.VECTORIZE_LOG_DIR)

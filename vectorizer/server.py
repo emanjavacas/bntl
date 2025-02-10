@@ -103,17 +103,3 @@ async def task_status(task_id: str):
         return task
     else:
         raise HTTPException(status_code=404, detail="Task not found")
-
-
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--debug', action='store_true')
-    args = parser.parse_args()
-
-    import uvicorn
-    uvicorn.run("server:app",
-                host='0.0.0.0',
-                port=settings.PORT,
-                workers=settings.WORKERS,
-                reload=args.debug)

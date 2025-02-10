@@ -109,7 +109,7 @@ class DBClient():
         "tertiary_title": "title"}
 
     def __init__ (self) -> None:
-        self.mongodb_client = motor.AsyncIOMotorClient(settings.LOCAL_URI)
+        self.mongodb_client = motor.AsyncIOMotorClient(settings.MONGODB_URI)
         self.bntl_coll = self.mongodb_client[settings.LOCAL_DB][settings.BNTL_COLL]
         self.autocomplete_coll = self.mongodb_client[settings.LOCAL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]

@@ -16,8 +16,6 @@ def setup_logger(path='settings_vectorizer_logger.toml'):
 
 
 class Settings(BaseSettings):
-    PORT: int = Field(help="Server port", default=6666)
-
     VECTORIZER_DB: str = Field(default="vectorizer")
     TASKS_COLL: str = Field(default="tasks")
     VECTORS_COLL: str = Field(default="vectors")
@@ -25,8 +23,6 @@ class Settings(BaseSettings):
     BATCH_SIZE: int = Field(default=48)
     RETRY_DELAY: int = Field(default=3600 * 10)
     MAX_RETRIES: int = Field(default=5)
-
-    WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
 
     model_config = SettingsConfigDict(toml_file=["settings_vectorizer.toml"])
 

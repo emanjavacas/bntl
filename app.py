@@ -510,23 +510,3 @@ async def export_query(request: Request, query_id: str, format: str):
     else:
         raise HTTPException(status_code=404, detail=f"Unknown format: [{format}]")
     return StreamingResponse(io.BytesIO(output.encode()))
-
-
-if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--debug', action='store_true')
-    args = parser.parse_args()
-
-    # make sure folders exist
-    if not os.path.isdir(settings.UPLOAD_LOG_DIR):
-        os.makedirs(settings.UPLOAD_LOG_DIR)
-    if not os.path.isdir(settings.VECTORIZE_LOG_DIR):
-        os.makedirs(settings.VECTORIZE_LOG_DIR)
-
-    import uvicorn
-    uvicorn.run("app:app",
-                host='0.0.0.0',
-                port=settings.PORT,
-                workers=settings.WORKERS,
-                reload=args.debug)
