@@ -10,7 +10,7 @@ from bntl.rdf import parse_rdf
 from bntl.db import DBClient
 from bntl.vector import VectorClient
 from bntl.upload import convert_to_text
-from vectorizer import client
+from vectorize import client
 
 
 async def main(paths):

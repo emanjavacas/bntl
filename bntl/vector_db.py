@@ -1,4 +1,6 @@
 
+import logging
+
 from tqdm import tqdm
 
 import numpy as np
@@ -7,6 +9,8 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 from qdrant_client import models
 
 from bntl.settings import settings
+
+logger = logging.getLogger(__name__)
 
 
 class MissingVectorException(Exception):
@@ -18,6 +22,8 @@ class VectorClient:
     Client for a Vector database using QDrant
     """
     def __init__(self) -> None:
+        logger.info("Starting Qdrant client on: {}:{}".format(
+            settings.QDRANT_HOST, settings.QDRANT_HTTP_PORT))
         self.qdrant_client = AsyncQdrantClient(
             location=settings.QDRANT_HOST, port=settings.QDRANT_HTTP_PORT, timeout=100)
         self.collection_name = settings.QDRANT_COLL

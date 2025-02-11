@@ -17,7 +17,7 @@ from bntl import utils
 from bntl.models import QueryModel, QueryParams, StatusModel
 from bntl.models import DocumentModel, DBDocumentModel, ComputedFields
 
-from vectorizer.settings import settings as v_settings
+from vectorize.settings import settings as v_settings
 
 
 logger = logging.getLogger(__name__)
@@ -109,7 +109,9 @@ class DBClient():
         "tertiary_title": "title"}
 
     def __init__ (self) -> None:
-        self.mongodb_client = motor.AsyncIOMotorClient(f"mongodb://{settings.MONGODB_HOST}:{settings.MONGODB_PORT}")
+        uri = f"mongodb://{settings.MONGODB_HOST}:{settings.MONGODB_PORT}"
+        logger.info("Starting DB client on: {}".format(uri))
+        self.mongodb_client = motor.AsyncIOMotorClient(uri)
         self.bntl_coll = self.mongodb_client[settings.LOCAL_DB][settings.BNTL_COLL]
         self.autocomplete_coll = self.mongodb_client[settings.LOCAL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]

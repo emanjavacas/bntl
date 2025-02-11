@@ -1,19 +1,19 @@
 
 services:
-  server:
-    build: .
-    ports:
-      - ${PORT}:${PORT} # bind port to make it accessible from the outside world
-    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
-    depends_on:
-      - mongodb
-      - qdrant
-    volumes:
-      - .:/app
-    
+  # server:
+  #   build: .
+  #   ports:
+  #     - ${PORT}:${PORT} # bind port to make it accessible from the outside world
+  #   command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
+  #   depends_on:
+  #     - mongodb
+  #     - qdrant
+  #   volumes:
+  #     - .:/app
+
   # vectorizer:
   #   build: .
-  #   command: ["uvicorn", "vectorizer.server:app", "--host", "0.0.0.0", "--port", "${VECTORIZER_PORT}", "--workers", "${VECTORIZER_WORKERS}"]
+  #   command: ["uvicorn", "vectorizer:app", "--host", "0.0.0.0", "--port", "${VECTORIZER_PORT}", "--workers", "${VECTORIZER_WORKERS}"]
   #   deploy:
   #     resources:
   #       reservations:
@@ -32,12 +32,11 @@ services:
     ports:
       - ${MONGODB_PORT}:${MONGODB_PORT} # for debugging
     command: mongod --port ${MONGODB_PORT}
-    
     # volumes:
     #   - ./mongo-data:/data/db
 
   qdrant:
-    image: qdrant/qdrant:v1.11.0
+    image: qdrant/qdrant:v1.13.2
     ports:
       - ${QDRANT_HTTP_PORT}:${QDRANT_HTTP_PORT} # for debugging
     environment:

@@ -6,8 +6,8 @@
   <span>
     <span class="fw-bold pe-2">{{ _('Type') }}</span>
     <span>{{item.document.type_of_reference | get_ref_type(lang)}}</span>
-    {% if "recensie" in item.document.keywords %}
-      <!-- <span class="fw-bold">[{{ _('Recensie') }}]</span> -->
+    {% if item.document.keywords and "recensie" in item.document.keywords %}
+      <span class="fw-bold">[{{ _('Recensie') }}]</span>
       <!-- icon -->
       <span class="px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ _('Recensie') }}">
         <img width="30px" src="/static/assets/img/icons/recensie.svg">
@@ -125,7 +125,7 @@
     <span class="fw-bold pe-2">{{ _('URL 🔓') }}</span>
     <ul class="pb-0">
     {% for url in item.document.urls %}
-      <li><a class="px-0" href="{{url}}">{{url}}</a></li>
+      <li><a class="px-0" target="_blank" href="{{url}}">{{url}}</a></li>
     {% endfor %}
   </ul>
   </span>

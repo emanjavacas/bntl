@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from bntl import utils
 from bntl.models import StatusModel
-from vectorizer.client import vectorize, VectorizationException
+from vectorize.client import vectorize, VectorizationException
 
 
 logger = logging.getLogger(__name__)

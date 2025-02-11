@@ -5,7 +5,7 @@ import asyncio
 from bntl.db import DBClient
 from bntl.vector_db import VectorClient
 from bntl.settings import settings
-from vectorizer.db import DBClient as VectorizerDBClient
+from vectorize.db import DBClient as VectorizerDBClient
 
 
 async def main():

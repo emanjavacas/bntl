@@ -5,8 +5,8 @@ from datetime import datetime, timezone
 import motor.motor_asyncio as motor
 from pymongo import UpdateOne
 
-from vectorizer.models import TaskModel, VectorModel, Status, create_new_status
-from vectorizer.settings import settings
+from vectorize.models import TaskModel, VectorModel, Status, create_new_status
+from vectorize.settings import settings
 
 from bntl.settings import settings as bntl_settings
 

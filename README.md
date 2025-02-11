@@ -129,9 +129,9 @@ fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=
 
 ## Vectorization
 
-To use the vectorization service (code living in vectorizer/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml.
+To use the vectorization service (code living in vectorize/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml.
 
-The process is started using the vectorizer/server.py, which spawns a separate FastAPI server.
+The process is started using the vectorize/server.py, which spawns a separate FastAPI server.
 
 The vectors are generated and stored into a MongoDB before being passed over to the main process to be indexed with the QDrant DB.
 

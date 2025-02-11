@@ -10,8 +10,8 @@ import pymongo
 from motor.motor_asyncio import AsyncIOMotorCollection
 
 from bntl.settings import settings as bntl_settings
-from vectorizer.models import Status
-from vectorizer.utils import maybe_await
+from vectorize.models import Status
+from vectorize.utils import maybe_await
 
 
 logger = logging.getLogger(__name__)

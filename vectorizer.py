@@ -10,10 +10,10 @@ import pymongo
 
 import torch
 
-from vectorizer.model_manager import ModelManagerFE, ModelManagerStella
-from vectorizer.settings import setup_logger, settings
-from vectorizer.models import Status, TaskModel, VectorizeParams
-from vectorizer.db import DBClient
+from vectorize.model_manager import ModelManagerFE, ModelManagerStella
+from vectorize.settings import setup_logger, settings
+from vectorize.models import Status, TaskModel, VectorizeParams
+from vectorize.db import DBClient
 
 
 setup_logger()
