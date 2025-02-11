@@ -1,15 +1,13 @@
 __pycache__
 __MACOSX/
 
-venv
+.venv
 
 .vscode
 .DS_Store
 
 *.log
 *.lock
-
-secret_settings.toml
 
 static/translations/*/LC_MESSAGES/*.mo
 

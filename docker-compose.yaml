@@ -1,38 +1,48 @@
 
 services:
-  bntl-app:
+  server:
     build: .
     ports:
-      - "${PORT}:${PORT}"
-    command: ["poetry", "run", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
+      - ${PORT}:${PORT} # bind port to make it accessible from the outside world
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
     depends_on:
       - mongodb
       - qdrant
     volumes:
       - .:/app
     
-  vectorizer-app:
-    build: .
-    ports:
-      - "${VECTORIZER_PORT}:${VECTORIZER_PORT}"
-    command: ["poetry", "run", "uvicorn", "vectorizer.server:app", "--host", "0.0.0.0", "--port", "${VECTORIZER_PORT}", "--workers", "${VECTORIZER_WORKERS}"]
-    depends_on:
-      - mongodb
-      - qdrant
-    volumes:
-      - .:/app
+  # vectorizer:
+  #   build: .
+  #   command: ["uvicorn", "vectorizer.server:app", "--host", "0.0.0.0", "--port", "${VECTORIZER_PORT}", "--workers", "${VECTORIZER_WORKERS}"]
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #   depends_on:
+  #     - mongodb
+  #     - qdrant
+  #   volumes:
+  #     - .:/app
 
   mongodb:
     image: mongo:7
-    ports: 
-      - ${MONGODB_PORT}:${MONGODB_PORT}
-    volumes:
-      - ./mongo-data:/data/db
+    ports:
+      - ${MONGODB_PORT}:${MONGODB_PORT} # for debugging
+    command: mongod --port ${MONGODB_PORT}
+    
+    # volumes:
+    #   - ./mongo-data:/data/db
 
   qdrant:
     image: qdrant/qdrant:v1.11.0
     ports:
-      - "${QDRANT_PORT}:${QDRANT_PORT}"
-    volumes:
-      - ./qdrant-data:/qdrant/storage
+      - ${QDRANT_HTTP_PORT}:${QDRANT_HTTP_PORT} # for debugging
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=${QDRANT_HTTP_PORT}
+      - QDRANT__SERVICE__GRPC_PORT=${QDRANT_GRPC_PORT}
+    # volumes:
+    #   - ./qdrant-data:/qdrant/storage
 

@@ -1,17 +1,16 @@
 FROM python:3.12
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    bibutils \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN apt-get update \
+&& apt-get install --no-install-recommends -y \
+bibutils
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+RUN pip3 install --no-cache-dir poetry
 
-RUN poetry install
+COPY pyproject.toml ./
+
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-root --no-interaction --no-ansi --with vectorizer
 
 COPY . .
-

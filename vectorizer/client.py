@@ -9,8 +9,8 @@ import asyncio
 import pymongo
 from motor.motor_asyncio import AsyncIOMotorCollection
 
+from bntl.settings import settings as bntl_settings
 from vectorizer.models import Status
-from vectorizer.settings import settings
 from vectorizer.utils import maybe_await
 
 
@@ -19,7 +19,9 @@ logger = logging.getLogger(__name__)
 
 async def post_task(task_id: str, texts: List[str], doc_ids: List[str]):
     async with aiohttp.ClientSession() as session:
-        url = 'http://0.0.0.0:{}/vectorize'.format(settings.PORT)
+        url = 'http://{}:{}/vectorize'.format(
+            bntl_settings.VECTORIZER_HOST,
+            bntl_settings.VECTORIZER_PORT)
         data = {"task_id": task_id, "texts": texts, "doc_ids": doc_ids}
         async with session.post(url, json=data) as resp:
             return await resp.json()
@@ -28,9 +30,12 @@ async def post_task(task_id: str, texts: List[str], doc_ids: List[str]):
 async def get_task_status(task_id: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(
-            'http://0.0.0.0:{}/check-status/{}'.format(settings.PORT, task_id)) as resp:
+            'http://{}:{}/check-status/{}'.format(
+                bntl_settings.VECTORIZER_HOST,
+                bntl_settings.VECTORIZER_PORT, 
+                task_id)) as resp:
             return await resp.json()
-        
+
 
 def get_retry_time(n_docs):
     if n_docs > 50_000:

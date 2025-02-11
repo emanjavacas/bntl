@@ -19,7 +19,7 @@ class VectorClient:
     """
     def __init__(self) -> None:
         self.qdrant_client = AsyncQdrantClient(
-            location="localhost", port=settings.QDRANT_PORT, timeout=100)
+            location=settings.QDRANT_HOST, port=settings.QDRANT_HTTP_PORT, timeout=100)
         self.collection_name = settings.QDRANT_COLL
 
     async def find_vector_by_id(self, doc_id):

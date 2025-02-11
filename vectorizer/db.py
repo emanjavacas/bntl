@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class DBClient():
     def __init__(self, ) -> None:
-        self.db_client = motor.AsyncIOMotorClient(bntl_settings.MONGODB_URI)
+        self.db_client = motor.AsyncIOMotorClient(f"mongodb://{bntl_settings.MONGODB_HOST}:{bntl_settings.MONGODB_PORT}")
         self.tasks_coll = self.db_client[settings.VECTORIZER_DB][settings.TASKS_COLL]
         self.vectors_coll = self.db_client[settings.VECTORIZER_DB][settings.VECTORS_COLL]
 

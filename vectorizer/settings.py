@@ -24,18 +24,7 @@ class Settings(BaseSettings):
     RETRY_DELAY: int = Field(default=3600 * 10)
     MAX_RETRIES: int = Field(default=5)
 
-    model_config = SettingsConfigDict(toml_file=["settings_vectorizer.toml"])
-
-    @classmethod
-    def settings_customise_sources(
-        cls,
-        settings_cls: Type[BaseSettings],
-        init_settings: PydanticBaseSettingsSource,
-        env_settings: PydanticBaseSettingsSource,
-        dotenv_settings: PydanticBaseSettingsSource,
-        file_secret_settings: PydanticBaseSettingsSource,
-    ) -> Tuple[PydanticBaseSettingsSource, ...]:
-        return (TomlConfigSettingsSource(settings_cls),)
+    model_config = SettingsConfigDict(env_file=".vectorizer.env", extra="ignore")
 
 
 settings = Settings()
