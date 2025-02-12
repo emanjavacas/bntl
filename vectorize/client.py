@@ -58,7 +58,7 @@ async def vectorize(vectors_coll: AsyncIOMotorCollection,
                     texts: List[str], 
                     doc_ids: Union[None, List[str]]=None, 
                     retry_time: Union[None, float]=None,
-                    timeout: float=3600 * 2,
+                    timeout: float=3600 * 5,
                     logger=logger) -> Union[List[float] | None]:
     """
     Start vectorize task and monitor the status until done, error or timeout
