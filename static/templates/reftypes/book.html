@@ -63,6 +63,11 @@
   </span>
 </div>
 {% endif %}
+<!-- title -->
+<div class="row pb-2">
+  <span><span class="fw-bold pe-2">{{ _('Titel') }}</span>
+  <span>{{item.document.title}}</span>
+</div>
 <!-- T2 -->
 {% if item.document.secondary_title %}
 <div class="row pb-2">
@@ -160,7 +165,7 @@
 <div class="row pb-2">
   <span>
     <span class="fw-bold pe-2">{{ _('Overige informatie') }}</span>
-    <span>{{item.document.abstract}}</span>
+    <span style="white-space: pre-wrap;">{{ item.document.abstract }}</span>
   </span>
 </div>
 {% endif %}
