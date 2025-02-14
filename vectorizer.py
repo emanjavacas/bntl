@@ -44,18 +44,22 @@ async def vectorize_task(task_id, texts, doc_ids):
                 app.state.model_manager.move_model_to_gpu()
                 # Cache
                 if text2vector := await app.state.db_client.retrieve_cache(texts):
+                    logger.info("Got {}/{} vectors from cache".format(len(text2vector, len(texts))))
                     if input_texts := [text for text in texts if text not in text2vector]:
+                        logger.info("Vectorizing {} remaining docs".format(len(input_texts)))
                         vectors = await run_in_threadpool(
                             app.state.model_manager.get_model().encode, input_texts, settings.BATCH_SIZE)
                         # merge vectors
                         text2vector.update(zip(input_texts, vectors.tolist()))
                     vectors = [text2vector[text] for text in texts]
                 else:
+                    logger.info("Vectorizing {} docs".format(len(texts)))
                     vectors = await run_in_threadpool(
                         app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
                     vectors = vectors.tolist()
                 app.state.model_manager.move_model_to_cpu()    
                 # store vectors
+                logger.info("Storing vectors...")
                 await app.state.db_client.store_vectors(task_id, vectors, doc_ids)
                 # Update the task status to done
                 await app.state.db_client.update_task_status(task_id, Status.DONE)
