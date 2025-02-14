@@ -44,7 +44,7 @@ async def vectorize_task(task_id, texts, doc_ids):
                 app.state.model_manager.move_model_to_gpu()
                 # Cache
                 if text2vector := await app.state.db_client.retrieve_cache(texts):
-                    logger.info("Got {}/{} vectors from cache".format(len(text2vector, len(texts))))
+                    logger.info("Got {}/{} vectors from cache".format(len(text2vector), len(texts)))
                     if input_texts := [text for text in texts if text not in text2vector]:
                         logger.info("Vectorizing {} remaining docs".format(len(input_texts)))
                         vectors = await run_in_threadpool(
