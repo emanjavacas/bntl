@@ -17,7 +17,7 @@ def setup_logger(path='settings_logger.toml'):
 
 
 class Settings(BaseSettings):
-    VECTORIZER_HOST: str = Field(help="Hostname where the vectorizer is running", default="0.0.0.0")
+    VECTORIZER_HOST: str = Field(help="Hostname where the vectorizer is running", default="localhost")
     VECTORIZER_PORT: str = Field(help="Port on which the vectorization server is running")
 
     MONGODB_PORT: int = Field(help="MongoDB port", default=27017)

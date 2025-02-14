@@ -1,5 +1,4 @@
 
-import rispy
 import os
 from glob import glob
 
@@ -758,8 +757,6 @@ def parse_rdf(rdf_data):
                 info['urls'] = [info['urls']]
             parsed.append(info)
 
-    # return ris
-    parsed = rispy.dumps(parsed, mapping=utils.RISPY_MAPPING)
     return parsed
 
 
@@ -779,5 +776,6 @@ if __name__ == '__main__':
         parsedf = f'{args.outdir}/{parsedf}'
         with open(fn, 'r', encoding='utf-8') as file:
             parsed = parse_rdf(file.read())
-        with open(parsedf, 'w') as bibliography_file:
-            bibliography_file.write(parsed)
+        with open(parsedf, "w+") as bibliography_file:
+            for doc in parsed:
+                bibliography_file.write(json.dumps(doc) + "\n")

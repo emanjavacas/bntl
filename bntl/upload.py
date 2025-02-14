@@ -75,13 +75,8 @@ class FileUploadManager:
                 file_data = b''.join([self.file_chunks[file_id][i] for i in range(len(self.file_chunks[file_id]))])
                 await a_logger.info("Parsing RDF into RIS...")
                 await self.update_status(file_id, Status.PARSING)
-                ris_data = await run_in_threadpool(lambda: parse_rdf(file_data.decode()))
-                await a_logger.info("Parsed")
-                await a_logger.info("Loading data...")
-                documents = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
-                await a_logger.info("Received {} documents".format(len(documents)))
-            except rispy.parser.ParseError as e:
-                await self.update_status(file_id, Status.UNKNOWNFORMAT, detail=str(e))
+                documents = await run_in_threadpool(lambda: parse_rdf(file_data.decode()))
+                await a_logger.info("Parsed {} documents".format(len(documents)))
             except Exception as e:
                 await self.update_status(file_id, Status.UNKNOWNFORMAT, detail="Couldn't parse RDF file")
             finally:

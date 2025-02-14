@@ -1,7 +1,6 @@
 
 import re
 import pandas as pd
-import rispy
 
 import sys
 sys.path.append("./")
@@ -47,14 +46,14 @@ if __name__ == "__main__":
     data = pd.read_csv("test/screen/screennames.csv", sep=";")
     data = data.dropna()
 
-    ris = []
+    docs = []
     with open("test/screen/sample_formulas.rdf") as f:
         for m in re.findall(r"<rdf:RDF.*?</rdf:RDF>", f.read(), re.DOTALL):
-            ris_data = rispy.loads(parse_rdf(m), mapping=utils.RISPY_MAPPING)
-            ris.extend(ris_data)
+            parsed = parse_rdf(m)
+            docs.extend(parsed)
 
     screen = []
-    for item in ris:
+    for item in docs:
         screen.append({"DOC ID": item['id'], 'generated': get_record_screen_name(item), "type": item["type_of_reference"]})
     merged = pd.merge(data, pd.DataFrame.from_dict(screen), on="DOC ID")
 
@@ -65,5 +64,3 @@ if __name__ == "__main__":
             f.write(f"- Doc Id: {doc_id}; Reference Type: {reftype}\n")
             f.write(diff + '\n')
             f.write("\n")
-            
-    # item = merged.loc[2][["Screen", "Screen names", "ris"]].to_dict(); print(rispy.dumps([item.pop("ris")])); item

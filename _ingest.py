@@ -2,7 +2,6 @@
 from copy import deepcopy
 import uuid
 import asyncio
-import rispy
 import aiofiles
 
 from bntl import utils
@@ -28,8 +27,7 @@ async def main(paths):
             # read data from file
             async with aiofiles.open(path, 'r') as f:
                 await logger.info("Loading data from file: {}".format(path))
-                ris_data = parse_rdf(await f.read())
-                docs = rispy.loads(ris_data, mapping=utils.RISPY_MAPPING)
+                docs = parse_rdf(await f.read())
 
             # insert documents
             await logger.info("Inserting {} docs from file: {}".format(len(docs), path))

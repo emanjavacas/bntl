@@ -66,10 +66,11 @@ class DBClient():
         return task_update
     
     async def store_vectors(self, task_id, vectors, doc_ids):
-        await self.vectors_coll.bulk_write(
+        stored = await self.vectors_coll.bulk_write(
             [UpdateOne({"task_id": task_id, "doc_id": doc_id, "vector_id": vector_id},
                         {"$set": {"vector": vector}})
                 for vector_id, (doc_id, vector) in enumerate(zip(doc_ids, vectors))])
+        logger.info(stored.bulk_api_result)
         
     async def find_in_batches(self, texts, batch_size=1000):
         result = []
