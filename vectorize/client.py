@@ -89,4 +89,5 @@ async def vectorize(vectors_coll: AsyncIOMotorCollection,
         vectors = await vectors_coll.find(
             {"task_id": task_id}
         ).sort("vector_id", pymongo.DESCENDING).to_list(length=None)
+        await maybe_await(logger.info("Returning {} vectors".format(len(vectors))))
         return [item["vector"] for item in vectors]
