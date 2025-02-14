@@ -1,0 +1,867 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/J884AZNB">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Een pleidooi voor dichterlijke kunde</dcterms:title>
+                <bibo:pages>78</bibo:pages>
+                <bibo:shortTitle>Kuijper, Jan. Antimetrieën: verspreide opstellen. Nijmegen: Flanor, 2024.</bibo:shortTitle>
+                <dcterms:creator rdf:nodeID="n8"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n8"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>48</bibo:volume>
+                        <bibo:issue>3</bibo:issue>
+                        <dcterms:date>2024</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                               <dcterms:title>Poëziekrant</dcterms:title>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Kuijper, Jan</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n11"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n8">
+        <foaf:givenName>Carl de</foaf:givenName>
+        <foaf:surname>Strycker</foaf:surname>
+    </foaf:Person>
+   <ctag:UserTag rdf:nodeID="n11"><ctag:label>recensie</ctag:label></ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/DA29IC84">
+        <res:resource rdf:resource="https://neerlandistiek.nl/2025/01/het-beste-van-boekwinkeltjes-hans-faverey-verzamelde-gedichten-1993/"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Faverey, Hans</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n11"/>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://neerlandistiek.nl/2025/01/het-beste-van-boekwinkeltjes-hans-faverey-verzamelde-gedichten-1993/">
+        <dcterms:title>Het beste van boekwinkeltjes: Hans Faverey, &quot;Verzamelde gedichten&quot; (1993)</dcterms:title>
+        <bibo:shortTitle>Faverey, Hans. Verzamelde gedichten; editieverantwoording Marita Mathijsen. Amsterdam: De Bezige Bij, 1993.</bibo:shortTitle>
+        <bibo:uri>https://neerlandistiek.nl/2025/01/het-beste-van-boekwinkeltjes-hans-faverey-verzamelde-gedichten-1993/</bibo:uri>
+        <dcterms:creator rdf:nodeID="n17"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n17"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 1.01.2025</bibo:volume>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>neerlandistiek.nl</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n17">
+       <foaf:givenName>Helge</foaf:givenName><foaf:surname>Bonset</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/BQ9V9G48">
+        <res:resource rdf:resource="https://www.aup-online.com/content/journals/10.5117/NEDTAA2024.3.001.DIKK"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>-loos</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>accent</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>morfologie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>morfosyntaxis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>nominalisatie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.aup-online.com/content/journals/10.5117/NEDTAA2024.3.001.DIKK">
+        <dcterms:title>Linking morphs, stress and meaning in Dutch complex caritive adjectives</dcterms:title>
+        <dcterms:abstract>P. 287 Abstract; p. 287 Keywords; p. 321-323 References; p. 323-333 Appendix.</dcterms:abstract>
+        <bibo:pages>287-333</bibo:pages>
+        <bibo:doi>10.5117/NEDTAA2024.3.001.DIKK</bibo:doi>
+        <bibo:uri>https://www.aup-online.com/content/journals/10.5117/NEDTAA2024.3.001.DIKK</bibo:uri>
+        <dcterms:creator rdf:nodeID="n25"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n25"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>29</bibo:volume>
+                <bibo:issue>3</bibo:issue>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Nederlandse taalkunde</dcterms:title>
+                        <bibo:issn>1384-5845; 2352-1171</bibo:issn>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n25">
+        <foaf:givenName>Marcel den</foaf:givenName>
+        <foaf:surname>Dikken</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/723TW45F">
+        <res:resource rdf:resource="https://www.mdnl.nl/?p=17133"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Provoost, Anne</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.mdnl.nl/?p=17133">
+        <dcterms:title>Poëzie van nu 105: &quot;Decem&quot; van Anne Provoost</dcterms:title>
+        <dcterms:abstract>Over: Provoost, Anne. Decem: ongelegenheidsgedichten voor asielverstrekkers. Amsterdam: Querido, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.mdnl.nl/?p=17133</bibo:uri>
+        <dcterms:creator rdf:nodeID="n37"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n37"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 7.01.2025</bibo:volume>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Maatschappij der Nederlandse letterkunde</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n37">
+        <foaf:givenName>Mario</foaf:givenName>
+        <foaf:surname>Molegraaf</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/DBCZ4ZUE">
+        <res:resource rdf:resource="https://www.mdnl.nl/?p=17041"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Greyson, Max</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.mdnl.nl/?p=17041">
+        <dcterms:title>Poëzie van nu 103: &quot;Dramaturgie van het loslaten&quot; van Max Greyson</dcterms:title>
+        <dcterms:abstract>Over: Greyson, Max. Dramaturgie van het loslaten: gedichten. Amsterdam: De Arbeiderspers, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.mdnl.nl/?p=17041</bibo:uri>
+        <dcterms:creator rdf:nodeID="n45"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n45"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 20.12.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Maatschappij der Nederlandse letterkunde</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n45">
+        <foaf:givenName>Mario</foaf:givenName>
+        <foaf:surname>Molegraaf</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/RPK5UBTS">
+        <res:resource rdf:resource="https://www.mdnl.nl/?p=17138"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Blinder, Oda</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.mdnl.nl/?p=17138">
+        <dcterms:title>Poëzie van nu 104: &quot;Curaçao bij nacht&quot; van Oda Blinder</dcterms:title>
+        <dcterms:abstract>Over: Blinder, Oda. Curaçao bij nacht. Haarlem: In de Knipscheer, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.mdnl.nl/?p=17138</bibo:uri>
+        <dcterms:creator rdf:nodeID="n53"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n53"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 30.12.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Maatschappij der Nederlandse letterkunde</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n53">
+        <foaf:givenName>Mario</foaf:givenName>
+        <foaf:surname>Molegraaf</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/8SXVQXXV">
+        <res:resource rdf:resource="https://www.dereactor.org/teksten/een-poetica-van-de-schets"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Marissing, Lidy van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.dereactor.org/teksten/een-poetica-van-de-schets">
+        <dcterms:title>Een poëtica van de schets</dcterms:title>
+        <dcterms:abstract>Over: Marissing, Lidy van. De verwerping van het stilzitten. Gent: het balanseer, 2024.
+
+Ook verschenen in Poëziekrant: 48 (2024) 6, 20-21.</dcterms:abstract>
+        <bibo:uri>https://www.dereactor.org/teksten/een-poetica-van-de-schets</bibo:uri>
+        <dcterms:creator rdf:nodeID="n61"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n61"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 27.12.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>De reactor</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n61">
+       <foaf:givenName>Ewoud</foaf:givenName><foaf:surname>Goethals</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/FJPAXBWD">
+        <res:resource rdf:resource="https://www.dereactor.org/teksten/zo-uit-een-roman-gestapt"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Brabant, Stefaan van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.dereactor.org/teksten/zo-uit-een-roman-gestapt">
+        <dcterms:title>Zo uit een roman gestapt</dcterms:title>
+        <dcterms:abstract>Over: Brabant, Stefaan van. Schopenhauer. Amsterdam: Het Zuidelijk Toneel, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.dereactor.org/teksten/zo-uit-een-roman-gestapt</bibo:uri>
+        <dcterms:creator rdf:nodeID="n69"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n69"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 25.12.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>De reactor</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n69">
+        <foaf:givenName>Jane</foaf:givenName>
+        <foaf:surname>Stuhlmacher</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/SJDWXU9B">
+        <res:resource rdf:resource="https://www.dereactor.org/teksten/een-gat-in-de-taal"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Thomése, P. F.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.dereactor.org/teksten/een-gat-in-de-taal">
+        <dcterms:title>Een gat in de taal</dcterms:title>
+        <dcterms:abstract>Over: Thomése, P. F. Black-out: roman. Amsterdam: Prometheus, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.dereactor.org/teksten/een-gat-in-de-taal</bibo:uri>
+        <dcterms:creator rdf:nodeID="n77"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n77"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 18.12.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>De reactor</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n77">
+        <foaf:givenName>Lodewijk</foaf:givenName>
+        <foaf:surname>Verduin</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/XNEN2FPG">
+        <res:resource rdf:resource="https://brill.com/view/journals/qua/53/3-4/article-p311_9.xml"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>boekgeschiedenis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n11"/>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://brill.com/view/journals/qua/53/3-4/article-p311_9.xml">
+        <dcterms:title>[Lux Librorum: essays on books and history for Chris Coppens]</dcterms:title>
+        <bibo:pages>311-313</bibo:pages>
+        <bibo:doi>10.1163/15700690-05303001</bibo:doi>
+        <bibo:shortTitle>Proot, Goran, David McKitterick, Angela Nuovo and Paul F. Gehl (eds.). Lux Librorum: essays on books and history for Chris Coppens. Mechelen: Flanders Book Historical Society, 2018.</bibo:shortTitle>
+        <bibo:uri>https://brill.com/view/journals/qua/53/3-4/article-p311_9.xml</bibo:uri>
+        <dcterms:creator rdf:nodeID="n85"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n85"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>53</bibo:volume>
+                <bibo:issue>3-4</bibo:issue>
+                <dcterms:date>2023</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Quaerendo</dcterms:title>
+                        <bibo:issn>0014-9527, 1570-0690</bibo:issn>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n85">
+        <foaf:givenName>Rindert</foaf:givenName>
+        <foaf:surname>Jagersma</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/BHGZNSTB">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10732"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Clarysse, Johan</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10732">
+        <dcterms:title>Johan Clarysse: Het geduld van water</dcterms:title>
+        <dcterms:abstract>Over: Clarysse, Johan. Het geluid van water. Leuven: P, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10732</bibo:uri>
+        <dcterms:creator rdf:nodeID="n93"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n93"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n93">
+        <foaf:givenName>Yvan de</foaf:givenName>
+        <foaf:surname>Maesschalck</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/SNKSCT9P">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10721"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Delmotte, Alain</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10721">
+        <dcterms:title>Alain Delmotte: Breedschrift</dcterms:title>
+        <dcterms:abstract>Over: Delmotte, Alain. Breedschrift. Leuven: P, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10721</bibo:uri>
+        <dcterms:creator rdf:nodeID="n101"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n101"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n101">
+        <foaf:givenName>Yvan de</foaf:givenName>
+        <foaf:surname>Maesschalck</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/2384RNTV">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10725"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Stouten, Bart</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10725">
+        <dcterms:title>Bart Stouten: Zonde van de hemel</dcterms:title>
+        <dcterms:abstract>Over: Stouten, Bart. Zonde van de hemel. Kalmthout: Pelckmans, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10725</bibo:uri>
+        <dcterms:creator rdf:nodeID="n109"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n109"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n109">
+        <foaf:givenName>Jooris van</foaf:givenName>
+        <foaf:surname>Hulle</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/T2B8QH3P">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10726"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Dumon Tak, Bibi</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10726">
+        <dcterms:title>Bibi Dumon Tak, Annemarie van Haeringen (ill.): Rimpeling</dcterms:title>
+        <dcterms:abstract>Over: Dumon Tak, Bib. Rimpeling. Amsterdam: De Geus, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10726</bibo:uri>
+        <dcterms:creator rdf:nodeID="n117"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n117"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n117">
+       <foaf:givenName>Bea de</foaf:givenName><foaf:surname>Koster</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/VG7MQFS7">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10733"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Oomen, Joost</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10733">
+        <dcterms:title>Joost Oomen: Het paradijs van slapen, of Iemand die met bloemen fietst</dcterms:title>
+        <dcterms:abstract>Over: Oomen, Joost. Het paradijs van slapen, of Iemand die met bloemen fietst: roman. Amsterdam: Querido, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10733</bibo:uri>
+        <dcterms:creator rdf:nodeID="n125"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n125"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n125">
+        <foaf:givenName>Marlies van</foaf:givenName>
+        <foaf:surname>Breda</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/HDWU2IMQ">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10739"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Heerma van Voss, Thomas</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10739">
+        <dcterms:title>Thomas Heerma van Voss: Het Baltisch station. Een treinreis</dcterms:title>
+        <dcterms:abstract>Over: Heerma van Voss, Thomas. Het Baltisch station: een treinreis. Amsterdam: Ambo|Anthos, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10739</bibo:uri>
+        <dcterms:creator rdf:nodeID="n133"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n133"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n133">
+        <foaf:givenName>Lisanne</foaf:givenName>
+        <foaf:surname>Vroomen</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/WDUNTKIB">
+        <res:resource rdf:resource="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10735"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Spit, Lize</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10735">
+        <dcterms:title>Lize Spit: Autobiografie van mijn lichaam</dcterms:title>
+        <dcterms:abstract>Over: Spit, Lize. Autobiografie van mijn lichaam. Amsterdam: Das Mag, 2024.</dcterms:abstract>
+        <bibo:uri>https://mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10735</bibo:uri>
+        <dcterms:creator rdf:nodeID="n141"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n141"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>1</bibo:issue>
+                <dcterms:date>2025</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n141">
+        <foaf:givenName>Jooris van</foaf:givenName>
+        <foaf:surname>Hulle</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/CVINTPRA">
+        <res:resource rdf:resource="https://neerlandistiek.nl/2022/12/een-schoone-historie-van-margarieten-van-limborch-capittels-101-en-102/"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+                <ctag:label>Roman van Heinric en Margriete van Limborch</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>editie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://neerlandistiek.nl/2022/12/een-schoone-historie-van-margarieten-van-limborch-capittels-101-en-102/">
+        <dcterms:title>&quot;Een schoone historie van Margarieten van Limborch : capittels 101 en 102</dcterms:title>
+        <bibo:uri>https://neerlandistiek.nl/2022/12/een-schoone-historie-van-margarieten-van-limborch-capittels-101-en-102/</bibo:uri>
+        <dcterms:creator rdf:nodeID="n149"/>
+        <bibo:authorList>
+            <rdf:Seq>
+               <rdf:li rdf:nodeID="n149"/><rdf:li rdf:nodeID="n151"/>
+            </rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n151"/>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>Geplaatst op 18.12.2022</bibo:volume>
+                <dcterms:date>2022</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>neerlandistiek.nl</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n149">
+        <foaf:givenName>Inge van</foaf:givenName>
+        <foaf:surname>Outryve</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n151">
+       <foaf:givenName>Willem</foaf:givenName><foaf:surname>Kuiper</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/25F22FPT">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Gerrit Krol: 1 augustus 1934-24 november 2013</dcterms:title>
+                <dcterms:abstract>In de rubriek Het einde.</dcterms:abstract>
+                <bibo:pages>66</bibo:pages>
+                <dcterms:creator rdf:nodeID="n160"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n160"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>137</bibo:volume>
+                        <bibo:issue>48</bibo:issue>
+                        <dcterms:date>2013</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>De groene Amsterdammer</dcterms:title>
+                                <bibo:issn>1871-7837</bibo:issn>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Krol, Gerrit</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>in memoriam</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n160">
+       <foaf:givenName>Marcel</foaf:givenName><foaf:surname>Möring</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/NI3759EI">
+        <res:resource rdf:resource="https://www.mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10662"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Wortel, Maartje</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10662">
+        <dcterms:title>Maartje Wortel: Camping</dcterms:title>
+        <dcterms:abstract>Over: Wortel, Maartje. Camping. Amsterdam: Prometheus, 2024.</dcterms:abstract>
+        <bibo:uri>https://www.mappalibri.be/?navigatieid=61&amp;via_navigatieid=17&amp;recensieid=10662</bibo:uri>
+        <dcterms:creator rdf:nodeID="n169"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n169"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:issue>9</bibo:issue>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Mappalibri</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n169">
+        <foaf:givenName>Henk van</foaf:givenName>
+        <foaf:surname>Viegen</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/TN7ETHGH">
+        <res:resource rdf:resource="https://www.tzum.info/2024/10/column-het-is-herman-brusselmans-maar/"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Brusselmans, Herman</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>antisemitisme</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.tzum.info/2024/10/column-het-is-herman-brusselmans-maar/">
+        <dcterms:title>Het is Herman Brusselmans maar</dcterms:title>
+        <dcterms:abstract>Column.</dcterms:abstract>
+        <bibo:uri>https://www.tzum.info/2024/10/column-het-is-herman-brusselmans-maar/</bibo:uri>
+        <dcterms:creator rdf:nodeID="n177"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n177"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>geplaatst op 30.10.2024</bibo:volume>
+                <dcterms:date>2024</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                       <dcterms:title>Tzum</dcterms:title>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n177">
+       <foaf:givenName>Frank van</foaf:givenName><foaf:surname>Dijl</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/4K796C22">
+        <res:resource rdf:resource="https://louiscouperus.nl/bibliotheek/arabesken/arabesken-54-december-2019"/>
+        <ctag:tagged rdf:nodeID="n188"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>boekenbezit</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>opdrachtgever</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>patronaat</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://louiscouperus.nl/bibliotheek/arabesken/arabesken-54-december-2019">
+        <dcterms:title>Louis Couperus en de gesigneerde opdrachten aan Derix de Wild: een belangrijke Nederlandse restaurator</dcterms:title>
+        <dcterms:abstract>P. 21 [Inleiding]; p. 22 Noten.</dcterms:abstract>
+        <bibo:pages>21-22</bibo:pages>
+        <bibo:uri>https://louiscouperus.nl/bibliotheek/arabesken/arabesken-54-december-2019</bibo:uri>
+        <dcterms:creator rdf:nodeID="n186"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n186"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>27</bibo:volume>
+                <bibo:issue>54</bibo:issue>
+                <dcterms:date>2019</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>Arabesken</dcterms:title>
+                        <bibo:issn>1567-8067</bibo:issn>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n186">
+        <foaf:givenName>Evert Paul</foaf:givenName>
+        <foaf:surname>Veltkamp</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n188">
+       <ctag:label>Couperus, Louis</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/Z2F4A5BX">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Een ongepubliceerde brief van Louis Couperus: &quot;Den nutteloozen toeschouwe&quot; geeft zijn mening</dcterms:title>
+                <dcterms:abstract>P. 23 [Inleiding]; p. 26 Noten.</dcterms:abstract>
+                <bibo:pages>23-26</bibo:pages>
+                <bibo:uri>https://louiscouperus.nl/bibliotheek/arabesken/arabesken-54-december-2019</bibo:uri>
+                <dcterms:creator rdf:nodeID="n198"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n198"/><rdf:li rdf:nodeID="n200"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <dcterms:creator rdf:nodeID="n200"/>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>27</bibo:volume>
+                        <bibo:issue>54</bibo:issue>
+                        <dcterms:date>2019</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                                <dcterms:title>Arabesken</dcterms:title>
+                                <bibo:issn>1567-8067</bibo:issn>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged rdf:nodeID="n188"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>brief</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n198">
+       <foaf:givenName>Eric A.</foaf:givenName><foaf:surname>Rooij</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n200">
+       <foaf:givenName>H. T. M.</foaf:givenName><foaf:surname>Vliet</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/SI4WQ4IH">
+        <res:resource rdf:resource="https://www.demaaseikenaar.be/msk2018_4.pdf"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Eyck, Jan van</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Maaseik (dialect)</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:AcademicArticle rdf:about="https://www.demaaseikenaar.be/msk2018_4.pdf">
+        <dcterms:title>Lambert Aerts (1875-1937): een
+vergeten kenner van “De Aanbidding van het Lam Gods” van de gebroeders van Eyck</dcterms:title>
+        <dcterms:abstract>P. 231-232 Eindnoten.</dcterms:abstract>
+        <bibo:pages>225-232</bibo:pages>
+        <bibo:uri>https://www.demaaseikenaar.be/msk2018_4.pdf</bibo:uri>
+        <dcterms:creator rdf:nodeID="n207"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n207"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Issue>
+                <bibo:volume>49</bibo:volume>
+                <bibo:issue>4</bibo:issue>
+                <dcterms:date>2018</dcterms:date>
+                <dcterms:isPartOf>
+                    <bibo:Journal>
+                        <dcterms:title>De Maaseikenaar</dcterms:title>
+                        <bibo:issn>2033-1045</bibo:issn>
+                    </bibo:Journal>
+                </dcterms:isPartOf>
+            </bibo:Issue>
+        </dcterms:isPartOf>
+    </bibo:AcademicArticle>
+    <foaf:Person rdf:nodeID="n207">
+       <foaf:givenName>Jan</foaf:givenName><foaf:surname>Gerits</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/NS4VZDHE">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Een verre vogel</dcterms:title>
+                <bibo:pages>24</bibo:pages>
+                <dcterms:creator rdf:nodeID="n217"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n217"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>20</bibo:volume>
+                        <bibo:issue>1</bibo:issue>
+                        <dcterms:date>1999</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                               <dcterms:title>Alvermenneke</dcterms:title>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged rdf:nodeID="n219"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n217">
+       <foaf:givenName>Jos</foaf:givenName><foaf:surname>Pieters</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n219">
+       <ctag:label>Mesotten, Bart</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/VMTMV7D2">
+        <res:resource>
+            <bibo:AcademicArticle>
+                <dcterms:title>Een mensenleven geleden</dcterms:title>
+                <bibo:pages>9-10</bibo:pages>
+                <dcterms:creator rdf:nodeID="n226"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n226"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:Issue>
+                        <bibo:volume>20</bibo:volume>
+                        <bibo:issue>1</bibo:issue>
+                        <dcterms:date>1999</dcterms:date>
+                        <dcterms:isPartOf>
+                            <bibo:Journal>
+                               <dcterms:title>Alvermenneke</dcterms:title>
+                            </bibo:Journal>
+                        </dcterms:isPartOf>
+                    </bibo:Issue>
+                </dcterms:isPartOf>
+            </bibo:AcademicArticle>
+        </res:resource>
+        <ctag:tagged rdf:nodeID="n219"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n226">
+       <foaf:givenName>Jos</foaf:givenName><foaf:surname>Ghysen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>

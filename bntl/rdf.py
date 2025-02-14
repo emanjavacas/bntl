@@ -5,8 +5,6 @@ from glob import glob
 from lxml import etree
 from tqdm.auto import tqdm
 
-from bntl import utils
-
 
 namespaces = {
     'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -762,6 +760,7 @@ def parse_rdf(rdf_data):
 
 if __name__ == '__main__':
     import argparse
+    import json
     parser = argparse.ArgumentParser()
     parser.add_argument('inputdir')
     parser.add_argument('outdir')

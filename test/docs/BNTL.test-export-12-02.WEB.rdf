@@ -1,0 +1,164 @@
+
+
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/K9LGDHL9">
+        <res:resource rdf:resource="http://irs.ub.rug.nl/ppn/170300307"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>bijzin</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>hoofdzin</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>ja-neevraag</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>semantiek en syntaxis</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>universele grammatica</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>vraagwoordvraag</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n107"/>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="http://irs.ub.rug.nl/ppn/170300307">
+        <dcterms:title>Formalizing the minimalist program</dcterms:title>
+        <dcterms:abstract>Proefschrift Groningen. 
+
+P. 177-184 Bibliography; p. 185-189 Samenvatting.</dcterms:abstract>
+        <bibo:uri>http://irs.ub.rug.nl/ppn/170300307</bibo:uri>
+        <z:extra>Archive Location: Formalizing the minimalist program / Mettina Jolanda Arnoldina Veenstra. - [S.l. : s.n.] ; [Groningen] : [University Library Groningen] [Host], 1998 Datum laatste update: 12-06-1998. - Ook verschenen in gedrukte vorm. - Proefschrift Rijksuniversiteit Groningen. - Met lit. opg. en een samenvatting in het Nederlands.
+Archive: Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:extra>
+        <dcterms:creator rdf:nodeID="n99"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n99"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+           <bibo:Website><dcterms:date>1998</dcterms:date></bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n99">
+        <foaf:givenName>Mettina</foaf:givenName>
+        <foaf:surname>Veenstra</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n107">
+       <ctag:label>woordvolgorde</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/DT9CH6A9">
+        <res:resource rdf:resource="https://research.tilburguniversity.edu/en/publications/extraction-in-dutch-with-lexical-rules"/>
+        <z:accessDate>0053-01-01 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>voorzetselgroep</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n107"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>zinsstructuur</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="https://research.tilburguniversity.edu/en/publications/extraction-in-dutch-with-lexical-rules">
+        <dcterms:title>Extraction in Dutch with lexical rules</dcterms:title>
+        <bibo:uri>https://research.tilburguniversity.edu/en/publications/extraction-in-dutch-with-lexical-rules</bibo:uri>
+        <z:extra>Archive Location: Extraction in Dutch with lexical rules / Gerrrit Rentier. - Tilburg : Tilburg University, Institute for Language Technology and Artificial Intelligence, 1994. -  (ITK research report, ISSN 0924-7807 ; no. 53) Includes bibliographical references.
+Archive: Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:extra>
+        <dcterms:creator rdf:nodeID="n111"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n111"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Website>
+                <dcterms:title>ITK research report</dcterms:title>
+                <dcterms:date>1994</dcterms:date>
+            </bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n111">
+       <foaf:givenName>Gerrit</foaf:givenName><foaf:surname>Rentier</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/UPLTHGHV">
+        <res:resource rdf:resource="http://www.let.rug.nl/~zwart/docs/lin95.pdf"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>West-Vlaanderen</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>hulpwerkwoord</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>modaal werkwoord</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>werkwoordsvolgorde</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>werkwoordverheffing</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="http://www.let.rug.nl/~zwart/docs/lin95.pdf">
+        <dcterms:title>A note on verb clusters in the Stellingwerf dialect</dcterms:title>
+        <dcterms:abstract>Lezing, gehouden op de 26ste jaarvergadering van de Algemene Vereniging voor Taalwetenschap op 21 januari 1995 te Utrecht. 
+
+Ook in gedrukte vorm verschenen in: Linguistics in the Netherlands: (1995) 215-226.</dcterms:abstract>
+        <bibo:uri>http://www.let.rug.nl/~zwart/docs/lin95.pdf</bibo:uri>
+        <z:extra>Archive Location: A note on verb clusters in the Stellingwerf dialect / C. Jan-Wouter Zwart. - Groningen : Rijksuniversiteit Groningen, Faculteit der Letteren, 1999.
+Archive: Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)
+Place: Groningen</z:extra>
+        <dcterms:creator rdf:nodeID="n118"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n118"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+           <bibo:Website><dcterms:date>1999</dcterms:date></bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n118">
+        <foaf:givenName>Jan-Wouter</foaf:givenName>
+        <foaf:surname>Zwart</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/JEA5WGJY">
+        <res:resource rdf:resource="https://research.tilburguniversity.edu/en/publications/a-lexicalist-approach-to-dutch-cross-serial-dependencies"/>
+        <z:accessDate>0050-01-01 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>valentie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>werkwoord</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>werkwoordgroep</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Webpage rdf:about="https://research.tilburguniversity.edu/en/publications/a-lexicalist-approach-to-dutch-cross-serial-dependencies">
+        <dcterms:title>A lexicalist approach to Dutch cross serial dependencies</dcterms:title>
+        <bibo:uri>https://research.tilburguniversity.edu/en/publications/a-lexicalist-approach-to-dutch-cross-serial-dependencies</bibo:uri>
+        <z:extra>Archive Location: A lexicalist approach to Dutch cross serial dependencies / Gerrit Rentier. - Tilburg : Tilburg University, Institute for Language Technology and Artificial Intelligence, 1994. -  (ITK research report, ISSN 0924-7807 ; no. 50) Includes bibliographical references.
+Archive: Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)
+Place: Tilburg</z:extra>
+        <dcterms:creator rdf:nodeID="n128"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n128"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+           <bibo:Website><dcterms:date>1994</dcterms:date></bibo:Website>
+        </dcterms:isPartOf>
+    </bibo:Webpage>
+    <foaf:Person rdf:nodeID="n128">
+       <foaf:givenName>Gerrit</foaf:givenName><foaf:surname>Rentier</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>

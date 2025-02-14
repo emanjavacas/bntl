@@ -1,0 +1,298 @@
+
+
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/JFEE2XKQ">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Kramers talen cd-rom: Engels, Frans, Duits</dcterms:title>
+                <dcterms:abstract>ISBN 90-6882-404-X.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>Elsevier</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2000</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Kramers talen cd-rom : Engels, Frans, Duits / projectleider en hoofdred. Harry Coenders ; red. Edgar Schouten ... [et al.] ; programmeur Bodo Wolf. - Versie 2.0. - Amsterdam : Elsevier, [2000]. - 1 cd-rom. : kleur, geluid + handleiding ([11] p.) Titel van intern label. - Nederlands-, Engels-, Frans- en Duitstalig met Nederlandse handleiding. - 1e versie in 2 cd-roms: 1997. - ISBN 90-6882-404-X.</dcterms:source>
+                <bibo:director rdf:nodeID="n16"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n16"/><rdf:li rdf:nodeID="n18"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n18"/>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Duits-Nederlands</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n20"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Frans-Nederlands</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>vertaalwoordenboeken</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n16">
+       <foaf:givenName>H.</foaf:givenName><foaf:surname>Coenders</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n18">
+       <foaf:givenName>Bodo</foaf:givenName><foaf:surname>Wolf</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n20">
+       <ctag:label>Engels-Nederlands</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/FTAAGSGE">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Kramers Business CD-ROM Engels</dcterms:title>
+                <dcterms:abstract>ISBN 90-6882-403-1.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>Elsevier</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2000</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Kramers business cd-rom Engels / Elsevier bedrijfsinformatie bv, Sander Bekkers ... [et al.] ; Harry Coenders, hoofdred. Kramers woordenboeken, projectleider ; Hanny Demeersseman, red. Kramers woordenboeken ... [et al.] ; Zeres GmbH, Wolf Paprotté, Olaf Noebe, programmeur en projectleider ; lexicografisch materiaal van: The Language Lab, Chris P. Odijk, terminologie op het gebied van Recht ; Stijlgids Engels is een bijdrage van: concept: Koen Gubbels/The Language Lab ; auteurs: Ping Cleton, Daniel Carroll ; eindred.: Ping Cleton. - Versie 1.0. - [Amsterdam] : Elsevier, cop. 2000. - 1 CD-ROM. : kleur + 1 tekst (11 p.) Titel van interne bron. - Ondertitel op doos: Vertaalwoordenboek - Zakentermen - Stijlgids voor vertalers. - ISBN 90-6882-403-1.</dcterms:source>
+                <bibo:director rdf:nodeID="n26"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                        <rdf:li rdf:nodeID="n26"/>
+                        <rdf:li rdf:nodeID="n28"/>
+                        <rdf:li rdf:nodeID="n29"/>
+                        <rdf:li rdf:nodeID="n30"/>
+                        <rdf:li rdf:nodeID="n31"/>
+                        <rdf:li rdf:nodeID="n32"/>
+                        <rdf:li rdf:nodeID="n33"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n28"/>
+                <bibo:director rdf:nodeID="n29"/>
+                <bibo:director rdf:nodeID="n30"/>
+                <bibo:director rdf:nodeID="n31"/>
+                <bibo:director rdf:nodeID="n32"/>
+                <bibo:director rdf:nodeID="n33"/>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged rdf:nodeID="n20"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>economische terminologie</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>vakterminologie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n26">
+        <foaf:givenName>Hanny</foaf:givenName>
+        <foaf:surname>Demeersseman</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n28">
+       <foaf:givenName>Wolf</foaf:givenName><foaf:surname>Paprotté</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n29">
+       <foaf:givenName>Olaf</foaf:givenName><foaf:surname>Noebe</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n30">
+       <foaf:givenName>Chris P.</foaf:givenName><foaf:surname>Odijk</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n31">
+       <foaf:givenName>Koen</foaf:givenName><foaf:surname>Gubbels</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n32">
+       <foaf:givenName>Ping</foaf:givenName><foaf:surname>Cleton</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n33">
+       <foaf:givenName>Daniel</foaf:givenName><foaf:surname>Carroll</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/IU7YUZ66">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Konnex: uitdrukkingen en vaste verbindingen in de Nederlandse taal</dcterms:title>
+                <dcterms:abstract>ISBN 90-06-81129-7.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>ThiemeMeulenhoff</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2004</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Konnex : uitdrukkingen en vaste verbindingen in de Nederlandse taal / [Ruud Stumpel ... et al. ; red. Penta Taal]. - Versie 1.0. - Utrecht [etc.] : ThiemeMeulenhoff, cop. 2004. - 1 cd-rom. : geluid + handleiding (51 p.) ISBN 90-06-81129-7.</dcterms:source>
+                <bibo:lccn>P. de Kleijn in: Neerl. muros: 43 (2005) 1, 50-56.</bibo:lccn>
+                <z:extra>Place: Utrecht [etc.]</z:extra>
+                <bibo:director rdf:nodeID="n39"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n39"/><rdf:li rdf:nodeID="n41"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n41"/>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Nederlands als tweede taal</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>fraseologismen</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n39">
+       <foaf:givenName>Ruud</foaf:givenName><foaf:surname>Stumpel</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n41">
+       <foaf:givenName>Penta</foaf:givenName><foaf:surname>Taal</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/6PZ7DFBY">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Karel van het Reve leest Luisteraars!</dcterms:title>
+                <dcterms:abstract>ISBN 978-90-28260-00-9 
+
+Columns, gelezen tussen 1921-1999 voor Radio Nederland Wereldomroep. Gedeeltelijk niet eerder gepubliceerd. 3 compact discs.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>Van Oorschot</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2007</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Karel van het Reve leest Luisteraars!. Amsterdam: Van Oorschot, 2007.</dcterms:source>
+                <z:extra>ISBN: 978-90-28260-00-9</z:extra>
+                <bibo:director rdf:nodeID="n47"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n47"/></rdf:Seq>
+                </bibo:authorList>
+            </bibo:Film>
+        </res:resource>
+        <z:accessDate>2007-12-06 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Reve, Karel van het</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>essay</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+   <foaf:Person rdf:nodeID="n47"><foaf:surname>S.n.</foaf:surname></foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/SICE9A37">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Go Dutch!: a language course on CD-ROM</dcterms:title>
+                <dcterms:abstract>ISBN 90-6283-359-4.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>Coutinho</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2003</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Go Dutch! : a language course on CD-ROM / Rita Devos ... [et al.]. - Bussum : Coutinho, cop. 2003. - 1 cd-rom. : kleur, geluid + handleiding (15 p.) Titel afkomstig van label. - Production of the Instituut voor Levende Talen, K.U. Leuven in collab. with Universitair Talencentrum, Universiteit van Tilburg. - Created within the European Commission funded Small is Beautiful project. - Engels- en Nederlandstalig. - ISBN 90-6283-359-4.</dcterms:source>
+                <bibo:lccn>Stephen Vousden, Jack Nichols in: Dutch crossing: 28 (2004) 1-2, 184-188 | P. de Kleijn in: Neerl. muros: 43 (2005) 1, 50-56.</bibo:lccn>
+                <z:extra>Edition: cop. 2003
+Place: Bussum</z:extra>
+                <bibo:director rdf:nodeID="n54"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n54"/></rdf:Seq>
+                </bibo:authorList>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Nederlands als vreemde taal</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n54">
+       <foaf:givenName>Rita</foaf:givenName><foaf:surname>Devos</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/BHQXS8JP">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Gebrandmerkte oude meervouden in taal en tekst</dcterms:title>
+                <dcterms:abstract>ISBN 90-72474-54-6. 
+
+Behoort tot de reeks &quot;Bouwstenen op het gebied van de Nederlandse naamkunde, dialectologie en filologie&quot; (ISSN 1374-2094; nummer 8).</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <foaf:name>Koninklijke Academie voor Nederlandse Taal- en Letterkunde</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2004</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Paardekooper, P. C. Gebrandmerkte oude meervouden in taal en tekst. Gent: Koninklijke Academie voor Nederlandse Taal- en Letterkunde, [2004]. 1 CD-Rom. (Bouwstenen op het gebied van de Nederlandse naamkunde, dialectologie en filologie, ISSN 1374-2094; nr. 8).</dcterms:source>
+                <z:extra>ISBN: 90-72474-54-6
+Place: Gent
+Publication Title: Bouwstenen op het gebied van de Nederlandse naamkunde, dialectologie en filologie
+8</z:extra>
+                <bibo:director rdf:nodeID="n60"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n60"/></rdf:Seq>
+                </bibo:authorList>
+            </bibo:Film>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>West-Vlaanderen</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>contrastief Afrikaans</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>meervoud</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n60">
+        <foaf:givenName>P. C.</foaf:givenName>
+        <foaf:surname>Paardekooper</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/MW3CG87K">
+        <res:resource>
+            <bibo:Film>
+                <dcterms:title>Etymologie-DVD: woordgeschiedenis: 40 etymologische titels, van 1818 tot 2001</dcterms:title>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                       <foaf:name>Genootschap Onze Taal</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2007</dcterms:date>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Genootschap Onze Taal, Stichting Historic Future. Etymologie-DVD: woordgeschiedenis: 40 etymologische titels, van 1818 tot 2001 (12.378 pagina's). Den Haag: Genootschap Onze Taal; Haarlem: WoordWerk, 2007. 1 dvd.</dcterms:source>
+                <z:extra>Place: Den Haag: Genootschap Onze Taal; Haarlem: WoordWerk</z:extra>
+                <bibo:director rdf:nodeID="n68"/>
+                <bibo:authorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n68"/><rdf:li rdf:nodeID="n70"/>
+                    </rdf:Seq>
+                </bibo:authorList>
+                <bibo:director rdf:nodeID="n70"/>
+            </bibo:Film>
+        </res:resource>
+        <z:accessDate>2009-12-14 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>etymologie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Organization rdf:nodeID="n68">
+       <foaf:name>Genootschap Onze Taal</foaf:name>
+    </foaf:Organization>
+    <foaf:Organization rdf:nodeID="n70">
+       <foaf:name>Stichitng Historic Future</foaf:name>
+    </foaf:Organization>
+</rdf:RDF>

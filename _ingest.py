@@ -43,7 +43,7 @@ async def main(paths):
                 if text := convert_to_text(doc["document"]):
                     texts.append(text)
                     doc_ids.append(doc["document"]["id"])
-            task_id = str(uuid.uuid4())
+            task_id = utils.generate_id()
             vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
 
             # insert to qdrant

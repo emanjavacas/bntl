@@ -1,4 +1,5 @@
 
+import uuid
 import os
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -18,6 +19,10 @@ RISPY_MAPPING["SV"] = "series_volume"
 
 
 def identity(item): return item
+
+
+def generate_id():
+    return str(uuid.uuid4())
 
 
 def get_doc_text(doc) -> Dict[str, str]:

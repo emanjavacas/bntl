@@ -1,0 +1,386 @@
+
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/6PEJ8JT9">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>De onfortuinlijke keuzes van een cultuurpessimist: oorlog en bevrijding voor Roel Houwink</dcterms:title>
+                <dcterms:abstract>P. 109-111 Noten.</dcterms:abstract>
+                <bibo:pages>102-111</bibo:pages>
+                <dcterms:creator rdf:nodeID="n4"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n4"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Jan Campert-Stichting Jaarboek</dcterms:title>
+                        <dcterms:date>2021</dcterms:date>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Houwink, Roel</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n4">
+        <foaf:givenName>Bertram</foaf:givenName>
+        <foaf:surname>Mourits</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n7">
+       <ctag:label>Tweede Wereldoorlog</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/ZHHZERCI">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Bevrijd?: 1945 door joodse ogen</dcterms:title>
+                <dcterms:abstract>P. 95 Noten; p. 96 Literatuur.</dcterms:abstract>
+                <bibo:pages>88-96</bibo:pages>
+                <dcterms:creator rdf:nodeID="n12"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n12"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Jan Campert-Stichting Jaarboek</dcterms:title>
+                        <dcterms:date>2021</dcterms:date>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Burnier, Andreas</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Durlacher, G. L.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Herzberg, Abel J.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Minco, Marga</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n12">
+       <foaf:givenName>Yra van</foaf:givenName><foaf:surname>Dijk</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/6WF4EG5Q">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>De niet-miezerige mens: over Guus Kuijer en de humanisering van het cristendom</dcterms:title>
+                <bibo:pages>49-67</bibo:pages>
+                <dcterms:creator rdf:nodeID="n22"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n22"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Jan Campert-Stichting Jaarboek</dcterms:title>
+                        <dcterms:date>2021</dcterms:date>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Constantijn Huygensprijs 2020</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Kuijer, Guus</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n22">
+       <foaf:givenName>Arnon</foaf:givenName><foaf:surname>Grunberg</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/362KGDWV">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Er is een plek waar altijd poëzie overblijft: over &quot;Grondwater&quot; van Piet Gerbrandy</dcterms:title>
+                <dcterms:abstract>Gerbrandy, Piet. Grondwater: beschouwingen over literatuur en existentie. Amsterdam: Atlas Contact, 2018.</dcterms:abstract>
+                <bibo:pages>37-45</bibo:pages>
+                <dcterms:creator rdf:nodeID="n30"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n30"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Jan Campert-Stichting Jaarboek</dcterms:title>
+                        <dcterms:date>2021</dcterms:date>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Gerbrandy, Piet</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>J. Greshoffprijs 2020</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n30">
+        <foaf:givenName>Bertram</foaf:givenName>
+        <foaf:surname>Mourits</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/NQZTA3K3">
+       <res:resource rdf:resource="urn:isbn:978-90-47432-22-7"/>
+    </z:UserItem>
+    <bibo:BookSection rdf:about="urn:isbn:978-90-47432-22-7">
+        <dcterms:title>Dutch art and the Hudson Valley patroon painters</dcterms:title>
+        <bibo:pages>25–57</bibo:pages>
+        <dcterms:creator rdf:nodeID="n38"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n38"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:EditedBook>
+                <dcterms:title>Going Dutch: the Dutch presence in America, 1609-2009</dcterms:title>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>Leiden; Bosten</address:localityName>
+                        <foaf:name>Brill</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2010</dcterms:date>
+                <bibo:isbn13>978-90-47432-22-7</bibo:isbn13>
+                <bibo:editor rdf:nodeID="n40"/>
+                <bibo:editorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n40"/></rdf:Seq>
+                </bibo:editorList>
+                <dcterms:isPartOf>
+                    <bibo:Series>
+                        <dcterms:title>Atlantic world</dcterms:title>
+                        <bibo:number>15</bibo:number>
+                    </bibo:Series>
+                </dcterms:isPartOf>
+            </bibo:EditedBook>
+        </dcterms:isPartOf>
+    </bibo:BookSection>
+    <foaf:Person rdf:nodeID="n38">
+        <foaf:givenName>Louisa</foaf:givenName>
+        <foaf:surname>Wood Ruby</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n40">
+        <foaf:givenName>Joyce D.</foaf:givenName>
+        <foaf:surname>Goodfriend</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/ZZU5WFMZ">
+        <res:resource rdf:resource="urn:isbn:978-3-947879-30-4"/>
+        <z:repository>K10plus ISBN</z:repository>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Coornhert, Dirck Volckertsz</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Passe, Crispijn van de (jr.)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n53"/>
+        <ctag:tagged rdf:nodeID="n54"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>prostitutie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:BookSection rdf:about="urn:isbn:978-3-947879-30-4">
+        <dcterms:title>&quot;Eine Strafe, bitterer als der Tod”: Die Amsterdamer Zuchthäuser Rasphuis  und Spinhuis als Orte der Sozialdisziplinierung</dcterms:title>
+        <bibo:pages>215-237</bibo:pages>
+        <dcterms:creator rdf:nodeID="n48"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n48"/><rdf:li rdf:nodeID="n50"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n50"/>
+        <dcterms:isPartOf>
+            <bibo:EditedBook>
+                <dcterms:title>Rembrandts Amsterdam: Goldene Zeiten?</dcterms:title>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>München</address:localityName>
+                        <foaf:name>Hirmer</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2024</dcterms:date>
+                <bibo:isbn13>978-3-947879-30-4</bibo:isbn13>
+                <bibo:editor rdf:nodeID="n46"/>
+                <bibo:editorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n46"/></rdf:Seq>
+                </bibo:editorList>
+            </bibo:EditedBook>
+        </dcterms:isPartOf>
+    </bibo:BookSection>
+    <foaf:Person rdf:nodeID="n46">
+       <foaf:givenName>Jochen</foaf:givenName><foaf:surname>Sander</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n48">
+       <foaf:givenName>Kambis</foaf:givenName><foaf:surname>Zahedi</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n50">
+       <foaf:givenName>Jochen</foaf:givenName><foaf:surname>Sander</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n53">
+       <ctag:label>Rembrandt</ctag:label>
+    </ctag:UserTag>
+    <ctag:UserTag rdf:nodeID="n54">
+       <ctag:label>niet in autopsie</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/5SWAUMW3">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Bettler, Bedürftige, Vagabunden: Rembrandts Radierungen</dcterms:title>
+                <bibo:pages>191-213</bibo:pages>
+                <dcterms:creator rdf:nodeID="n63"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n63"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Rembrandts Amsterdam: Goldene Zeiten?</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>München</address:localityName>
+                                <foaf:name>Hirmer</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>2024</dcterms:date>
+                        <bibo:isbn13>978-3-947879-30-4</bibo:isbn13>
+                        <bibo:editor rdf:nodeID="n61"/>
+                        <bibo:editorList>
+                           <rdf:Seq><rdf:li rdf:nodeID="n61"/></rdf:Seq>
+                        </bibo:editorList>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <z:repository>K10plus ISBN</z:repository>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Hoogstraten, Samuel van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Houbraken, Arnold</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Huygens, Constantijn</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n53"/>
+        <ctag:tagged rdf:nodeID="n54"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n61">
+       <foaf:givenName>Jochen</foaf:givenName><foaf:surname>Sander</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n63">
+       <foaf:givenName>Astrid</foaf:givenName><foaf:surname>Reuter</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/UCRFEJSZ">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>Für wen und weshalb: zu Ursprung und Sinnhaftigkeit des Begriffs &quot;Gouden Eeuw&quot;</dcterms:title>
+                <bibo:pages>43-51</bibo:pages>
+                <dcterms:creator rdf:nodeID="n75"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n75"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Rembrandts Amsterdam: Goldene Zeiten?</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>München</address:localityName>
+                                <foaf:name>Hirmer</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>2024</dcterms:date>
+                        <bibo:isbn13>978-3-947879-30-4</bibo:isbn13>
+                        <bibo:editor rdf:nodeID="n73"/>
+                        <bibo:editorList>
+                           <rdf:Seq><rdf:li rdf:nodeID="n73"/></rdf:Seq>
+                        </bibo:editorList>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <z:repository>K10plus ISBN</z:repository>
+        <ctag:tagged rdf:nodeID="n53"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Vondel, Joost van den</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n54"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n73">
+       <foaf:givenName>Jochen</foaf:givenName><foaf:surname>Sander</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n75">
+        <foaf:givenName>Tom van der</foaf:givenName>
+        <foaf:surname>Molen</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/ZBDBDGNX">
+        <res:resource>
+            <bibo:BookSection>
+                <dcterms:title>So Malerisch gedacht, so  swunghaft in der Bewegung”: Rembransts Nachtwache und das Amsterdamer Schützenstück des 17. Jahrhunderts</dcterms:title>
+                <bibo:pages>117-133</bibo:pages>
+                <dcterms:creator rdf:nodeID="n85"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n85"/></rdf:Seq>
+                </bibo:authorList>
+                <dcterms:isPartOf>
+                    <bibo:EditedBook>
+                        <dcterms:title>Rembrandts Amsterdam: Goldene Zeiten?</dcterms:title>
+                        <dcterms:publisher>
+                            <foaf:Organization>
+                                <address:localityName>München</address:localityName>
+                                <foaf:name>Hirmer</foaf:name>
+                            </foaf:Organization>
+                        </dcterms:publisher>
+                        <dcterms:date>2024</dcterms:date>
+                        <bibo:isbn13>978-3-947879-30-4</bibo:isbn13>
+                        <bibo:editor rdf:nodeID="n83"/>
+                        <bibo:editorList>
+                           <rdf:Seq><rdf:li rdf:nodeID="n83"/></rdf:Seq>
+                        </bibo:editorList>
+                    </bibo:EditedBook>
+                </dcterms:isPartOf>
+            </bibo:BookSection>
+        </res:resource>
+        <z:repository>K10plus ISBN</z:repository>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Busken Huet, Conrad</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Gouden Eeuw</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Huizinga, Johan</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Vos, Jan</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n54"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n83">
+       <foaf:givenName>Jochen</foaf:givenName><foaf:surname>Sander</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n85">
+        <foaf:givenName>Tom van der</foaf:givenName>
+        <foaf:surname>Molen</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>

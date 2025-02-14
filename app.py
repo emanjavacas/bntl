@@ -7,7 +7,6 @@ from typing import List, get_args
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
-import uuid
 import humanize
 import aiofiles
 import rispy
@@ -97,7 +96,7 @@ async def add_session_id_cookie(request: Request, call_next):
     """
     session_id = request.cookies.get("session_id")
     if not session_id:
-        session_id = str(uuid.uuid4())
+        session_id = utils.generate_id()
     response = await call_next(request)
     response.set_cookie(key="session_id", value=session_id, httponly=True, samesite="Lax")
     return response
@@ -437,7 +436,7 @@ async def vectorize(background_tasks: BackgroundTasks):
         last_status = last_task["current_status"]
         if not VectorizationStatus.is_done(last_status["status"]):
             raise HTTPException(status_code=409, detail="Service is busy, another task is running")
-    task_id = str(uuid.uuid4())
+    task_id = utils.generate_id()
     await app.state.db_client.register_vectorization(task_id, VectorizationStatus.VECTORIZING)
     background_tasks.add_task(vectorize_task, app.state.db_client, app.state.vector_client, task_id)
     return {"status": "ok", "taskId": task_id}

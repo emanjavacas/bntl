@@ -1,0 +1,657 @@
+
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/IS7RRX92">
+        <res:resource rdf:resource="urn:isbn:1377-8455"/>
+        <z:accessDate>2020-03-09 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n6"/>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:1377-8455">
+        <dcterms:title>Stijn Streuvels!</dcterms:title>
+        <dcterms:abstract>P. 3 Geachte, beste, lieve lezer, door Nele Hendrickx.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Antwerpen</address:localityName>
+                <foaf:name>Letterenhuis</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2019</dcterms:date>
+        <bibo:numPages>95</bibo:numPages>
+        <bibo:isbn13>1377-8455</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Antwerpen: Letterenhuis, 2019. 95 p. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug). ARTIKELS: Vandemeulebroecke, Leentje. Grootvader, Ze kennen u niet die mijn spelend vers op vleugels droeg. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 6-17. | Huet, Leen. Geachte heer Streuvels. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 18-23. | Cornilly, Jeroen. Investeren in stenen en cement: Stijn Streuvels en zijn Lijsternest. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 24-33. | Jacques, Thomas. Streuvels fotografeert zijn personages. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 34-39. | Smedt, Marcel de. Stijn Streuvels' briefwisseling. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 40-51. | Vandevoorde, Hans. Van hazegrauwte en hazedoezel: tweede Yvegemse brief over de winter. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 58-64. | Cornilly, Jeroen. Een doorschoten boek voor het museum. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 66-74. | Jacques, Thomas. Zachtjes ter go gegaan. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 75-83. | Cornilly, Jeroen. Prutske en andere aanwinsten. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 84-91. | Smedt, Marcel de &amp; Karel Platteau. Het Stijn Streuvelsgenootschap. In: Stijn Streuvels!; redactie Jeroen Cornilly, Thomas Jacques, Jan Robert. Themanummer van: Zuurvrij (Antwerpen): (2019) (aug) 92-94.</dcterms:source>
+        <bibo:editor rdf:nodeID="n2"/>
+        <bibo:editorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n2"/>
+                <rdf:li rdf:nodeID="n4"/>
+                <rdf:li rdf:nodeID="n5"/>
+            </rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n4"/>
+        <bibo:editor rdf:nodeID="n5"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Zuurvrij</dcterms:title>
+                <bibo:number>2019</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n2">
+        <foaf:givenName>Jeroen</foaf:givenName>
+        <foaf:surname>Cornilly</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n4">
+       <foaf:givenName>Thomas</foaf:givenName><foaf:surname>Jacques</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n5">
+       <foaf:givenName>Jan</foaf:givenName><foaf:surname>Robert</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n6">
+       <ctag:label>Streuvels, Stijn</ctag:label>
+    </ctag:UserTag>
+    <ctag:UserTag rdf:nodeID="n7">
+       <ctag:label>speciaal nummer</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/ZJQD9PHR">
+        <res:resource rdf:resource="urn:isbn:2032-3727"/>
+        <z:accessDate>2012-01-12 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Halle</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:2032-3727">
+        <dcterms:title>Zuidwestbrabants Museum Halle: de schatten van 2010: selectie uit de recente aanwinsten</dcterms:title>
+        <dcterms:abstract>P. 1 Intro, door Raymond Clement.</dcterms:abstract>
+        <bibo:volume>33</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Halle</address:localityName>
+                <foaf:name>Koninklijke Geschied- en Oudheidkundige Kring</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2011</dcterms:date>
+        <bibo:numPages>44</bibo:numPages>
+        <bibo:isbn13>2032-3727</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>François, Peter, Marcel Franssens. Zuidwestbrabants Museum Halle: de schatten van 2010: selectie uit de recente aanwinsten. Halle: Koninklijke Geschied- en Oudheidkundige Kring. 44 p. Speciaal nr. van: Hallensia (Halle): 33 (2011) 2 (apr-juni). ARTIKELS: François, Peter. Catalogus: De schatten van 2010: selectie uit de recente aanwinsten: Zuidwestbrabants Museum Halle, 1 mei - 31 oktober 2010. In: François, Peter, Marcel Franssens. Zuidwestbrabants Museum Halle: de schatten van 2010: selectie uit de recente aanwinsten. Speciaal nr. van: Hallensia (Halle): 33 (2011) 2 (apr-juni) 2-24.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n10"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n10"/><rdf:li rdf:nodeID="n12"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n12"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Hallensia</dcterms:title>
+                <bibo:number>2</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n10">
+       <foaf:givenName>Peter</foaf:givenName><foaf:surname>François</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n12">
+        <foaf:givenName>Marcel</foaf:givenName>
+        <foaf:surname>Franssens</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/PQAFCEN6">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/_lit006201001_01/"/>
+        <z:accessDate>2011-08-11 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>beeldvorming</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>literatuur en religie</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>zien</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/_lit006201001_01/">
+        <dcterms:title>Zien</dcterms:title>
+        <dcterms:abstract>Gedichten van: Henk Knol, Chrétien Breukers, Greetje Kruidhof, Hilde Bosma, Jan de Bas, Alexander Baneman, Liesbeth Goedbloed, Mart van der Hiele, Rikkert Zuiderveld, Wim Hofman, Eelke van Es, Hedwig Selles, Len Borgdorff, Koos Geerds en Menno van der Beek; een opstel van Len Borgdorff, een literaire analyse van Door Brouns-Wewerinke, bijdragen van Renata Barnard en Gerda van de Haar, en recensies van Coen van Alphen, Menno van der Beek, Len Borgdorff, Hilde Bosma, Teunis BuntMarianne Dingemanse, Janneke de Jong, Elizabeth Kooman en Marlies Verwoerd.</dcterms:abstract>
+        <bibo:volume>13</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Rotterdam</address:localityName>
+                <foaf:name>Stichting Liter</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2010</dcterms:date>
+        <bibo:isbn13>1388-3143</bibo:isbn13>
+        <bibo:uri>https://www.dbnl.org/tekst/_lit006201001_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Zien; redactie: Coen van Alphen, Menno van der Beek, Len Borgdorff, Hilde Bosma, Steven van der Gaauw (vormgeving), Gerda van de Haar, Elizabeth Kooman, Marlies Verwoerd. Rotterdam: Stichting Liter, 2010. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec). ARTIKELS: Haar, Gerda van de. Ik zie oogbollen en ik voel iets, hoe komt dat?: Oek de Jong herlezen 1 - over &quot;Opwaaiende zomerjurken&quot; (1979). In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 46-49. | Beek, Menno van der. Blessed be all metrical rules. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 64-65. | Bosma, Hilde. Hij keek en hij keek en hij keek. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 68. | Dingemanse, Marianne. Kijken als een kind. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 70-72. | Jong, Janneke de. Gezien worden doet opleven. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 72-73. | Kooman, Elizabeth. Bewust zijn. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec), 73-75. | Verwoerd, Marlies. Over alles wat we zien en niet zien of heel misschien wel. In: Zien; redactie: Coen van Alphen ... [et al.]. Speciaal nummer van: Liter (Zoetermeer): 13 (2010) 60 (dec) 76-78.</dcterms:source>
+        <bibo:editor rdf:nodeID="n16"/>
+        <bibo:editorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n16"/>
+                <rdf:li rdf:nodeID="n18"/>
+                <rdf:li rdf:nodeID="n19"/>
+                <rdf:li rdf:nodeID="n20"/>
+                <rdf:li rdf:nodeID="n21"/>
+                <rdf:li rdf:nodeID="n22"/>
+                <rdf:li rdf:nodeID="n23"/>
+                <rdf:li rdf:nodeID="n24"/>
+            </rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n18"/>
+        <bibo:editor rdf:nodeID="n19"/>
+        <bibo:editor rdf:nodeID="n20"/>
+        <bibo:editor rdf:nodeID="n21"/>
+        <bibo:editor rdf:nodeID="n22"/>
+        <bibo:editor rdf:nodeID="n23"/>
+        <bibo:editor rdf:nodeID="n24"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+               <dcterms:title>Liter</dcterms:title><bibo:number>60</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n16">
+        <foaf:givenName>Coen van</foaf:givenName>
+        <foaf:surname>Alphen</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n18">
+        <foaf:givenName>Menno van der</foaf:givenName>
+        <foaf:surname>Beek</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n19">
+       <foaf:givenName>Len</foaf:givenName><foaf:surname>Borgdorff</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n20">
+       <foaf:givenName>Hilde</foaf:givenName><foaf:surname>Bosma</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n21">
+        <foaf:givenName>Steven van der</foaf:givenName>
+        <foaf:surname>Gaauw</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n22">
+        <foaf:givenName>Gerda van der</foaf:givenName>
+        <foaf:surname>Haar</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n23">
+        <foaf:givenName>Elizabeth</foaf:givenName>
+        <foaf:surname>Kooman</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n24">
+        <foaf:givenName>Marlies</foaf:givenName>
+        <foaf:surname>Verwoerd</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/2VRGBEA8">
+        <res:resource rdf:resource="urn:isbn:0165-5094"/>
+        <z:accessDate>2024-01-16 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n32"/>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:0165-5094">
+        <dcterms:title>Writers Unlimited Winternachtenspecial 2014</dcterms:title>
+        <dcterms:abstract>P. 4-5 Woord vooraf, door Judith Uyterlinde.</dcterms:abstract>
+        <bibo:volume>58</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Van Oorschot</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2014</dcterms:date>
+        <bibo:numPages>113</bibo:numPages>
+        <bibo:isbn13>0165-5094</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Writers unlimited winternachtenspecial 2014. Amsterdam: Van Oorschot 113 p. Speciaal nummer van: Tirade (Amsterdam): 58 (2014) (jan) [=452] 6-119.</dcterms:source>
+        <bibo:editor rdf:nodeID="n30"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n30"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+               <dcterms:title>Tirade</dcterms:title><bibo:number>452</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n30">
+       <foaf:surname>Redactie Tirade</foaf:surname>
+    </foaf:Person>
+    <ctag:UserTag rdf:nodeID="n32">
+       <ctag:label>bloemlezing</ctag:label>
+    </ctag:UserTag>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/XMJZ8EA8">
+        <res:resource>
+            <bibo:Book>
+                <dcterms:title>Winternachtenspecial 2015</dcterms:title>
+                <dcterms:abstract>P. 4-5 Twintig winters wereldliteratuur: ter inleiding van dit nummer, door Judith Uyterlinde.</dcterms:abstract>
+                <bibo:volume>59</bibo:volume>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>Amsterdam</address:localityName>
+                        <foaf:name>Van Oorschot</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2015</dcterms:date>
+                <bibo:numPages>89</bibo:numPages>
+                <bibo:isbn13>0165-5094</bibo:isbn13>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Writers unlimited winternachtenspecial 2015. Amsterdam: Van Oorschot. 89 p. Speciaal nummer van: Tirade (Amsterdam): 59 (2015) (jan) [=457] 4-93.</dcterms:source>
+                <bibo:editor rdf:nodeID="n36"/>
+                <bibo:editorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n36"/></rdf:Seq>
+                </bibo:editorList>
+                <dcterms:isPartOf>
+                    <bibo:Series>
+                        <dcterms:title>Tirade</dcterms:title>
+                        <bibo:number>457</bibo:number>
+                    </bibo:Series>
+                </dcterms:isPartOf>
+            </bibo:Book>
+        </res:resource>
+        <z:accessDate>2024-01-16 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n32"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>essay</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n36">
+       <foaf:surname>Redactie Tirade</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/5FZJ2GJX">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/_par009201401_01/"/>
+        <z:accessDate>2017-04-10 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Lehmann, L. Th.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/_par009201401_01/">
+        <dcterms:title>Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler</dcterms:title>
+        <dcterms:abstract>P. 3 Bij dit nummer: inleiding door de redactie. Met literaire bijdragen van Erik Bindervoet, Remco Campert, Anneke Brassinga, Ilse Starkenburg, Laurens Vancrevel &amp; Pieter Schermer.</dcterms:abstract>
+        <bibo:volume>19</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Stichting Het Oof in 't Zeil</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2014</dcterms:date>
+        <bibo:numPages>163</bibo:numPages>
+        <bibo:isbn13>1384-6280</bibo:isbn13>
+        <bibo:uri>https://www.dbnl.org/tekst/_par009201401_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Amsterdam: Stichting Het Oof in 't Zeil, 2014. 163 p. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5. ARTIKELS: Bent, Jaap van der. Tussen alle bewegingen steeds in beweging: leven en werk van Louis Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 15-22. | Vancrevel, Laurens. &quot;Wat dat surrealisme betekent weet niemand. Maar het is zeer amusant&quot;: L. Th. Lehmann als surrealist. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 36-46. | Bruinja, Tsead. Elizabeth Taylor op de roltrap: collage van een onvoltooid gedicht. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 47-51. | Boef, August Hans den. &quot;Is Louis Lehmann still alive?&quot;: L. Th. Lehmann en de bloeitijd van de popcultuur. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 52-63. | Beekhuis, Alida &amp; Marsha Keja. Een naïeve componist: Guus Janssen over de muziek van Louis Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 64-68. | Bent, Jaap van der. Liever geen literaire Cadillacs: Louis Lehmann bespreekt het buitenlandse boek. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 70-81. | Boxsel, Matthijs van. De lallende Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 82-89. | Keja, Marsha. &quot;Gij zult niet bloemlezen!&quot;: Louis Lehmann in brieven. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 90-98. | Noordhoek, Wim. Lof der nieuwsgierigheid. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 100-104. | Adelaar, Dick. De alleskunner: de collages van Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 105-107. | Brands, Wim. Heel? In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 108. | Calis, Piet. De dans van Louis. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 109. | Faassen, Sjoerd van. &quot;Ik heb nooit kunnen inzien waarom de maan iets pöeties zou zijn&quot;: L. Th. Lehmann en &quot;Criterium&quot;. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 114-126. | Plomp, Hans. Louis Lehmann in Ruigoord. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 129-132. | Noordhoek, Wim. &quot;Overschie is geen dorp midden in Siberië of Tibet&quot;: een interview met Louis Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 136-143. | Deel, T. van. Lehmann-flarden. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 145-149. | Hinrichs, Jan Paul. De Gouden Reaal: huisuitgeverij van L. Th. Lehmann. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 150-151. | Hinrichs, Jan Paul. Utrechtse bohème: Jacques Boersma en Theo F. den Heijer. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 153-154. | Olink, Hans. Een mens valt uit Duitsland. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 153-154. | Goede, Anton de. Ivan Sitniakowsky: &quot;ik wilde nooit met iets anders dan met literatuur te maken hebben&quot;. In: Wie is L. Th. Lehmann?: dichter, prozaïst, essayist, criticus, jurist, scheepsarcheoloog, muzikant, tekenaar, danser, componist, vertaler. Speciaal nummer van: De parelduiker (Amsterdam): 19 (2014) 4-5, 160-163.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n41"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n41"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>De parelduiker</dcterms:title>
+                <bibo:number>4-5</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n41">
+       <foaf:surname>Redactie De Parelduiker</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/VAKSSWUM">
+        <res:resource rdf:resource="https://www.aup-online.com/content/journals/00398691/64/1"/>
+        <z:accessDate>2013-11-19 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n7"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>syntaxis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>werkwoordsvolgorde</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>zinsstructuur</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.aup-online.com/content/journals/00398691/64/1">
+        <dcterms:title>Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin</dcterms:title>
+        <dcterms:abstract>P. 1-9 Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin: inleiding, door Hans Bennis &amp; Evie Coussé (p. 8-9 Bibliografie).</dcterms:abstract>
+        <bibo:volume>64</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Amsterdam University Press</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2012</dcterms:date>
+        <bibo:numPages>156</bibo:numPages>
+        <bibo:isbn13>0039-8691</bibo:isbn13>
+        <bibo:uri>https://www.aup-online.com/content/journals/00398691/64/1</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Amsterdam: Amsterdam University Press. 156 p. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1. ARTIKELS: Boonen, Ute. Volgordevariatie in twee- en meerledige hypotactische en paratactische werkwoordclusters in Middelnederlandse oorkonden. In: Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1, 11-40. | Versloot, Arjen, Hanneke Hengst &amp; Marjan Huisman. Werkwoordvolgordes in het Amsterdams van de 17e eeuw. In: Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1, 41-71. | Coussé, Evie &amp; Gert De Sutter. De historische wortels van de rode en groene volgorde in het Nederlands. In: Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1, 73-101. | Usen, Karin van, Walter Haeseryn &amp; Paula Fikkert. Weet jij wanneer je &quot;op&quot; gaat &quot;splitsen&quot;?: onderzoek naar de voorkeur voor het bijeenhouden of splitsen van partikelwerkwoorden in de bijzin. In: Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1, 103-127. | Wurmbrand, Susi. Parasitic participles in Germanic: evidence for the theory of verb clusters. In: Werkwoordsvolgorde in de rechterperiferie van de Nederlandse zin; gastredactie: Evie Coussé &amp; Hans Bennis. Speciaal nummer van: Taal en tongval (Gent): 64 (2012) 1, 129-156. | Bakker, Frens &amp; Roeland van Hout. De afgrenzing tussen de noordelijke en zuidelijke dialecten in Noord-Limburg. In: Taal en tongval (Gent): 64 (2012) 2, 159-193. | Vriendt, Sera De &amp; Georges De Schutter. Het genus van leenwoorden in het Brussels. In: Taal en tongval (Gent): 64 (2012) 2, 195-241. | Latour, Britt, Roeland van Hout &amp; Stef Grondelaers. De schoonheid van taal: hoe wezenlijk is het oordeel &quot;mooi&quot; in taalattitudes? In: Taal en tongval (Gent): 64 (2012) 2, 243-261. | Hauwermeiren, Paul Van. Nominale afleidingen in het Bargoens. In: Taal en tongval (Gent): 64 (2012) 2, 263-295.</dcterms:source>
+        <bibo:editor rdf:nodeID="n46"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n46"/><rdf:li rdf:nodeID="n48"/></rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n48"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Taal en tongval</dcterms:title>
+                <bibo:number>1</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n46">
+       <foaf:givenName>Evie</foaf:givenName><foaf:surname>Coussé</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n48">
+       <foaf:givenName>Hans</foaf:givenName><foaf:surname>Bennis</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/BMSRUADK">
+        <res:resource rdf:resource="urn:isbn:2034-6867"/>
+        <z:accessDate>2016-12-02 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Frans-Nederlandse taalgrens</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Landen</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:2034-6867">
+        <dcterms:title>Landen 1795-1963: Vlaamse streek in de provincie Luik, op de bres voor Brabant en Limburg</dcterms:title>
+        <bibo:volume>39</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Landen</address:localityName>
+                <foaf:name>Geschied- en Heemkundige Kring Pepijn@Landen</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2016</dcterms:date>
+        <bibo:numPages>215</bibo:numPages>
+        <bibo:isbn13>2034-6867</bibo:isbn13>
+        <bibo:isbn13>(ISSN);</bibo:isbn13>
+        <bibo:isbn13>978-90-9029-604-3</bibo:isbn13>
+        <bibo:isbn13>(ISBN)</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Wemans, Georges. Landen 1795-1963: Vlaamse streek in de provincie Luik, op de bres voor Brabant en Limburg. Landen: Geschied- en Heemkundige Kring Pepijn@Landen. 215 p. (Speciaal nr. van: Ons Landens erfdeel (Landen): 39 (2016) 90-91).</dcterms:source>
+        <dcterms:creator rdf:nodeID="n54"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n54"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Ons Landens erfdeel</dcterms:title>
+                <bibo:number>90-91</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n54">
+       <foaf:givenName>Georges</foaf:givenName><foaf:surname>Wemans</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/7E3U3PM4">
+        <res:resource rdf:resource="https://demodernetijd.nl/nummers/DNE-2015-34/"/>
+        <z:accessDate>2017-01-31 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>gezondheid</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>negentiende eeuw</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://demodernetijd.nl/nummers/DNE-2015-34/">
+        <dcterms:title>Wel en onwel: het lichaam in de negentiende eeuw</dcterms:title>
+        <dcterms:abstract>Bewerking van lezingen, gehouden tijdens een congres van de Werkgroep Negentiende Eeuw op 12 december 2014. P. 185-189 Inleiding, door Wessel Krul.</dcterms:abstract>
+        <bibo:volume>39</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Hilversum</address:localityName>
+                <foaf:name>Verloren</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2015</dcterms:date>
+        <bibo:numPages>143</bibo:numPages>
+        <bibo:isbn13>1381-8546</bibo:isbn13>
+        <bibo:uri>https://demodernetijd.nl/nummers/DNE-2015-34/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Wel en onwel: het lichaam in de negentiende eeuw; gastredactie Wessel Krul. Hilversum: Verloren. 143 p. Speciaal nummer van: De negentiende eeuw (Hilversum): 39 (2015) 3-4. ARTIKELS: Vermeer, Leonieke. &quot;Papa is weder ongesteld&quot;: ziektebeleving in negentiende-eeuwse egodocumenten. In: Wel en onwel: het lichaam in de negentiende eeuw; gastredactie Wessel Krul. Speciaal nummer van: De negentiende eeuw (Hilversum): 39 (2015) 3-4, 230-251. | Kemperink, Mary. Nederlandse literaire verbeelding van oosterse homoseksualiteit in relatie tot het westerse wetenschappelijke discours. In: Wel en onwel: het lichaam in de negentiende eeuw; gastredactie Wessel Krul. Speciaal nummer van: De negentiende eeuw (Hilversum): 39 (2015) 3-4, 252-270.</dcterms:source>
+        <bibo:editor rdf:nodeID="n60"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n60"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>De negentiende eeuw</dcterms:title>
+                <bibo:number>3-4</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n60">
+       <foaf:givenName>Wessel</foaf:givenName><foaf:surname>Krul</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/FCQ2CHBB">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/_jaa027201101_01/"/>
+        <z:accessDate>2013-09-05 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n6"/>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/_jaa027201101_01/">
+        <dcterms:title>Stijn Streuvels en Avelghem: &quot;Weeral en nog eens: voor mijn plezier&quot;</dcterms:title>
+        <dcterms:abstract>P. 7-8 Ten geleide, door Marcel De Smedt.</dcterms:abstract>
+        <bibo:volume>17</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Kortrijk</address:localityName>
+                <foaf:name>Stijn Streuvelsgenootschap</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2012</dcterms:date>
+        <bibo:numPages>311</bibo:numPages>
+        <bibo:isbn13>978-90-8154-142-8</bibo:isbn13>
+        <bibo:isbn13>(ISBN)</bibo:isbn13>
+        <bibo:uri>https://www.dbnl.org/tekst/_jaa027201101_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]). 311 p. ARTIKELS: Thiers, Paul. Bibliografie van &quot;Avelghem&quot;. In: Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]) 49-50. | Theunynck, Peter. Stijn Streuvels en het Rijke Roomse Leven: &quot;Avelghem&quot;, voer voor culturele antropologen. In: Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]) 51-65, 285. | Thiers, Paul. &quot;Avelghem, de naam alleen al had een edelen klank&quot;. In: Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]) 67-96, 285-287. | Breës, Toon. &quot;Stille avonden&quot; (1905) &quot;uit het verband gerukt van de slijtende tijd en vastgezet in het onverroerbare&quot;. In: Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]) 97-151, 288-292. | Iseghem, Johan van. Stijn Streuvels en de &quot;Kroniek van de familie Gezelle&quot;. In: Stijn Streuvels en &quot;Avelghem&quot;: &quot;Weeral en nog eens: voor mijn plezier&quot;; onder redactie van Marcel de Smedt. Jaarboek van het Stijn Streuvelsgenootschap (Kortrijk): 17 (2011 [versch. 2012]) 153-219, 292-305.</dcterms:source>
+        <bibo:editor rdf:nodeID="n66"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n66"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Jaarboek van het Stijn Streuvelsgenootschap</dcterms:title>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n66">
+        <foaf:givenName>Marcel de</foaf:givenName>
+        <foaf:surname>Smedt</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/5CMG523L">
+        <res:resource rdf:resource="https://www.dbnl.org/tekst/_boe022201301_01/"/>
+        <z:accessDate>2013-05-01 00:00:00</z:accessDate>
+        <ctag:tagged rdf:nodeID="n7"/>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>vrouwelijke auteurs</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>vrouwengeschiedenis</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.dbnl.org/tekst/_boe022201301_01/">
+        <dcterms:title>Vrouwen &amp; boeken</dcterms:title>
+        <dcterms:abstract>Inhoudelijke aansluiting bij het boek en de tentoonstelling '1001 vrouwen uit de Nederlandse geschiedenis'; samengesteld door Els Kloek; [met medewerking van Anna de Haas]. Nijmegen: Vantilt, 2013. De tentoonstelling wordt gehouden van 15 februari tot en met 20 mei 2013 bij de afdeling Bijzondere Collecties van de Universiteit van Amsterdam.</dcterms:abstract>
+        <bibo:volume>29</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Nijmegen</address:localityName>
+                <foaf:name>Vantilt</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2013</dcterms:date>
+        <bibo:numPages>96</bibo:numPages>
+        <bibo:isbn13>0168-8391</bibo:isbn13>
+        <bibo:uri>https://www.dbnl.org/tekst/_boe022201301_01/</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Vrouwen &amp; boeken; [redactie J.F. Heijbroek ... et al.]. Nijmegen: Vantilt, 2013. 96 p. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt). ARTIKELS: Waterschoot, Jos van. &quot;Vrouwen zijn niet allemaal even belangrijk, hoogstens allemaal interessant&quot;: interview met Els Kloek en Anna de Haas, samenstellers van &quot;1001 Vrouwen uit de Nederlandse geschiedenis&quot;. In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 8-13. | Smolenaars, Marja. Gildezusters en andere vrouwen in het boekenvak. In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 14-21. | Haas, Anna de. Anna en Fopje Folkema, prentenmaaksters in de achttiende eeuw. In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 22-27. | Reinders, Sophie. Als liefde met liefde beloond mag zijn: sporen van vergeten vrouwen in vrouwenalba amicorum (ca. 1570-1620). In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 32-37. | Versteegh, Jaap. &quot;Geen fusie, maar invasie!&quot;: Debora Duyvis en de strijd tussen de beroepsverenigingen van grafische kunstenaars, 1945-1950. In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 38-45. | Verheul, Ingeborg. &quot;Er ligt een schat aan de voet van de Munttoren&quot;: de bibliotheek- en archiefcollectie van Atria, kennisinstituut voor emancipatie en vrouwengeschiedenis in Amsterdam. In: Vrouwen &amp; boeken; [redactie J. F. Heijbroek... et al.]. Speciaal nummer van: De boekenwereld: 29 (2013) 3 (mrt) 46-53.</dcterms:source>
+        <bibo:editor rdf:nodeID="n70"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n70"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>De boekenwereld</dcterms:title>
+                <bibo:number>3</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n70">
+        <foaf:givenName>J. F.</foaf:givenName>
+        <foaf:surname>Heijbroek</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/F2PNX6J5">
+        <res:resource rdf:resource="urn:isbn:2211-7245"/>
+        <z:accessDate>2023-10-18 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Engels</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Italiaans</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>advertenties</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>vreemde taal</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:2211-7245">
+        <dcterms:title>Vreemde talen in advertising</dcterms:title>
+        <bibo:volume>4</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>John Benjamin Publishing Company</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2015</dcterms:date>
+        <bibo:numPages>66</bibo:numPages>
+        <bibo:isbn13>2211-7245</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>[Vreemde talen in advertising]. Dutch journal of applied linguistics. Amsterdam: John Benjamin Publishing Company. 66 p. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 1-66. ARTIKELS: Hornikx, Jos. Non-nativeness in communication: use and effects of foreign languages in advertising. In: [Vreemde talen in advertising]. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 1-5. | Zenner, Eline, Dirk Speelman en Dirk Geeraerts. English-only job advertising in the Low Countries: the impact of job-related and company-related predictors. In: [Vreemde talen in advertising]. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 6-20. | Meurs, Frank van, Hubert Korzilius en Liset Bergevoet. English words and phrases in Dutch job advertisements: do they function as peripheral persuasion cues?. In: [Vreemde talen in advertising]. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 21-38. | Raedts, Mariet en Natalie Dupré. De doeltreffendheid van een Italiaanse versus Nederlandse slagzin in een Italiaanse wijnreclame. In: [Vreemde talen in advertising]. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 39-58. | Hornikx, Jos en Ellen Mulder. The curiosity-evoking capacity of foreign languages in advertising. In: [Vreemde talen in advertising]. Speciaal gedeelte van: Dutch journal of applied linguistics (Amsterdam): 4 (2015) 1, 59-66.</dcterms:source>
+        <bibo:editor rdf:nodeID="n76"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n76"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Dutch journal of applied linguistics</dcterms:title>
+                <bibo:number>1</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+   <foaf:Person rdf:nodeID="n76"><foaf:surname>S.n.</foaf:surname></foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/78R299V7">
+        <res:resource rdf:resource="urn:isbn:1373-4873"/>
+        <z:accessDate>2021-11-16 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Reinaert</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:1373-4873">
+        <dcterms:title>Vossen: expeditie in het land van Reynaert</dcterms:title>
+        <dcterms:abstract>P. 1 Woord vooraf, door Jozef Dauwe. N.a.v. het tentoonstellingsproject &quot;Vossen: expeditie in het land van Reynaert&quot; van The Phoebus Foundation (5 mei - 30 september 2018).</dcterms:abstract>
+        <bibo:volume>56</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Gent</address:localityName>
+                <foaf:name>Openbaar Kunstbezit in Vlaanderen</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2018</dcterms:date>
+        <bibo:numPages>48</bibo:numPages>
+        <bibo:isbn13>1373-4873</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Vossen: expeditie in het land van Reynaert. Gent: Openbaar Kunstbezit in Vlaanderen, 2018. 48 p. Extra nummer van: Openbaar Kunstbezit in Vlaanderen (Gent): 56 (2018). ARTIKELS: Daele, Rik van. Zoete woorden. In: Vossen: expeditie in het land van Reynaert. Extra nummer van: Openbaar Kunstbezit in Vlaanderen (Gent): 56 (2018) 2-26. | Schalley, Niels. Weetstu waer Krieke Putte steet? In: Vossen: expeditie in het land van Reynaert. Extra nummer van: Openbaar Kunstbezit in Vlaanderen (Gent): 56 (2018) 29-47.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n84"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n84"/><rdf:li rdf:nodeID="n86"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n86"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+               <dcterms:title>Openbaar kunstbezit in Vlaanderen</dcterms:title>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n84">
+       <foaf:givenName>Rik van</foaf:givenName><foaf:surname>Daele</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n86">
+       <foaf:givenName>Niels</foaf:givenName><foaf:surname>Schalley</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/N8D39MFX">
+        <res:resource rdf:resource="https://www.de-gids.nl/2019/1"/>
+        <z:accessDate>2024-01-17 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>literatuur en maatschappij</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>natie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>patriottisme</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged rdf:nodeID="n7"/>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>volkscultuur</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="https://www.de-gids.nl/2019/1">
+        <dcterms:title>Volk &amp; natie</dcterms:title>
+        <dcterms:abstract>P. 3 [Inleiding], door Claire Weeda en Adriaan van Veldhuizen, namens de redactie.</dcterms:abstract>
+        <bibo:volume>182</bibo:volume>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>NV De Groene Amsterdammer</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2019</dcterms:date>
+        <bibo:numPages>21</bibo:numPages>
+        <bibo:isbn13>0016-9730</bibo:isbn13>
+        <bibo:uri>https://www.de-gids.nl/2019/1</bibo:uri>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Volk &amp; natie. Amsterdam: NV De Groene Amsterdammer. 21 p. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 3-24. ARTIKELS: Grunberg, Arnon. Woedende liefde. In: Volk &amp; natie. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 3-5. | Heesch, Margriet van. Hoe te getuigen van onze tijd? In: Volk &amp; natie. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 9. | Goldschmidt, Tijs. Leeg hoofd. In: Volk &amp; natie. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 10-12. | Brederode, Désanne van. Leentjebuur. In: Volk &amp; natie. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 14-15. | Postma, Jan. Iedereen wil Menno ter Braak zijn. In: Volk &amp; natie. Speciaal gedeelte van: De gids (Amsterdam): 182 (2019) 1, 21.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n90"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n90"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+               <dcterms:title>De gids</dcterms:title><bibo:number>1</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n90">
+       <foaf:surname>Redactie De gids</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>

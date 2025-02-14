@@ -1,0 +1,514 @@
+
+
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:res="http://purl.org/vocab/resourcelist/schema#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:address="http://schemas.talis.com/2005/address/schema#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:bibo="http://purl.org/ontology/bibo/"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:ctag="http://commontag.org/ns#">
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/URWQW3EN">
+        <res:resource>
+            <bibo:Book>
+                <dcterms:title>&quot;Welgeachte Streuvels&quot;: de correspondentie tussen Stijn Streuvels en August Keersmaekers over de schooluitgave van &quot;De oogst&quot;</dcterms:title>
+                <dcterms:abstract>P. 5-3- Inleiding, door Luc Daems (bezorger). 
+
+Bibliofiele uitgave op 75 exemplaren.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>Kalmthout</address:localityName>
+                        <foaf:name>De Carbolineum Pers</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2016</dcterms:date>
+                <bibo:numPages>148</bibo:numPages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>&quot;Welgeachte Streuvels&quot;: de correspondentie tussen Stijn Streuvels en August Keersmaekers over de schooluitgave van &quot;De oogst&quot;; bezorgd en ingeleid door Luc Daems. Kalmthout: De Carbolineum Pers, 2016. 148 p.</dcterms:source>
+                <bibo:editor rdf:nodeID="n3"/>
+                <bibo:editorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n3"/></rdf:Seq>
+                </bibo:editorList>
+            </bibo:Book>
+        </res:resource>
+        <z:accessDate>2017-05-19 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Keersmaekers, August</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Streuvels, Stijn</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>briefwisseling</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>literatuuronderwijs</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n3">
+       <foaf:givenName>Luc</foaf:givenName><foaf:surname>Daems</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/TEK3NRGJ">
+        <res:resource rdf:resource="urn:isbn:978-90-5997-094-6"/>
+        <z:accessDate>2011-04-07 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Katwijk aan Zee</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>dialect</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>spreekwoorden</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-5997-094-6">
+        <dcterms:title>Wel wel, 'n huis mit 'n bel, en dan nog vollek roupe!: 144 uitdrukkingen en gezegdes in het Katwijks dialect</dcterms:title>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Leiden</address:localityName>
+                <foaf:name>Primavera Pers</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2010</dcterms:date>
+        <bibo:numPages>59</bibo:numPages>
+        <bibo:isbn13>978-90-5997-094-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Marel, Jaap van der &amp; Leendert de Vink. Wel wel, 'n huis mit 'n bel, en dan nog vollek roupe!: 144 uitdrukkingen en gezegdes in het Katwijks dialect. Leiden: Primavera Pers, 2010. 59 p.</dcterms:source>
+        <dcterms:creator rdf:nodeID="n11"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n11"/><rdf:li rdf:nodeID="n13"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n13"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n11">
+        <foaf:givenName>Jaap van der</foaf:givenName>
+        <foaf:surname>Marel</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n13">
+        <foaf:givenName>Leendert de</foaf:givenName>
+        <foaf:surname>Vink</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/T4SPQESC">
+        <res:resource rdf:resource="urn:isbn:978-90-382-1700-0"/>
+        <z:accessDate>2012-10-15 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Algemeen Nederlands Verbond (A.N.V.)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Snellaert, F. A.</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-382-1700-0">
+        <dcterms:title>Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond</dcterms:title>
+        <dcterms:abstract>Teksten van de toespraken gehouden op de Academische huldezitting ter ere van dr. Ferdinand A. Snellaert, in de Koninklijke Academie voor Nederlandse Taal- en Letterkunde te Gent op 5 december 2009. 
+
+P. 3-4 Inleiding; p. 57-58 Selectieve bibliografie dr. F. A. Snellaert (zelfstandige publicaties en belangrijkste artikels).</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Gent</address:localityName>
+                <foaf:name>Academia Press</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2010</dcterms:date>
+        <bibo:numPages>viii, 62</bibo:numPages>
+        <bibo:isbn13>978-90-382-1700-0</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond; Yvo Peeters (red.). Gent: Academia Press, 2010. VIII, 62 p. (Publicaties ANV. Reeks 2; nr. 3). HOOFDSTUKKEN: Rau, Hugo. Dr. Ferdinand Snellaert: een &quot;Nederlander&quot; in het nieuwe België. In: Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond; Yvo Peeters (red.). Gent: Academia Press, 2010, p. 11-14. (Publicaties ANV. Reeks 2; nr. 3). | Judo, Frank. De politieke context na de scheiding: dr. F. A. Snellaert en het orangisme. In: Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond; Yvo Peeters (red.). Gent: Academia Press, 2010, p. 17-23. (Publicaties ANV. Reeks 2; nr. 3). | Cels, Marc. Politiek gescheiden, maar cultureel één: een ANV-visie in de lijn van Snellaert en Meert. In: Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond; Yvo Peeters (red.). Gent: Academia Press, 2010, p. 25-32. (Publicaties ANV. Reeks 2; nr. 3). | Clercq, Martine de. Dr. F. A. Snellaert: wegbereider voor de Zuidnederlandsche Maatschappij van Taalkunde. In: Dr. F. A. Snellaert (1809-1872), wegbereider van het Algemeen-Nederlands Verbond; Yvo Peeters (red.). Gent: Academia Press, 2010, p. 35-40. (Publicaties ANV. Reeks 2; nr. 3).</dcterms:source>
+        <bibo:editor rdf:nodeID="n19"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n19"/></rdf:Seq>
+        </bibo:editorList>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Publicaties ANV: reeks 2</dcterms:title>
+                <bibo:number>3</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n19">
+       <foaf:givenName>Yvo</foaf:givenName><foaf:surname>Peeters</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/8KRY6ZHX">
+        <res:resource rdf:resource="urn:isbn:978-90-388-9316-7"/>
+        <z:accessDate>2010-07-13 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>interpunctie</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-388-9316-7">
+        <dcterms:title>Weg om legging: signalering onjuist spatiegebruik</dcterms:title>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Amsterdam</address:localityName>
+                <foaf:name>Nijgh &amp; Van Ditmar</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2010</dcterms:date>
+        <bibo:numPages>160</bibo:numPages>
+        <bibo:isbn13>978-90-388-9316-7</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Dings, René. Weg om legging: signalering onjuist spatiegebruik. Amsterdam: Nijgh &amp; Van Ditmar, 2010. 160 p.</dcterms:source>
+        <bibo:lccn>Noë, Raymond. Onjuiste spaties. In: Onze taal: 79 (2010) 5, 148-149.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n25"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n25"/></rdf:Seq>
+        </bibo:authorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n25">
+       <foaf:givenName>René</foaf:givenName><foaf:surname>Dings</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/3ZTLXV5R">
+        <res:resource rdf:resource="urn:isbn:978-94-6393-103-8"/>
+        <z:accessDate>2023-02-09 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>woordenschat</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-94-6393-103-8">
+        <dcterms:title>Weg met het woord (het; o; meervoud: woorden; boektitel): een bundel over de veelheid aan woorden en de overtolligheid van sommige: het boek suggereert welke woorden we vanaf dit jaar beter niet meer gebruiken</dcterms:title>
+        <dcterms:abstract>Met auteursbijdragen van onder anderen Marc Reynebeau, Wouter Deprez, Fleur van Groningen.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Gent</address:localityName>
+                <foaf:name>Borgerhoff &amp; Lamberigts</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2019</dcterms:date>
+        <bibo:numPages>124</bibo:numPages>
+        <bibo:isbn13>978-94-6393-103-8</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Weg met het woord (het; o; meervoud: woorden; boektitel): een bundel over de veelheid aan woorden en de overtolligheid van sommige: het boek suggereert welke woorden we vanaf dit jaar beter niet meer gebruiken; met auteursbijdragen van onder anderen Marc Reynebeau, Wouter Deprez, Fleur van Groningen... [et al.]; coördinatie: Sam De Graeve, Nils De Malsche &amp; Joni Verhulst; eindredactie: Marcel van den Boogert. Gent: Borgerhoff &amp; Lamberigts, 2019. 124 p.</dcterms:source>
+        <bibo:lccn>Noë, Raymond. Woorden die weg moeten. In: Onze taal: 89 (2020) 2-3, 34.</bibo:lccn>
+        <bibo:editor rdf:nodeID="n30"/>
+        <bibo:editorList>
+            <rdf:Seq>
+                <rdf:li rdf:nodeID="n30"/>
+                <rdf:li rdf:nodeID="n32"/>
+                <rdf:li rdf:nodeID="n33"/>
+            </rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n32"/>
+        <bibo:editor rdf:nodeID="n33"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n30">
+       <foaf:givenName>Sam de</foaf:givenName><foaf:surname>Graeve</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n32">
+        <foaf:givenName>Nils de</foaf:givenName>
+        <foaf:surname>Malsche</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n33">
+       <foaf:givenName>Joni</foaf:givenName><foaf:surname>Verhulst</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/H3U522GG">
+        <res:resource rdf:resource="urn:isbn:978-90-8704-282-0"/>
+        <z:accessDate>2012-06-25 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Jong van Rodenburgh, Cornelis de</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Kaapstad</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>brieven</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-8704-282-0">
+        <dcterms:title>&quot;Weest wel met alle menschen&quot;: de &quot;Kaapse brieven&quot; van Cornelius de Jong van Rodenburgh (1762-1838)</dcterms:title>
+        <dcterms:abstract>P. 31-53 Inleiding; p. 614-621 Epiloog; p. 622-624 Bijlage: Fragment-genealogie De Jong (van Rodenburgh)/Truter/Van Beresteyn; p. 625-626 Bronnen en literatuur; p. 627-640 Personenregister.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Hilversum</address:localityName>
+                <foaf:name>Verloren</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2012</dcterms:date>
+        <bibo:numPages>640</bibo:numPages>
+        <bibo:isbn13>978-90-8704-282-0</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>&quot;Weest wel met alle menschen&quot;: de &quot;Kaapse brieven&quot; van Cornelius de Jong van Rodenburgh (1762-1838); verzorgd door Carla van Baalen en Dick de Mildt. Hilversum: Verloren, 2012. 640 p. (Egodocumenten; 28).</dcterms:source>
+        <dcterms:creator rdf:nodeID="n37"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n37"/><rdf:li rdf:nodeID="n39"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n39"/>
+        <dcterms:isPartOf>
+            <bibo:Series>
+                <dcterms:title>Egodocumenten</dcterms:title>
+                <bibo:number>28</bibo:number>
+            </bibo:Series>
+        </dcterms:isPartOf>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n37">
+        <foaf:givenName>Carla van</foaf:givenName>
+        <foaf:surname>Baalen</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n39">
+       <foaf:givenName>Dick de</foaf:givenName><foaf:surname>Mildt</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/U7DELW42">
+        <res:resource rdf:resource="urn:isbn:978-90-8733-012-5"/>
+        <z:accessDate>2013-11-21 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>die</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>taalbeschouwing</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>taalbeschrijving</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-8733-012-5">
+        <dcterms:title>We hebben een D! We hebben een I!</dcterms:title>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Groningen</address:localityName>
+                <foaf:name>De Hondsrug Pers</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2012</dcterms:date>
+        <bibo:numPages>78</bibo:numPages>
+        <bibo:isbn13>978-90-8733-012-5</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Nieuwenhuijsen, Peter. We hebben een D! We hebben een I!. Groningen: De Hondsrug Pers, 2012. 78 p.</dcterms:source>
+        <bibo:lccn>Noë, Raymond. Woorden. In: Onze taal: 82 (2013) 4, 106.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n45"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n45"/></rdf:Seq>
+        </bibo:authorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n45">
+        <foaf:givenName>Peter</foaf:givenName>
+        <foaf:surname>Nieuwenhuijsen</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/B5LD8LRB">
+        <res:resource rdf:resource="urn:isbn:978-94-014-5769-9"/>
+        <z:accessDate>2020-02-20 00:00:00</z:accessDate>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>levenslied</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>lied</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-94-014-5769-9">
+        <dcterms:title>Watskeburt, Lage Landen?: een eigenzinnige canon van het Nederlandstalige lied</dcterms:title>
+        <dcterms:abstract>P. 487-489 Bibliografie; p. 490-498 Index.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Tielt</address:localityName>
+                <foaf:name>Lannoo</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2019</dcterms:date>
+        <bibo:numPages>498</bibo:numPages>
+        <bibo:isbn13>978-94-014-5769-9</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Dyck, Peter van. Watskeburt, Lage Landen?: een eigenzinnige canon van het Nederlandstalige lied. Tielt: Lannoo, 2019. 498 p.</dcterms:source>
+        <bibo:lccn>Laurens, Ham. Een omgevallen platenkast van de goede soort. Op: De Reactor, plaatsingsdatum 11-01-2020. | Mutsaers, Lutgard. Terug van nooit echt weggeweest: het Nederlandstalige lied. In: De lage landen: 63 (2020) 2, 138-139.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n52"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n52"/></rdf:Seq>
+        </bibo:authorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n52">
+       <foaf:givenName>Peter van</foaf:givenName><foaf:surname>Dyck</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/D53299R6">
+        <res:resource>
+            <bibo:Book>
+                <dcterms:title>Conscience bibliofiel</dcterms:title>
+                <dcterms:abstract>Bibliofiele uitgave met losse foto's, in beperkte oplage.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>Kalmthout</address:localityName>
+                        <foaf:name>De Carbolineum Pers</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2010</dcterms:date>
+                <bibo:numPages>90</bibo:numPages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Waterschoot, Werner. Conscience bibliofiel. Kalmthout: De Carbolineum Pers, 2010. 90 p.</dcterms:source>
+                <dcterms:creator rdf:nodeID="n59"/>
+                <bibo:authorList>
+                   <rdf:Seq><rdf:li rdf:nodeID="n59"/></rdf:Seq>
+                </bibo:authorList>
+            </bibo:Book>
+        </res:resource>
+        <z:accessDate>2017-02-24 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Conscience, Hendrik</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Dieren, Jan Petrus van</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>auteurschap</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>bibliofiele uitgaven</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>boekbanden</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>boekgeschiedenis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>drukgeschiedenis</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n59">
+        <foaf:givenName>Werner</foaf:givenName>
+        <foaf:surname>Waterschoot</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/FKXVVTLY">
+        <res:resource>
+            <bibo:Book>
+                <dcterms:title>Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie</dcterms:title>
+                <dcterms:abstract>P. 3-4 Watermerk.</dcterms:abstract>
+                <dcterms:publisher>
+                    <foaf:Organization>
+                        <address:localityName>Alveringem</address:localityName>
+                        <foaf:name>Comsa!</foaf:name>
+                    </foaf:Organization>
+                </dcterms:publisher>
+                <dcterms:date>2010</dcterms:date>
+                <bibo:numPages>144</bibo:numPages>
+                <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+                <dcterms:source>Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010. 144 p. HOOFDSTUKKEN: Verstraeten, Herman. De erotiek van woorden. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 143. | Decerf, Frank.Poëtica. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 99. | Delmotte, Alain. De poëzierecensie die niemand ooit zal sschrijven: belijdenis van een poëzierecensent. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 7-14. | Delmotte, Alain. Het lichtgevende deel van een knipperlicht. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 104-107. | Verstraeten, Pieter. Ruimte, tijd, mens, Digther: herinneringen aan een tijdschrift. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 87-89. | Rigolle, Paul. De smaak van karamel. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 128. | Vekemans, Herlinda. Inzet van de taal en verlangen van de dichter. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 135-137. | Freys, Diana. Verwondering op ooghoogte. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 113. | Leroy, Frédéric. Poëzie is het onieuw hebben over poëzie. In: Watermerk: literair tijdschrift Digther: een doorslag van 10 jaar literaire passie; hoofdredactie: Hugo Verstraeten; redactie: Frank Decerf... [et al.]. Alveringem: Comsa!, 2010, p. 121.</dcterms:source>
+                <bibo:lccn>Foqué, Richard. Een doorslag van 10 jaar literaire passie. In: De auteur: (2011) 2, 2.</bibo:lccn>
+                <bibo:editor rdf:nodeID="n71"/>
+                <bibo:editorList>
+                    <rdf:Seq>
+                       <rdf:li rdf:nodeID="n71"/><rdf:li rdf:nodeID="n73"/>
+                    </rdf:Seq>
+                </bibo:editorList>
+                <bibo:editor rdf:nodeID="n73"/>
+            </bibo:Book>
+        </res:resource>
+        <z:accessDate>2011-07-05 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Digther (tijdschr.)</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <foaf:Person rdf:nodeID="n71">
+        <foaf:givenName>Hugo</foaf:givenName>
+        <foaf:surname>Verstraeten</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n73">
+       <foaf:givenName>Frank</foaf:givenName><foaf:surname>Decerf</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/YYQPMXK5">
+        <res:resource rdf:resource="urn:isbn:978-90-5655-105-6"/>
+        <z:accessDate>2015-06-23 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Bontridder, Albert</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>Wauters, Marcel</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-5655-105-6">
+        <dcterms:title>Waterdruppels</dcterms:title>
+        <dcterms:abstract>P. [369-372] Editieverantwoording. 
+
+De inleidende tekst van Roland Jooris &quot;Drie benaderingen&quot;, bij &quot;Mijnheer en Mevrouw Ledepop&quot; is eerder verschenen in: 	Groeten van Mijnheer en Mevrouw Ledepop; tekeningen: Marcel Wauters; met teksten van: Albert Bontridder; en drie benaderingen van: Roland Jooris. [S.l.: s.n.], 1990.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Gent</address:localityName>
+                <foaf:name>PoezieCentrum</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2015</dcterms:date>
+        <bibo:numPages>374</bibo:numPages>
+        <bibo:isbn13>978-90-5655-105-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Bontridder, Albert &amp; Marcel Wauters. Waterdruppels; bezorgd door Els van Damme &amp; Yves T'Sjoen. [Gent]: PoezieCentrum, 2014. [374] p.</dcterms:source>
+        <bibo:lccn>Brems, Elke. Absurditeit in woord en beeld: over &quot;Waterdruppels&quot; van Albert Bontridder &amp; Marcel Wauters. In: Poëziekrant: 39 (2015) 4 44-45.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n77"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n77"/><rdf:li rdf:nodeID="n79"/></rdf:Seq>
+        </bibo:authorList>
+        <dcterms:creator rdf:nodeID="n79"/>
+        <bibo:editor rdf:nodeID="n80"/>
+        <bibo:editorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n80"/><rdf:li rdf:nodeID="n82"/></rdf:Seq>
+        </bibo:editorList>
+        <bibo:editor rdf:nodeID="n82"/>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n77">
+        <foaf:givenName>Albert</foaf:givenName>
+        <foaf:surname>Bontridder</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n79">
+       <foaf:givenName>Marcel</foaf:givenName><foaf:surname>Wauters</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n80">
+       <foaf:givenName>Els van</foaf:givenName><foaf:surname>Damme</foaf:surname>
+    </foaf:Person>
+    <foaf:Person rdf:nodeID="n82">
+       <foaf:givenName>Yves</foaf:givenName><foaf:surname>T'Sjoen</foaf:surname>
+    </foaf:Person>
+    <z:UserItem rdf:about="http://zotero.org/groups/5376439/items/NQ5QUWID">
+        <res:resource rdf:resource="urn:isbn:978-90-5972-512-6"/>
+        <z:accessDate>2011-08-01 00:00:00</z:accessDate>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>Gerhardt, Ida G. M.</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+           <ctag:UserTag><ctag:label>dans</ctag:label></ctag:UserTag>
+        </ctag:tagged>
+        <ctag:tagged>
+            <ctag:UserTag>
+               <ctag:label>literatuur en muziek</ctag:label>
+            </ctag:UserTag>
+        </ctag:tagged>
+    </z:UserItem>
+    <bibo:Book rdf:about="urn:isbn:978-90-5972-512-6">
+        <dcterms:title>Wat zingt het popelend refrein: over muziek en dans in het werk van Ida Gerhardt</dcterms:title>
+        <dcterms:abstract>P. 147-150 Lijst van geciteerde gedichten; p. 151-167 Noten; p. 169-176 Bibliografie; p. 177-182 Index.</dcterms:abstract>
+        <dcterms:publisher>
+            <foaf:Organization>
+                <address:localityName>Delft</address:localityName>
+                <foaf:name>Eburon</foaf:name>
+            </foaf:Organization>
+        </dcterms:publisher>
+        <dcterms:date>2011</dcterms:date>
+        <bibo:numPages>182</bibo:numPages>
+        <bibo:isbn13>978-90-5972-512-6</bibo:isbn13>
+        <z:repository>Bibliografie van de Nederlandse Taal- en Literatuurwetenschap (BNTL)</z:repository>
+        <dcterms:source>Wijk, Trudy van. Wat zingt het popelend refrein: over muziek en dans in het werk van Ida Gerhardt. Delft: Eburon, 2011. 182 p.</dcterms:source>
+        <bibo:lccn>Steyaert, Kris. &quot;Een zingen in aanvankelijkheid&quot;: muziek als inspiratiebron bij Ida Gerhardt. In: Spiegel der letteren: 54 (2012) 2, 271-273.</bibo:lccn>
+        <dcterms:creator rdf:nodeID="n87"/>
+        <bibo:authorList>
+           <rdf:Seq><rdf:li rdf:nodeID="n87"/></rdf:Seq>
+        </bibo:authorList>
+    </bibo:Book>
+    <foaf:Person rdf:nodeID="n87">
+       <foaf:givenName>Trudy van</foaf:givenName><foaf:surname>Wijk</foaf:surname>
+    </foaf:Person>
+</rdf:RDF>
