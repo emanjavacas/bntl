@@ -1,5 +1,6 @@
 
 import logging
+from typing import Literal
 
 import torch
 from sentence_transformers import SentenceTransformer
@@ -18,22 +19,19 @@ class ModelManager:
             self.load_model()
         return self
     
+    def close(self):
+        if self.model:
+            self.move_model_to_device("cpu")
+        del self.model
+    
     def load_model(self):
         raise NotImplementedError
 
-    def move_model_to_cpu(self):
+    def move_model_to_device(self, device: Literal["cuda", "cpu"]):
         raise NotImplementedError
     
-    def move_model_to_gpu(self):
-        raise NotImplementedError
-    
-    def close(self):
-        if self.model:
-            self.move_model_to_cpu()
-        del self.model
-
     def encode(self, text, batch_size):
-        return self.model.encode(text, batch_size=batch_size)
+        raise NotImplementedError
 
 
 class ModelManagerStella(ModelManager):
@@ -41,19 +39,12 @@ class ModelManagerStella(ModelManager):
         if self.model is None:
             self.model = SentenceTransformer(self.model_name, trust_remote_code=True)
             logger.info("Loaded model")
-            self.move_model_to_cpu()
 
-    def move_model_to_gpu(self):
-        if self.model.device != torch.device('cuda'):
-            logger.info("Moving model to GPU...")
-            self.model = self.model.to(torch.device('cuda'))
-            logger.info("Model moved to GPU.")
-
-    def move_model_to_cpu(self):
-        if self.model.device != torch.device('cpu'):
-            logger.info("Moving model back to CPU...")
-            self.model = self.model.to(torch.device('cpu'))
-            logger.info("Model moved back to CPU.")
+    def move_model_to_device(self, device):
+        if self.model.device != torch.device(device):
+            logger.info(f"Moving model to {device}...")
+            self.model = self.model.to(torch.device(device))
+            logger.info(f"Model moved to {device}.")
 
     def encode(self, text, batch_size):
         return self.model.encode(text, batch_size=batch_size, prompt_name='s2s_query')
@@ -63,18 +54,15 @@ class ModelManagerFE(ModelManager):
     def load_model(self):
         if self.model is None:
             self.model = BGEM3FlagModel(self.model_name, use_fp16=True)      
-            logger.info("Loaded model")  
-            self.move_model_to_cpu()
+            logger.info("Loaded model")
 
-    def move_model_to_gpu(self):
-        logger.info("Moving model to GPU...")
-        self.model.model.cuda()
-        logger.info("Model moved to GPU.")
-
-    def move_model_to_cpu(self):
-        logger.info("Moving model back to CPU...")
-        self.model.model.cpu()
-        logger.info("Model moved back to CPU.")
+    def move_model_to_device(self, device):
+        logger.info(f"Moving model to {device}...")
+        if device == "cuda":
+            self.model.model.cuda()
+        else:
+            self.model.model.cpu()
+        logger.info(f"Model moved to {device}.")
 
     def encode(self, text, batch_size):
         logger.info("Vectorizing {} texts...".format(len(text)))
