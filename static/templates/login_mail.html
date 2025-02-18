@@ -1,0 +1,43 @@
+
+{% extends "template.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="login-container">
+    <div class="d-flex justify-content-center align-items-center">
+        <div id="card" class="card login-card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title text-center mb-4">Login</h5>
+                <div id="mail-step">
+                    <p>Enter admin email to receive a login code.</p>
+                    <form class="form-floating" id="mail-form">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="mail" placeholder="Enter your email" required>
+                        </div>
+                        <button id="mail-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
+                    </form>
+                </div>
+                <div id="code-step" style="display: none;">
+                    <p>A code has been sent to <span id="masked-mail"></span>, it will be valid for a limited time.</p>
+                    <form class="form-floating" id="code-form">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="code" placeholder="Enter your code" required>
+                        </div>
+                        <button id="code-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
+                    </form>
+                </div>
+                <div class="mt-3">
+                    <div id="feedback" class="small text-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="module" src="/static/js/login_mail.js"></script>
+{% endblock %}

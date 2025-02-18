@@ -1,16 +1,19 @@
 
 import io
 import os
+import random
 import logging
 import functools
-from typing import List, get_args
+from typing import List, Union, get_args
 import urllib.parse
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
+
 import humanize
 import aiofiles
 import rispy
 import gettext
+import redis.asyncio as redis
 
 from fastapi import FastAPI, Request, Depends, Response, status
 from fastapi import UploadFile, File, BackgroundTasks, HTTPException, Form, Query
@@ -22,11 +25,12 @@ from fastapi.templating import Jinja2Templates
 from bntl.vector_db import VectorClient, MissingVectorException
 from bntl.vectorization import Status as VectorizationStatus, vectorize_task
 from bntl.db import DBClient
-from bntl.models import QueryParams, VectorParams, LoginParams, PageParams
+from bntl.models import QueryParams, VectorParams, LoginParams, LoginMailParams, LoginCodeParams, PageParams
 from bntl.models import DBDocumentModel, VectorEntryModel, FileUploadModel, VectorizationTaskModel
 from bntl.models import get_record_screen_name, TypeOfReference
 from bntl.pagination import paginate, paginate_within, build_query
 from bntl.upload import Status as UploadStatus, FileUploadManager
+from bntl.mail import send_verification_code
 from bntl.settings import settings, setup_logger
 from bntl import utils
 
@@ -34,17 +38,18 @@ setup_logger()
 logger = logging.getLogger(__name__)
 
 
-VALIDATED_SESSIONS = set()
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.db_client = await DBClient.create()
     app.state.vector_client = VectorClient()
+    app.state.redis_client = redis.from_url(
+            f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", 
+            decode_responses=True)
     app.state.file_upload = FileUploadManager(app.state.db_client)
     yield
     app.state.db_client.close()
     await app.state.vector_client.close()
+    await app.state.redis_client.close()
 
 
 app = FastAPI(
@@ -128,36 +133,69 @@ async def exception_handler(request: Request, e: RequiresLoginException) -> Resp
     return RedirectResponse(url=f"/login?next_url={e.args[0]['next_url']}")
 
 
-def require_validated_session(request: Request):
+async def require_validated_session(request: Request):
     """
     Dependency injection for protected routes
     """
     session_id = request.cookies.get("session_id")
-    if not session_id or session_id not in VALIDATED_SESSIONS:
+    if not session_id or not await app.state.redis_client.exists(f"session:{session_id}"):
         raise RequiresLoginException({"next_url": request.url.path})
 
 
 @app.get("/login", response_class=HTMLResponse, include_in_schema=False)
 async def login_get(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     return templates.TemplateResponse(
-        "login.html", {"request": request, "_": get_translation(lang).gettext, "lang": lang})
+        "login.html" if settings.AUTH == "password" else "login_mail.html", 
+        {"request": request, "_": get_translation(lang).gettext, "lang": lang})
+    
+
+async def handle_mail_login(session_id: str, mail: str, redis_client):
+    if mail != settings.ADMIN_MAIL:
+        raise HTTPException(status_code=401, detail="Unauthorized email")
+    
+    code = str(random.randint(1000, 9999))
+    await redis_client.delete(f"code:{session_id}")
+    await redis_client.setex(f"code:{session_id}", settings.VERIFICATION_TOKEN_TIME, code)
+    await send_verification_code(settings.ADMIN_MAIL, code)
+    return JSONResponse({"next_step": "code"})
+
+
+async def handle_code_verification(session_id: str, code: str, redis_client):
+    stored_code = await redis_client.get(f"code:{session_id}")
+    if not stored_code:
+       raise HTTPException(status_code=404, detail="Couldn't fetch code for session")
+    if code == stored_code:
+        await redis_client.setex(f"session:{session_id}", settings.SESSION_TIME, "validated")
+        return JSONResponse({"status_code": status.HTTP_303_SEE_OTHER})
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong code")
+
+
+async def handle_password_login(session_id: str, password: str, redis_client):
+    if password == settings.AUTH_SECRET:
+        await redis_client.setex(f"session:{session_id}", settings.SESSION_TIME, "validated")
+        return JSONResponse({"status_code": status.HTTP_303_SEE_OTHER})
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong password")
 
 
 @app.post("/login", include_in_schema=False)
-async def login_post(login_params: LoginParams, request: Request=None):
-    if login_params.password == settings.UPLOAD_SECRET:
-        session_id = request.cookies.get("session_id")
-        if session_id:
-            VALIDATED_SESSIONS.add(session_id)
-            return JSONResponse({"status_code": status.HTTP_303_SEE_OTHER})
+async def login_post(login_params: Union[LoginParams, LoginMailParams, LoginCodeParams], 
+                     request: Request=None):
+    if session_id := request.cookies.get("session_id"):
+        # password-based
+        if settings.AUTH == "password":
+            return await handle_password_login(session_id, login_params.password, app.state.redis_client)
+        # mail-based
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown session")
-    else:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong password")
+            if hasattr(login_params, "mail"):
+                return await handle_mail_login(session_id, login_params.mail, app.state.redis_client)
+            if hasattr(login_params, "code"):
+                return await handle_code_verification(session_id, login_params.code, app.state.redis_client)
+
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown session")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def home(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     Home route
     """
@@ -171,7 +209,7 @@ async def home(request: Request, lang: str = Query(default=settings.DEFAULT_LOCA
 
 
 @app.get("/about", response_class=HTMLResponse)
-async def about(request: Request, lang: str = Query(default=settings.DEFAULT_LOCALE)):
+async def about(request: Request, lang: str=Query(default=settings.DEFAULT_LOCALE)):
     """
     About route
     """
@@ -193,12 +231,10 @@ async def register_query(request: Request, query_params: QueryParams):
     Log a query and store the parameters so that we can later show it in the query history
     """
     session_id = request.cookies.get("session_id")
-    query_data = await app.state.db_client.find_query(session_id, query_params)
-    if query_data:
+    if query_data := await app.state.db_client.find_query(session_id, query_params):
         query_id = query_data["_id"]
     else:
         query_id = await app.state.db_client.register_query(session_id, query_params)
-
     return JSONResponse(content={"query_id": str(query_id)})
 
 
@@ -231,24 +267,23 @@ async def paginate_route(request: Request,
     Paginate route when moving forward and backward on a given query
     """
     session_id = request.cookies.get("session_id")
-    query_data = await app.state.db_client.get_query(query_id, session_id)
-    if not query_data:
-        return JSONResponse(status_code=404, content={"error": "Query not found"})
+    if query_data := await app.state.db_client.get_query(query_id, session_id):
+        query_params = QueryParams.model_validate(query_data['query_params'])
+        results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBDocumentModel)
+        # store total on query database for preview & last accessed
+        await app.state.db_client.update_query(
+            query_id, session_id, 
+            {"n_hits": results.n_hits, "last_accessed": datetime.now(timezone.utc)})
 
-    query_params = QueryParams.model_validate(query_data['query_params'])
-    results = await paginate(app.state.db_client.bntl_coll, query_params, page_params, DBDocumentModel)
-    # store total on query database for preview & last accessed
-    await app.state.db_client.update_query(
-        query_id, session_id, 
-        {"n_hits": results.n_hits, "last_accessed": datetime.now(timezone.utc)})
+        return templates.TemplateResponse(
+            "results.html",
+            {"request": request, 
+            "_": get_translation(lang).gettext, "lang": lang,
+            "query_id": query_id, 
+            "source": f"/paginate?query_id={query_id}", 
+            **results.model_dump()})
 
-    return templates.TemplateResponse(
-        "results.html",
-        {"request": request, 
-         "_": get_translation(lang).gettext, "lang": lang,
-         "query_id": query_id, 
-         "source": f"/paginate?query_id={query_id}", 
-         **results.model_dump()})
+    return JSONResponse(status_code=404, content={"error": "Query not found"})
 
 
 @app.get("/paginateWithin")
@@ -262,20 +297,19 @@ async def paginate_within_route(request: Request,
     Paginate route for recursive queries
     """
     session_id = request.cookies.get("session_id")
-    query_data = await app.state.db_client.get_query(query_id, session_id)
-    if not query_data:
-        return JSONResponse(status_code=404, content={"error": "Query not found"})
+    if query_data := await app.state.db_client.get_query(query_id, session_id):
+        query_params = QueryParams.model_validate(query_data['query_params'])
+        results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBDocumentModel)
 
-    query_params = QueryParams.model_validate(query_data['query_params'])
-    results = await paginate_within(app.state.db_client.bntl_coll, query_params, query_str, page_params, DBDocumentModel)
+        source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
+        return templates.TemplateResponse(
+            "results.html", {"request": request, 
+                            "_": get_translation(lang).gettext, "lang": lang, 
+                            "is_within": True, 
+                            "source": source, 
+                            **results.model_dump()})
 
-    source = f"/paginateWithin?query_id={query_id}&query_str={query_str}"
-    return templates.TemplateResponse(
-        "results.html", {"request": request, 
-                         "_": get_translation(lang).gettext, "lang": lang, 
-                         "is_within": True, 
-                         "source": source, 
-                         **results.model_dump()})
+    return JSONResponse(status_code=404, content={"error": "Query not found"})
 
 
 @app.get("/history")

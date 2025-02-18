@@ -1,11 +1,10 @@
 
 import os
-from typing import Type, Tuple
 import logging.config
+from typing import Literal, Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic_settings import PydanticBaseSettingsSource, TomlConfigSettingsSource
-from pydantic import Field
+from pydantic import Field, EmailStr, model_validator
 
 import toml
 
@@ -27,7 +26,6 @@ class Settings(BaseSettings):
     AUTOCOMPLETE_COLL: str = Field(help="MongoDB autocomplete collection name", default="autocomplete")
     QUERY_COLL: str = Field(help="MongoDB query collection name", default="queries")
     UPLOAD_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="upload")
-    UPLOAD_SECRET: str = Field(help="Secret to run the upload logic", default="pass")
     VECTORIZATION_COLL: str = Field(help="MongoDB collection name for handling file uploads", default="vectorization")
 
     WITHIN_MAX_RESULTS: int = Field(help="Restrict results of original query to this number when doing recursive query", default=300_000)
@@ -38,14 +36,37 @@ class Settings(BaseSettings):
     QDRANT_GRPC_PORT: int = Field(help="Port used by QDrant (usually 6334)", default=6334)
     QDRANT_COLL: str = Field(default="bntl")
 
+    REDIS_HOST: str = Field(help="Redis hostname", default="localhost")
+    REDIS_PORT: int = Field(help="Redis port", default=6379)
+
     UPLOAD_LOG_DIR: str = Field(default="logs/upload", help="Directory to store the upload log files")
     VECTORIZE_LOG_DIR: str = Field(default="logs/vectorize", help="Directory to store the vectorization log files")
     TRANSLATIONS_DIR: str = Field(default="static/translations")
     DEFAULT_LOCALE: str = Field(default="nl")
 
-    WORKERS: int = Field(help="Number of workers for the uvicorn server", default=1)
+    SESSION_TIME: int = Field(help="Expiration time for validated session (secs)", default=60 * 60 * 1) # one hour
+    AUTH: Literal["mail", "password"] = Field(default="password")
+    # password-based authentication
+    AUTH_SECRET: str = Field(help="Secret to run the upload logic", default="pass")
+    # mail-based authentication
+    VERIFICATION_TOKEN_TIME: int = Field(help="Expiration time for token (secs)", default=60 * 5) # 5 minutes
+    MAIL_SERVER: Optional[str] = Field(help="Mail server", default=None)
+    MAIL_USERNAME: Optional[str] = Field(help="Username for mail server", default=None)
+    MAIL_PASSWORD: Optional[str] = Field(help="Password for mail server", default=None)
+    MAIL_FROM: Optional[str] = Field(help="Sender for mail server", default=None)
+    MAIL_PORT: Optional[int] = Field(help="Port for mail server", default=None)
+    ADMIN_MAIL: Optional[EmailStr] = Field(help="List of emails", default=None)
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    @model_validator(mode="after")
+    def check_mail_auth(self):
+        if self.AUTH == "mail":
+            for setting in ["MAIL_SERVER", "MAIL_USERNAME", "MAIL_PASSWORD", 
+                            "MAIL_FROM", "MAIL_PORT", "ADMIN_MAIL"]:
+                if not getattr(self, setting): # empty or None
+                    raise ValueError(f"mail AUTH needs MAIL config. Missing '{setting}'")
+        return self
 
 
 settings = Settings()

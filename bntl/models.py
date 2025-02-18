@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 
 from typing import List, Optional, Generic, TypeVar, Literal, Any
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 
 
 def _render_authors(authors):
@@ -340,4 +340,13 @@ class VectorizationTaskModel(BaseModel):
 
 class LoginParams(BaseModel):
     password: str
+    next_url: str
+
+
+class LoginMailParams(BaseModel):
+    mail: EmailStr
+
+
+class LoginCodeParams(BaseModel):
+    code: str
     next_url: str
