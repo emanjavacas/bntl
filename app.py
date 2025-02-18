@@ -150,13 +150,13 @@ async def login_get(request: Request, lang: str=Query(default=settings.DEFAULT_L
     
 
 async def handle_mail_login(session_id: str, mail: str, redis_client):
-    if mail != settings.ADMIN_MAIL:
+    if mail not in settings.ADMIN_MAILS:
         raise HTTPException(status_code=401, detail="Unauthorized email")
     
     code = str(random.randint(1000, 9999))
     await redis_client.delete(f"code:{session_id}")
     await redis_client.setex(f"code:{session_id}", settings.VERIFICATION_TOKEN_TIME, code)
-    await send_verification_code(settings.ADMIN_MAIL, code)
+    await send_verification_code(mail, code)
     return JSONResponse({"next_step": "code"})
 
 

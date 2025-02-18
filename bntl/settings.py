@@ -1,7 +1,7 @@
 
 import os
 import logging.config
-from typing import Literal, Optional
+from typing import Literal, Optional, List
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field, EmailStr, model_validator
@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     MAIL_PASSWORD: Optional[str] = Field(help="Password for mail server", default=None)
     MAIL_FROM: Optional[str] = Field(help="Sender for mail server", default=None)
     MAIL_PORT: Optional[int] = Field(help="Port for mail server", default=None)
-    ADMIN_MAIL: Optional[EmailStr] = Field(help="List of emails", default=None)
+    ADMIN_MAILS: List[EmailStr] = Field(help="List of emails", default=[])
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     def check_mail_auth(self):
         if self.AUTH == "mail":
             for setting in ["MAIL_SERVER", "MAIL_USERNAME", "MAIL_PASSWORD", 
-                            "MAIL_FROM", "MAIL_PORT", "ADMIN_MAIL"]:
+                            "MAIL_FROM", "MAIL_PORT", "ADMIN_MAILS"]:
                 if not getattr(self, setting): # empty or None
                     raise ValueError(f"mail AUTH needs MAIL config. Missing '{setting}'")
         return self
