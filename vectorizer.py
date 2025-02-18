@@ -41,7 +41,7 @@ async def vectorize_task(task_id, texts, doc_ids):
             # Attempt to move the model to GPU and run the task
             try:
                 app.state.model_manager.load_model()
-                app.state.model_manager.move_model_to_gpu()
+                app.state.model_manager.move_model_to_device("cuda")
                 # Cache
                 if text2vector := await app.state.db_client.retrieve_cache(texts):
                     logger.info("Got {}/{} vectors from cache".format(len(text2vector), len(texts)))
@@ -57,7 +57,7 @@ async def vectorize_task(task_id, texts, doc_ids):
                     vectors = await run_in_threadpool(
                         app.state.model_manager.get_model().encode, texts, settings.BATCH_SIZE)
                     vectors = vectors.tolist()
-                app.state.model_manager.move_model_to_cpu()    
+                app.state.model_manager.move_model_to_device("cpu")
                 # store vectors
                 logger.info("Storing vectors...")
                 await app.state.db_client.store_vectors(task_id, vectors, doc_ids)
