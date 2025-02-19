@@ -1,7 +1,5 @@
 #!/bin/bash
-DIR=/home/ubuntu/bntl-test/
-# USER=ubuntu
-# GROUP=ubuntu
+DIR=/home/ubuntu/bntl/
 VENV=$DIR/.venv/bin/activate
 
 # load .env
