@@ -20,6 +20,7 @@
       <div class="container-fluid">
         <!-- sorting -->
         <span class="navbar-text small">
+        {% if not source.startswith("/vector") %}
           {{ _('Sorteer op') }} 
         <!-- author -->
         <div class="btn-group px-2" role="group" aria-label="Basic outlined example">
@@ -45,6 +46,7 @@
             <i class="bi bi-caret-down-fill"></i>
           </a>
         </div>
+        {% endif %}
         </span>
         <!-- page size -->
         {% if source.startswith("/vector") %}
