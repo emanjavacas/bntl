@@ -85,10 +85,9 @@
       <div class="container-fluid justify-content-end">
         <form id="withinForm">
           <div class="input-group">
-            {% if n_hits > 0 %}
+            {% if n_hits > 0 and query_id %}
             <input name="within" class="form-control" type="search" placeholder="{{ _('Zoek binnen resultaat') }}" aria-label="Search" required>
             <button class="btn btn-sm btn-outline-secondary" type="submit">{{ _('Zoek') }}</button>
-            {% if query_id %}
             <button class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img width="15px" src="/static/assets/img/export.png">
             </button>
@@ -100,7 +99,6 @@
                 <a class="dropdown-item" target="_blank" href="/exportQuery?query_id={{query_id}}&format=bib">.bib</a>
               </li>
             </ul>
-            {% endif %}
             {% endif %}
           </div>
         </form>
