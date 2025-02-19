@@ -11,4 +11,5 @@ __MACOSX/
 
 static/translations/*/LC_MESSAGES/*.mo
 
-data/
+data/     # dev data
+app-data/ # docker data

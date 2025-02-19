@@ -346,9 +346,9 @@ async def vector_query(request: Request,
     """
     Vector-based query route using the document id
     """
-    doc_id = utils.unparse_doc_id(doc_id)
     try:
-        hits = await app.state.vector_client.search(doc_id, limit=vector_params.limit)
+        hits = await app.state.vector_client.search(
+            utils.unparse_doc_id(doc_id), limit=vector_params.limit)
     except MissingVectorException as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
@@ -369,7 +369,7 @@ async def vector_query(request: Request,
         transform=transform)
 
     # ensure we sort by score unless differently specified
-    if not page_params.sort_author and not page_params.sort_year:
+    if not page_params.sort_author or not page_params.sort_year:
         results.items = sorted(
             results.items,
             key=lambda item: hits_mapping[item.document.id], reverse=True)

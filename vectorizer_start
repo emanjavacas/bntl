@@ -1,0 +1,11 @@
+#!/bin/bash
+DIR=/home/ubuntu/bntl-test/
+VENV=$DIR/.venv/bin/activate
+
+# load .env
+set -a && source $DIR/.env && set +a
+
+cd $DIR
+source $VENV
+
+exec uvicorn vectorizer:app --port ${VECTORIZER_PORT:-8080} --workers ${VECTORIZER_WORKERS:-1}

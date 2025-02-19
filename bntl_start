@@ -1,0 +1,12 @@
+#!/bin/bash
+DIR=/home/ubuntu/bntl-test/
+# USER=ubuntu
+# GROUP=ubuntu
+VENV=$DIR/.venv/bin/activate
+
+# load .env
+set -a && source $DIR/.env && set +a
+
+cd $DIR
+source $VENV
+exec uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WORKERS:-1}
