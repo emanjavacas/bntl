@@ -156,7 +156,7 @@ async def handle_mail_login(session_id: str, mail: str, redis_client):
     code = str(random.randint(1000, 9999))
     await redis_client.delete(f"code:{session_id}")
     await redis_client.setex(f"code:{session_id}", settings.VERIFICATION_TOKEN_TIME, code)
-    await send_verification_code(mail, code)
+    send_verification_code(mail, code)
     return JSONResponse({"next_step": "code"})
 
 

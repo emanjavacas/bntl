@@ -1,43 +1,40 @@
 
-from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
+import logging
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 from jinja2 import Environment, FileSystemLoader
 from humanize import naturaltime
 
 from bntl.settings import settings
 
-
-conf = ConnectionConfig(
-    MAIL_SERVER = settings.MAIL_SERVER,
-    MAIL_USERNAME = settings.MAIL_USERNAME,
-    MAIL_PASSWORD = settings.MAIL_PASSWORD,
-    MAIL_FROM = settings.MAIL_FROM,
-    MAIL_PORT = settings.MAIL_PORT,
-    MAIL_STARTTLS = True,
-    MAIL_SSL_TLS = False)
+logger = logging.getLogger(__name__)
 
 
 jinja_env = Environment(loader=FileSystemLoader('static/templates/email'))
 
 
-async def send_email(email: str, subject: str, msg: str):
-    message = MessageSchema(
-        subject=subject,
-        recipients=[email],
-        body=msg,
-        subtype=MessageType.html)
+def send_email(email: str, subject: str, msg: str):
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = settings.MAIL_FROM
+    message["To"] = email
+    part = MIMEText(msg, "html")
+    message.attach(part)
+    server = smtplib.SMTP(settings.MAIL_SERVER, settings.MAIL_PORT)
+    server.sendmail(settings.MAIL_FROM, email, message.as_string())
 
-    await FastMail(conf).send_message(message)
 
-
-async def send_verification_code(email: str, code: str):
+def send_verification_code(email: str, code: str):
     template = jinja_env.get_template(
         'verification.html'
     ).render(
         {"code": code, 
          "expiration": naturaltime(settings.VERIFICATION_TOKEN_TIME, future=True)})
-    await send_email(email, "BNTL verification code", template)
+    send_email(email, "BNTL verification code", template)
 
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(send_verification_code("enrique.manjavacas@gmail.com", "1234"))
+    send_verification_code("enrique.manjavacas@gmail.com", "1234")

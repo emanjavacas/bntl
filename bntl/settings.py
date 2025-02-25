@@ -51,8 +51,6 @@ class Settings(BaseSettings):
     # mail-based authentication
     VERIFICATION_TOKEN_TIME: int = Field(help="Expiration time for token (secs)", default=60 * 5) # 5 minutes
     MAIL_SERVER: Optional[str] = Field(help="Mail server", default=None)
-    MAIL_USERNAME: Optional[str] = Field(help="Username for mail server", default=None)
-    MAIL_PASSWORD: Optional[str] = Field(help="Password for mail server", default=None)
     MAIL_FROM: Optional[str] = Field(help="Sender for mail server", default=None)
     MAIL_PORT: Optional[int] = Field(help="Port for mail server", default=None)
     ADMIN_MAILS: List[EmailStr] = Field(help="List of emails", default=[])
@@ -62,8 +60,7 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def check_mail_auth(self):
         if self.AUTH == "mail":
-            for setting in ["MAIL_SERVER", "MAIL_USERNAME", "MAIL_PASSWORD", 
-                            "MAIL_FROM", "MAIL_PORT", "ADMIN_MAILS"]:
+            for setting in ["MAIL_SERVER", "MAIL_FROM", "MAIL_PORT", "ADMIN_MAILS"]:
                 if not getattr(self, setting): # empty or None
                     raise ValueError(f"mail AUTH needs MAIL config. Missing '{setting}'")
         return self

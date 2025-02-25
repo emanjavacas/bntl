@@ -4,7 +4,6 @@ import collections
 from datetime import datetime, timezone
 from typing import Dict
 
-import rispy
 from fastapi.concurrency import run_in_threadpool
 
 from bntl import utils
