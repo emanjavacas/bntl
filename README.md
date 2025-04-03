@@ -55,8 +55,14 @@ There is some minor custom css code in `static/css`, some minor custom js code i
 `static/js` and all the heavy lifting is done inside `static/templates`, which contains
 all the `jinja2` templates.
 
+#### Dependent services
+
+We use MongoDB for indexing the documents and other app-related data. We use QDrant for
+managing the vector search. Finally, we use Redis to manage user data.
+
 ## Installation
 
+### Dev
 The package is managed with `poetry`. The recommended way of installing the code is using a
 `venv` virtual environment and installing with `poetry` from there. Recommended python version
 is 3.10 and above. Follow these steps:
@@ -70,25 +76,20 @@ pip install pip --upgrade
 pip install poetry
 ```
 
-Besides the package, you'll need to provide a MongoDB and QDrant databases. These don't need
-to live locally in your same server, but could potentially be remote and cloud-managed.
+Besides, in order to run the app you need to run the dependent services. The easiest way to do
+this is through the provided docker-compose.yaml file.
 
-### Databases
+Make sure docker is installed, and then do "docker compose up -d" from the root directory in order
+to start the services.
 
-We use two databases. Their parameters need to be set in the settings.toml file.
+### Deployment
 
-#### MongoDB
-
-For a local install on ubuntu you can follow this link: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/#std-label-install-mdb-community-ubuntu
-
-#### QDrant
-
-For a local install on ubuntu, it's recommended to use docker: https://qdrant.tech/documentation/guides/installation/
-
-### Bib
-
-you need bibutils
-```sudo apt install bibutils```
+- Run the dependent services
+    - `docker compose up -d`
+- Run the vectorization service
+    - Use the provided `vectorizer_start` entrypoint file to start the process, (better yet let `supervisor` take care of the deployment)
+- Run the main app service
+    - Use the provided `bntl_start` entrypoint file to start the process, (better yet let `supervisor` take care of the deployment)
 
 ## Translations
 Update (for the first time run, you need to run `pybabel init -i static/translations/messages.pot -d static/translations/ -l en` instead of update)
@@ -130,9 +131,7 @@ fetch("/paginateWithin?query_id=" + queryId + "&query_str=" + queryStr + "&lang=
 ## Vectorization
 
 To use the vectorization service (code living in vectorize/), it needs to be started in a separate process. Its config details are in settings_vectorizer.toml.
-
 The process is started using the vectorize/server.py, which spawns a separate FastAPI server.
-
 The vectors are generated and stored into a MongoDB before being passed over to the main process to be indexed with the QDrant DB.
 
 # Front End
@@ -141,11 +140,17 @@ Documentation for the Front End should go into the help page (WIP).
 
 ## Admin functionality
 
-In order manage the database, two password-protected routes have been implemented. 
+In order manage the database, two password-protected routes have been implemented 
+(one for uploading documents and deleting the database, another one for vectorizing them).
+
+### Authentication
 The password is set upon deployment using the settings.toml file.
+Additionally, admins can run the app using email-based authentication.
+This requires a email server configuration that is able to send emails to the registered admin emails.
+When configured, admins will get a code on their emails upon attempt to access protected routes.
 
 ### Uploading documents
-The first one is /upload, which can be used to upload rdf files as they are downloaded from Zotero.
+The route /upload can be used to upload rdf files as they are downloaded from Zotero.
 This route allows the admin to upload multiple files and monitor the status of the files.
 The app processes uploaded files, parses them and indexes the resulting documents.
 The process takes care of discarding duplicates and extracting information needed to enable querying functionality.
