@@ -39,16 +39,20 @@ async def update_status(db_client, task_id, status, **kwargs):
                              **kwargs))
 
 
-async def vectorize(texts):
+async def vectorize(texts, a_logger=logger):
     client = openai.AsyncClient(
         api_key=settings.VECTORIZER_API_KEY, 
         base_url=f"{settings.VECTORIZER_HOST}:{settings.VECTORIZER_PORT}/v1")
 
     vectors = []
     for i in range(0, len(texts), settings.VECTORIZER_BATCH_SIZE):
+        await utils.maybe_await(
+            a_logger.info("- vectorizing batch: {start}-{end}".format(
+                start=i,
+                end=min(len(texts), i+ settings.VECTORIZER_BATCH_SIZE))))
         batch = texts[i:i + settings.VECTORIZER_BATCH_SIZE]
         embs = await client.embeddings.create(input=batch, model=settings.VECTORIZER_MODEL)
-        vectors.extend([embs.data[i].embedding for i in range(len(embs))])
+        vectors.extend([item.embedding for item in embs.data])
     return vectors
 
 
@@ -80,15 +84,15 @@ async def vectorize_task(db_client, vector_client, task_id):
                 if remaining_texts := [text for text in texts if text not in vector_cache]:
                     await a_logger.info("Vectorizing {} remaining docs".format(len(remaining_texts)))
                     vectors = await vectorize(remaining_texts)
-                    await a_logger.info("Caching vectors")
+                    await a_logger.info("Caching vectors", a_logger=a_logger)
                     await db_client.store_vectors(task_id, remaining_texts, vectors)
                     vector_cache.update(zip(remaining_texts, vectors))
                 # sort to original order
                 vectors = [vector_cache[text] for text in texts]
             # no vectors found in cache
             else:
-                a_logger.info("Vectorizing {} docs".format(len(texts)))
-                vectors = await vectorize(texts)
+                await a_logger.info("Vectorizing {} docs".format(len(texts)))
+                vectors = await vectorize(texts, a_logger=a_logger)
                 await a_logger.info("Caching vectors")
                 await db_client.store_vectors(task_id, texts, vectors)
             await a_logger.info("Got {} vectors".format(len(vectors)))
