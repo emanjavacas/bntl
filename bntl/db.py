@@ -17,8 +17,6 @@ from bntl import utils
 from bntl.models import QueryModel, QueryParams, StatusModel
 from bntl.models import DocumentModel, DBDocumentModel, ComputedFields
 
-from vectorize.settings import settings as v_settings
-
 
 logger = logging.getLogger(__name__)
 
@@ -116,9 +114,10 @@ class DBClient():
         self.autocomplete_coll = self.mongodb_client[settings.LOCAL_DB][settings.AUTOCOMPLETE_COLL]
         self.query_coll = self.mongodb_client[settings.LOCAL_DB][settings.QUERY_COLL]
         self.upload_coll = self.mongodb_client[settings.LOCAL_DB][settings.UPLOAD_COLL]
+        # info about vectorization tasks
         self.vectorization_coll = self.mongodb_client[settings.LOCAL_DB][settings.VECTORIZATION_COLL]
-        # vectorize database to retrieve vectors when done
-        self.vectors_coll = self.mongodb_client[v_settings.VECTORIZER_DB][v_settings.VECTORS_COLL]
+        # caching
+        self.vectorizer_coll = self.mongodb_client[settings.VECTORIZER_DB][settings.VECTORIZER_COLL]
 
     @classmethod
     async def create(cls):
@@ -314,6 +313,24 @@ class DBClient():
 
     async def find_vectorization_status(self, task_id):
         return await self.vectorization_coll.find_one({"task_id": task_id})
+    
+    # vector caching
+    async def store_vectors(self, task_id, texts, vectors):
+        await self.vectorizer_coll.insert_many(
+            [{"task_id": task_id, "text": text, "vector": vector} for text, vector in zip(texts, vectors)])
+        
+    async def find_in_batches(self, texts, batch_size=1000):
+        result = []
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            cursor = self.vectorizer_coll.find({"text": {"$in": batch}, "vector": {"$exists": True, "$ne": []}})
+            result.extend(await cursor.to_list(None))
+        return result
+        
+    async def get_vector_cache(self, texts):
+        items = await self.find_in_batches(texts)
+        vector_cache = {item["text"]: item["vector"] for item in items}
+        return vector_cache
 
     # keywords
     async def find_autocomplete_by_prefix(self, field: str, prefix: str, limit=10) -> List[str]:

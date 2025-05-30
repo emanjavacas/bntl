@@ -16,9 +16,6 @@ def setup_logger(path='settings_logger.toml'):
 
 
 class Settings(BaseSettings):
-    VECTORIZER_HOST: str = Field(help="Hostname where the vectorizer is running", default="localhost")
-    VECTORIZER_PORT: str = Field(help="Port on which the vectorization server is running")
-
     MONGODB_PORT: int = Field(help="MongoDB port", default=27017)
     MONGODB_HOST: str = Field(help='MongoDB host', default="localhost")
     LOCAL_DB: str = Field(help="Local MongoDB BNTL database name", default="bntl")
@@ -30,6 +27,16 @@ class Settings(BaseSettings):
 
     WITHIN_MAX_RESULTS: int = Field(help="Restrict results of original query to this number when doing recursive query", default=300_000)
     MAX_EXPORT_RESULTS: int = Field(help="Maximum number of documents to be exported", default=100)
+
+    # vectorizer service
+    VECTORIZER_HOST: str = Field(help="Hostname where the vectorizer is running", default="http://localhost")
+    VECTORIZER_PORT: str = Field(help="Port on which the vectorization server is running")
+    VECTORIZER_MODEL: str = Field(help="Model name used for vectorization")
+    VECTORIZER_API_KEY: str = Field(help="API key for running vectorization", default="banaan")
+    VECTORIZER_BATCH_SIZE: int = Field(help="Batch size for vectorization", default=1_000)
+    # vectorizer db (store vectors for caching)
+    VECTORIZER_DB: str = Field(default="vectorizer")
+    VECTORIZER_COLL: str = Field(default="vectors")
 
     QDRANT_HOST: str = Field(help="Host for qdrant", default="localhost")
     QDRANT_HTTP_PORT: int = Field(help="Port used by QDrant (usually 6333)", default=6333)

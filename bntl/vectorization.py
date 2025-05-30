@@ -2,9 +2,11 @@
 import logging
 from datetime import datetime, timezone
 
+import openai
+
 from bntl import utils
 from bntl.models import StatusModel
-from vectorize.client import vectorize, VectorizationException
+from bntl.settings import settings
 
 
 logger = logging.getLogger(__name__)
@@ -37,27 +39,59 @@ async def update_status(db_client, task_id, status, **kwargs):
                              **kwargs))
 
 
+async def vectorize(texts):
+    client = openai.AsyncClient(
+        api_key=settings.VECTORIZER_API_KEY, 
+        base_url=f"{settings.VECTORIZER_HOST}:{settings.VECTORIZER_PORT}/v1")
+
+    vectors = []
+    for i in range(0, len(texts), settings.VECTORIZER_BATCH_SIZE):
+        batch = texts[i:i + settings.VECTORIZER_BATCH_SIZE]
+        embs = await client.embeddings.create(input=batch, model=settings.VECTORIZER_MODEL)
+        vectors.extend([embs.data[i].embedding for i in range(len(embs))])
+    return vectors
+
+
+async def get_texts_from_db(db_client):
+    docs = await db_client.find()
+    texts, doc_ids = [], []
+    for doc in docs:
+        if text := utils.convert_to_text(doc["document"]):
+            texts.append(text)
+            doc_ids.append(doc["document"]["id"])
+    return texts, doc_ids
+
+
 async def vectorize_task(db_client, vector_client, task_id):
     vectors = None
     async with utils.AsyncLogger(utils.get_vectorization_log_filename(task_id)) as a_logger:
         try:
-            docs = await db_client.find()
-            texts, doc_ids = [], []
-            for doc in docs:
-                if text := utils.convert_to_text(doc["document"]):
-                    texts.append(text)
-                    doc_ids.append(doc["document"]["id"])
+            texts, doc_ids = await get_texts_from_db(db_client)
+            # no texts, return
             if len(texts) == 0:
                 await a_logger.info("No documents found in database")
                 await update_status(db_client, task_id, Status.DONE)
+                return
+
+            await a_logger.info("Starting vectorization task: {}".format(task_id))
+            # check cache
+            if vector_cache := await db_client.get_vector_cache(texts):
+                await a_logger.info("Got {}/{} vectors from cache".format(len(vector_cache), len(texts)))
+                if remaining_texts := [text for text in texts if text not in vector_cache]:
+                    await a_logger.info("Vectorizing {} remaining docs".format(len(remaining_texts)))
+                    vectors = await vectorize(remaining_texts)
+                    await a_logger.info("Caching vectors")
+                    await db_client.store_vectors(task_id, remaining_texts, vectors)
+                    vector_cache.update(zip(remaining_texts, vectors))
+                # sort to original order
+                vectors = [vector_cache[text] for text in texts]
+            # no vectors found in cache
             else:
-                await a_logger.info("Starting vectorization task: {}".format(task_id))
-                await a_logger.info("Vectorizing {} documents...".format(len(docs)))
-                vectors = await vectorize(
-                    db_client.vectors_coll, task_id, texts, doc_ids, logger=a_logger)
-        except VectorizationException as e:
-            await a_logger.info("Exception while vectorizing: [{}]".format(str(e)))
-            await update_status(db_client, task_id, Status.VECTORIZINGERROR, detail=str(e))
+                a_logger.info("Vectorizing {} docs".format(len(texts)))
+                vectors = await vectorize(texts)
+                await a_logger.info("Caching vectors")
+                await db_client.store_vectors(task_id, texts, vectors)
+            await a_logger.info("Got {} vectors".format(len(vectors)))
         except Exception as e:
             await a_logger.info("Exception while vectorizing: [{}]".format(str(e)))
             await update_status(db_client, task_id, Status.VECTORIZINGERROR, detail=str(e))

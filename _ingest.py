@@ -9,7 +9,7 @@ from bntl.rdf import parse_rdf
 from bntl.db import DBClient
 from bntl.vector import VectorClient
 from bntl.upload import convert_to_text
-from vectorize import client
+from bntl.vectorization import vectorize
 
 
 async def main(paths):
@@ -44,7 +44,7 @@ async def main(paths):
                     texts.append(text)
                     doc_ids.append(doc["document"]["id"])
             task_id = utils.generate_id()
-            vectors = await client.vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
+            vectors = await vectorize(db_client.vectors_coll, task_id, texts, doc_ids, logger=logger)
 
             # insert to qdrant
             if vectors:

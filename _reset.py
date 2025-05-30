@@ -5,7 +5,6 @@ import asyncio
 from bntl.db import DBClient
 from bntl.vector_db import VectorClient
 from bntl.settings import settings
-from vectorize.db import DBClient as VectorizerDBClient
 
 
 async def main():
@@ -13,8 +12,6 @@ async def main():
     await db_client._clear_up()
     vector_client = VectorClient()
     await vector_client._clear_up()
-    db_client = await VectorizerDBClient.create()
-    await db_client._clear_up()
 
     if os.path.isdir(settings.UPLOAD_LOG_DIR):
         for f in os.listdir(settings.UPLOAD_LOG_DIR):
